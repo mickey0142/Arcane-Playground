@@ -1,20 +1,27 @@
 
 character1.png
-size: 1024,512
+size: 256,64
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 0001
   rotate: false
   xy: 2, 2
-  size: 333, 333
-  orig: 333, 333
+  size: 60, 60
+  orig: 60, 60
   offset: 0, 0
   index: -1
 0002
   rotate: false
-  xy: 337, 2
-  size: 333, 333
-  orig: 333, 333
+  xy: 64, 2
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+0003
+  rotate: false
+  xy: 126, 2
+  size: 60, 60
+  orig: 60, 60
   offset: 0, 0
   index: -1
