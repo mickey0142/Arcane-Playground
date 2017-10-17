@@ -17,11 +17,11 @@ public class ItemDrop extends GameObject{
 	
 	static int dropCount = 0;
 	static Texture swordDropTexture = new Texture(Gdx.files.internal("swordweapon.png"));// static and final ! all value and texture here
-	static final float SWORD_ATTACK_WIDTH = 64;
-	static final float SWORD_ATTACK_HEIGHT = 64;
+	static final float SWORD_ATTACK_WIDTH = 40;
+	static final float SWORD_ATTACK_HEIGHT = 40;
 	static final float SWORD_ATTACK = 5;
-	static final float SWORDLV2_ATTACK_WIDTH = 64;
-	static final float SWORDLV2_ATTACK_HEIGHT = 128;
+	static final float SWORDLV2_ATTACK_WIDTH = 40;
+	static final float SWORDLV2_ATTACK_HEIGHT = 80;
 	static final float SWORDLV2_ATTACK = 5;
 	public ItemDrop()
 	{

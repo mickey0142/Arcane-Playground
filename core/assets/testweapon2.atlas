@@ -1,0 +1,27 @@
+
+testweapon2.png
+size: 512,16
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+0001
+  rotate: false
+  xy: 2, 2
+  size: 85, 10
+  orig: 85, 10
+  offset: 0, 0
+  index: -1
+0002
+  rotate: false
+  xy: 89, 2
+  size: 85, 10
+  orig: 85, 10
+  offset: 0, 0
+  index: -1
+0003
+  rotate: false
+  xy: 176, 2
+  size: 85, 10
+  orig: 85, 10
+  offset: 0, 0
+  index: -1

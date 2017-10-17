@@ -72,8 +72,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	
 	public void createInCharacterStage()
 	{
-		playerHPBar[0] = new UI("hp.png", 20, 700, 100, 20, true);
-		playerHPBar[1] = new UI("hp.png", 200, 700, 100, 20, true);
+		playerHPBar[0] = new UI("hp.png", 20, 680, 150, 40);
+		playerHPBar[1] = new UI("hp.png", 250, 680, 150, 40);
 		player[0] = new PlayerCharacter(25, 5, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, playerHPBar[0], PlayerWeapon.sword, PlayerWeapon.swordAnim);
 		
 		// playerweapon.sword ^ here
@@ -101,15 +101,16 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	{
 		game = new Stage(new FitViewport(1350, 750));
 		gameBackground = new UI("gamebackground.jpg", 0, 0, 1350, 750, false);
-		playGround = new GameObject("playground.jpg", 25, 0, 1300, 650, false);
+		playGround = new GameObject("playground.png", 25, 0, 1300, 650, false);
 		
 		// add all actor for game stage in here. adding order should be background playground itemdrop wall player playerweapon playerattackeffect
 		game.addActor(gameBackground);
 		game.addActor(playGround);
 		
-		game.addActor(itemDrop[0]);
-		game.addActor(itemDrop[1]);
-		game.addActor(itemDrop[2]);
+		for (int i = 0; i < 10; i++)// change 10 to how many itemdrop hereeeeeee
+		{
+			game.addActor(itemDrop[i]);
+		}
 		
 		game.addActor(playerHPBar[0]);
 		game.addActor(playerHPBar[1]);
@@ -586,9 +587,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			{
 				continue;
 			}
-			if (checkCollision(playerAttack, allPlayer, "attack"))
+			if (checkCollision(playerAttack, allPlayer, "attack") && !allPlayer.hurt)
 			{
-				allPlayer.hp -= playerAttack.attack;
+				allPlayer.hp -= 1;
 				allPlayer.hurt = true;
 			}
 		}

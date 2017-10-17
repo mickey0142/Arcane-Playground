@@ -17,8 +17,8 @@ public class PlayerCharacter extends Actor{
 	int weaponLV;
 	int controlLeft, controlRight, controlUp, controlDown, controlAttack;
 	Rectangle hitbox, attackHitbox;
-	float attackWidth = 64, attackHeight = 64;
-	float hp = 100, hpMax = 100;// change hpmax when there is more than 1 character
+	float attackWidth = 40, attackHeight = 40;
+	int hp = 3;//, hpMax = 100;// use hpmax if character have different hp
 	float speed_x;
 	float speed_y;
 	float speedLeft, speedRight, speedUp, speedDown;
@@ -28,6 +28,9 @@ public class PlayerCharacter extends Actor{
 	float currentAttackCooldown;
 	float attackChargeTime = 0.5f;
 	float currentChargeTime;
+	float blinkTime = 2f, currentBlinkTime;
+	int blinkFrameCount;
+	boolean blink = false;
 	boolean faceLeft = false;
 	boolean charging = false;
 	boolean attacking = false;
@@ -36,6 +39,11 @@ public class PlayerCharacter extends Actor{
 	EffectRenderer attackEffect;
 	PlayerWeapon weapon;
 	
+	static TextureAtlas heart = new TextureAtlas(Gdx.files.internal("heart.atlas"));
+	static Animation<TextureRegion> heart3 = new Animation<TextureRegion>(1f, heart.findRegions("0003"));
+	static Animation<TextureRegion> heart2 = new Animation<TextureRegion>(1f, heart.findRegions("0002"));
+	static Animation<TextureRegion> heart1 = new Animation<TextureRegion>(1f, heart.findRegions("0001"));
+	static Animation<TextureRegion> heart0 = new Animation<TextureRegion>(1f, heart.findRegions("0004"));
 	static TextureAtlas ninja = new TextureAtlas(Gdx.files.internal("character1.atlas"));
 	static TextureAtlas cyclop = new TextureAtlas(Gdx.files.internal("character4.atlas"));
 	static TextureAtlas pirate = new TextureAtlas(Gdx.files.internal("character2.atlas"));
@@ -63,6 +71,8 @@ public class PlayerCharacter extends Actor{
 		attackHitbox = new Rectangle(x, y, attackWidth, attackHeight);
 		direction = "right";
 		this.hpBar = hpBar;
+		this.hpBar.animation = true;
+		updateHPBar();
 		this.weaponAtlas = weaponAtlas;
 		this.weaponAnim = weaponAnim;
 		
@@ -88,8 +98,8 @@ public class PlayerCharacter extends Actor{
 				attacking = true;
 			}
 		}
-		hpBar.setHPBarColor(hp, hpMax);
-		hpBar.setWidth(hp/hpMax*100);
+		//hpBar.setHPBarColor(hp, hpMax);
+		updateHPBar();
 		updateHitbox();
 		updateAttackHitbox();
 		if (speed_x > 0)
@@ -110,13 +120,31 @@ public class PlayerCharacter extends Actor{
 		}
 		if (hurt)
 		{
-			//currentAnim = hurtAnim;
-			if (currentAnim.isAnimationFinished(time))
+			currentBlinkTime += Gdx.graphics.getDeltaTime();
+			blinkFrameCount += 1;
+			if (currentBlinkTime < blinkTime)
+			{
+				if (blinkFrameCount % 10 <= 5)
+				{
+					blink = true;
+				}
+				else
+				{
+					blink = false;
+				}
+			}
+			else
 			{
 				hurt = false;
+				blink = false;
+				currentBlinkTime = 0;
+				blinkFrameCount = 0;
 			}
 		}
-		batch.draw(currentAnim.getKeyFrame(time, true), (faceLeft ? this.getX()+this.getWidth() : this.getX()), this.getY(), (faceLeft ? -this.getWidth() : this.getWidth()), this.getHeight());
+		if (!blink)
+		{
+			batch.draw(currentAnim.getKeyFrame(time, true), (faceLeft ? this.getX()+this.getWidth() : this.getX()), this.getY(), (faceLeft ? -this.getWidth() : this.getWidth()), this.getHeight());
+		}
 		batch.draw(temp2, attackHitbox.getX(), attackHitbox.getY(), attackHitbox.getWidth(), attackHitbox.getHeight());
 		if(currentChargeTime > 0)
 		{
@@ -223,5 +251,24 @@ public class PlayerCharacter extends Actor{
 		walkingAnim = new Animation<TextureRegion>(0.2f, walkingAtlas.getRegions());
 		walkingAnim.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
 		standingAnim = new Animation<TextureRegion>(0.5f, walkingAtlas.findRegions("0001"));
+	}
+	public void updateHPBar()
+	{
+		if (hp == 3)
+		{
+			hpBar.currentAnim = heart3;
+		}
+		else if (hp == 2)
+		{
+			hpBar.currentAnim = heart2;
+		}
+		else if (hp == 1)
+		{
+			hpBar.currentAnim = heart1;
+		}
+		else if (hp <= 0)
+		{
+			hpBar.currentAnim = heart0;
+		}
 	}
 }

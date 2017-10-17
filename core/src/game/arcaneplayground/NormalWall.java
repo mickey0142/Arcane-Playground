@@ -41,6 +41,10 @@ public class NormalWall extends GameObject{
 	}
 	public void spawnItem(ItemDrop itemdrop[])
 	{
+		if (itemdrop[ItemDrop.dropCount].dropped)
+		{
+			ItemDrop.dropCount += 1;
+		}
 		itemdrop[ItemDrop.dropCount].setValue(this.getX(), this.getY());
 	}
 }
