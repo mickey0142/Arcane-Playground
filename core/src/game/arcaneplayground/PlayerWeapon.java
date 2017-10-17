@@ -31,6 +31,8 @@ public class PlayerWeapon extends Actor{
 		this.animation = player.weaponAnim;
 		this.setX(player.getX());
 		this.setY(player.getY());
+		this.setWidth(60);
+		this.setHeight(60);
 		normalAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegions("0001"));
 		chargingAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegions("0002"));
 		currentAnim = normalAnim;
@@ -56,22 +58,21 @@ public class PlayerWeapon extends Actor{
 			currentAnim = animation;
 			time = 0;
 		}
-		//batch.draw(currentAnim.getKeyFrame(time), this.getX(), this.getY(), 40, 20);// make weapon rotate according to direction and move weapon to where it should be here
 		if (player.direction.equals("up"))
 		{
-			batch.draw(currentAnim.getKeyFrame(time), this.getX(), this.getY(), 40/2, 20/2, 40, 20, 1, 1, 90);
+			batch.draw(currentAnim.getKeyFrame(time), this.getX(), this.getY(), this.getWidth(), this.getHeight());
 		}
 		else if (player.direction.equals("down"))
 		{
-			batch.draw(currentAnim.getKeyFrame(time), this.getX(), this.getY()+40, 40/2, 20/2, -40, 20, 1, 1, 90);
+			batch.draw(currentAnim.getKeyFrame(time), this.getX(), this.getY(), this.getWidth(), this.getHeight());
 		}
 		else if (player.direction.equals("left"))
 		{
-			batch.draw(currentAnim.getKeyFrame(time), this.getX()+20, this.getY(), 40/2, 20/2, -40, 20, 1, 1, 0);
+			batch.draw(currentAnim.getKeyFrame(time), this.getX(), this.getY(), this.getWidth(), this.getHeight());
 		}
 		else if (player.direction.equals("right"))
 		{
-			batch.draw(currentAnim.getKeyFrame(time), this.getX(), this.getY(), 40/2, 20/2, 40, 20, 1, 1, 0);
+			batch.draw(currentAnim.getKeyFrame(time), this.getX(), this.getY(), this.getWidth(), this.getHeight());
 		}
 		if (currentAnim == animation)
 		{
