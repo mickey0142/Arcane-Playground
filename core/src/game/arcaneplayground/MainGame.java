@@ -74,9 +74,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	{
 		playerHPBar[0] = new UI("hp.png", 20, 700, 100, 20, true);
 		playerHPBar[1] = new UI("hp.png", 200, 700, 100, 20, true);
-		player[0] = new PlayerCharacter(25, 5, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, playerHPBar[0], PlayerWeapon.fist, PlayerWeapon.fistAnim);
-		player[1] = new PlayerCharacter(1270, 570, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, playerHPBar[1], PlayerWeapon.fist, PlayerWeapon.fistAnim);
-		player[0].setTexture(PlayerCharacter.pirate);
+		player[0] = new PlayerCharacter(25, 5, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, playerHPBar[0], PlayerWeapon.sword, PlayerWeapon.swordAnim);
+		
+		// playerweapon.sword ^ here
+		
+		player[1] = new PlayerCharacter(1270, 570, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, playerHPBar[1], PlayerWeapon.sword, PlayerWeapon.swordAnim);
+		player[0].setTexture(PlayerCharacter.test);
 		player[1].setTexture(PlayerCharacter.cyclop);
 		attackEffectRenderer[0] = new EffectRenderer(player[0]);
 		attackEffectRenderer[0].setValue(player[0].attackHitbox.getX(), player[0].attackHitbox.getY(), player[0].attackHitbox.getWidth(), player[0].attackHitbox.getHeight(), player[0].direction);
@@ -86,6 +89,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		playerWeaponRenderer[1] = new PlayerWeapon(player[1]);
 		player[0].setPlayerAttackEffectRenderer(attackEffectRenderer[0]);
 		player[1].setPlayerAttackEffectRenderer(attackEffectRenderer[1]);
+		player[0].setPlayerWeaponRenderer(playerWeaponRenderer[0]);
+		player[1].setPlayerWeaponRenderer(playerWeaponRenderer[1]);
 		
 		// ui in stage
 		characterBackground = new UI("characterbackground.jpg", 0, 0, 1350, 750);

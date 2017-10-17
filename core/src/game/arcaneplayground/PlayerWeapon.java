@@ -16,8 +16,8 @@ public class PlayerWeapon extends Actor{
 	// all weapon here
 	static TextureAtlas fist = new TextureAtlas(Gdx.files.internal("fistanim.atlas"));
 	static Animation<TextureRegion> fistAnim = new Animation<TextureRegion>(0.5f, fist.getRegions());
-//	static TextureAtlas sword = new TextureAtlas();
-//	static Animation<TextureRegion> swordAnum = new Animation();
+	static TextureAtlas sword = new TextureAtlas(Gdx.files.internal("testweapon.atlas"));
+	static Animation<TextureRegion> swordAnim = new Animation<TextureRegion>(0.5f, sword.getRegions());
 	// all weapon here
 	
 	public PlayerWeapon()
@@ -31,8 +31,8 @@ public class PlayerWeapon extends Actor{
 		this.animation = player.weaponAnim;
 		this.setX(player.getX());
 		this.setY(player.getY());
-		normalAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegions("001"));
-		chargingAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegions("002"));
+		normalAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegions("0001"));
+		chargingAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegions("0002"));
 		currentAnim = normalAnim;
 	}
 	public void draw(Batch batch, float alpha)
@@ -91,5 +91,8 @@ public class PlayerWeapon extends Actor{
 		// change texture of weapon
 		this.textureAtlas = player.weaponAtlas;
 		this.animation = player.weaponAnim;
+		// this will be where memory leak happens
+		normalAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegions("0001"));
+		chargingAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegions("0002"));
 	}
 }

@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 public class ItemDrop extends GameObject{
 	boolean dropped = false;
 	float attackWidth[] = new float[3], attackHeight[] = new float[3], attack[] = new float[3];
-	TextureAtlas effectAtlas, weaponAtlas[] = new TextureAtlas[3];
+	TextureAtlas effectAtlas, weaponAtlas;
 	Animation<TextureRegion> effectAnimation, weaponAnimation;
 	String weaponName;
 	
@@ -52,6 +52,8 @@ public class ItemDrop extends GameObject{
 			attack[0] = SWORD_ATTACK;
 			effectAtlas = EffectRenderer.swordAtlas;
 			effectAnimation = EffectRenderer.swordAnimation;
+			weaponAtlas = PlayerWeapon.sword;
+			weaponAnimation = PlayerWeapon.swordAnim;
 			//lv2
 			attackWidth[1] = SWORDLV2_ATTACK_WIDTH;
 			attackHeight[1] = SWORDLV2_ATTACK_HEIGHT;
@@ -59,8 +61,7 @@ public class ItemDrop extends GameObject{
 			//lv3
 			
 			
-			//weaponAtlas = ;
-			//weaponAnimation = ;// equal static in this class
+			
 			// change player weapon somehow...?
 			dropCount += 1;
 			dropped = true;
