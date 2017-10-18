@@ -30,6 +30,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	EffectRenderer attackEffectRenderer[] = new EffectRenderer[2];
 	PlayerWeapon playerWeaponRenderer[] = new PlayerWeapon[2];
 	ItemDrop itemDrop[];
+	UI playerCooldownBar[] = new UI[2];
 	UI playerHPBar[] = new UI[2];
 	Stage end;
 	float gametime;//temp
@@ -75,6 +76,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	{
 		playerHPBar[0] = new UI("hp.png", 20, 680, 150, 40);
 		playerHPBar[1] = new UI("hp.png", 250, 680, 150, 40);
+		playerCooldownBar[0] = new UI("box2.png", 0, 0, 60, 10);
+		playerCooldownBar[1] = new UI("box2.png", 0, 0, 60, 10);
 		player[0] = new PlayerCharacter(25, 5, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, playerHPBar[0], PlayerWeapon.sword, PlayerWeapon.swordAnim);
 		
 		// playerweapon.sword ^ here
@@ -92,6 +95,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		player[1].setPlayerAttackEffectRenderer(attackEffectRenderer[1]);
 		player[0].setPlayerWeaponRenderer(playerWeaponRenderer[0]);
 		player[1].setPlayerWeaponRenderer(playerWeaponRenderer[1]);
+		player[0].setCooldownBar(playerCooldownBar[0]);
+		player[1].setCooldownBar(playerCooldownBar[1]);
 		
 		// ui in stage
 		characterBackground = new UI("characterbackground.jpg", 0, 0, 1350, 750);
@@ -116,11 +121,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		game.addActor(playerHPBar[0]);
 		game.addActor(playerHPBar[1]);
 		
-		game.addActor(player[0]);
-		game.addActor(player[1]);
-		game.addActor(playerWeaponRenderer[0]);
-		game.addActor(playerWeaponRenderer[1]);
-		
 		game.addActor(walls[0]);
 		game.addActor(walls[1]);
 		game.addActor(walls[2]);
@@ -129,6 +129,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		game.addActor(normalWalls[2]);
 		game.addActor(normalWalls[3]);
 		game.addActor(normalWalls[4]);
+		
+		game.addActor(player[0]);
+		game.addActor(player[1]);
+		game.addActor(playerWeaponRenderer[0]);
+		game.addActor(playerWeaponRenderer[1]);
+		game.addActor(playerCooldownBar[0]);
+		game.addActor(playerCooldownBar[1]);
+		
 		game.addActor(attackEffectRenderer[0]);
 		game.addActor(attackEffectRenderer[1]);
 	}

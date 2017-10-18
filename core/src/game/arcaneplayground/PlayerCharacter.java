@@ -35,6 +35,7 @@ public class PlayerCharacter extends Actor{
 	boolean attacking = false;
 	boolean hurt = false;
 	UI hpBar;
+	UI cooldownBar;
 	EffectRenderer attackEffect;
 	PlayerWeapon weapon;
 	
@@ -99,6 +100,7 @@ public class PlayerCharacter extends Actor{
 		}
 		//hpBar.setHPBarColor(hp, hpMax);
 		updateHPBar();
+		updateCooldownBar();
 		updateHitbox();
 		updateAttackHitbox();
 		if (speed_x > 0)
@@ -210,11 +212,17 @@ public class PlayerCharacter extends Actor{
 				//set value for lv2
 				attackWidth = item.attackWidth[1];
 				attackHeight = item.attackHeight[1];
+				attackCooldown = item.attackCooldown[1];
+				attackChargeTime = item.attackChargeTime[1];
 				weaponLV = 2;
 			}
 			else if (weaponLV == 2)
 			{
 				//set value for lv3
+				attackWidth = item.attackWidth[2];
+				attackHeight = item.attackHeight[2];
+				attackCooldown = item.attackCooldown[2];
+				attackChargeTime = item.attackChargeTime[2];
 				weaponLV = 3;
 			}
 		}
@@ -223,8 +231,8 @@ public class PlayerCharacter extends Actor{
 			//set value for lv1
 			attackWidth = item.attackWidth[0];
 			attackHeight = item.attackHeight[0];
-			attackCooldown = item.attackCooldown;
-			attackChargeTime = item.attackChargeTime;
+			attackCooldown = item.attackCooldown[0];
+			attackChargeTime = item.attackChargeTime[0];
 			updateAttackEffect(item.effectAtlas, item.effectAnimation);
 			weaponName = item.weaponName;
 			weaponLV = 1;
@@ -269,5 +277,23 @@ public class PlayerCharacter extends Actor{
 		{
 			hpBar.currentAnim = heart0;
 		}
+	}
+	public void setCooldownBar(UI cooldownBar)
+	{
+		this.cooldownBar = cooldownBar;
+	}
+	public void updateCooldownBar()
+	{
+		cooldownBar.setX(this.getX());
+		cooldownBar.setY(this.getY()+this.getHeight()+20);
+		if (currentAttackCooldown <= 0)
+		{
+			cooldownBar.setVisible(false);
+		}
+		else
+		{
+			cooldownBar.setVisible(true);
+		}
+		cooldownBar.setWidth(60-(currentAttackCooldown/attackCooldown*60));
 	}
 }
