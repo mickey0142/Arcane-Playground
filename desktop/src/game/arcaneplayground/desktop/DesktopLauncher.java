@@ -14,6 +14,5 @@ public class DesktopLauncher {
 		config.forceExit = true;
 		config.addIcon("icon.png", FileType.Internal);
 		new LwjglApplication(new MainGame(), config);
-		//Hello World!
 	}
 }

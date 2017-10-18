@@ -17,7 +17,7 @@ public class PlayerCharacter extends Actor{
 	int weaponLV;
 	int controlLeft, controlRight, controlUp, controlDown, controlAttack;
 	Rectangle hitbox, attackHitbox;
-	float attackWidth = 64, attackHeight = 64;
+	float attackWidth = 40, attackHeight = 40;
 	float hp = 100, hpMax = 100;// change hpmax when there is more than 1 character
 	float speed_x;
 	float speed_y;
@@ -132,7 +132,7 @@ public class PlayerCharacter extends Actor{
 		hitbox.setX(this.getX()+15);
 		hitbox.setY(this.getY()+1);
 		hitbox.setWidth(this.getWidth()-30);
-		hitbox.setHeight(this.getHeight()-12);
+		hitbox.setHeight(this.getHeight()-18);
 	}
 	public void updateAttackHitbox()
 	{

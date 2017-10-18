@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+
 public class MainGame extends ApplicationAdapter implements InputProcessor{
 	SpriteBatch batch;
 	Texture img;
@@ -28,6 +29,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	PlayerCharacter checkCollisionTemp;
 	EffectRenderer attackEffectRenderer[] = new EffectRenderer[2];
 	PlayerWeapon playerWeaponRenderer[] = new PlayerWeapon[2];
+	
 	ItemDrop itemDrop[];
 	UI playerHPBar[] = new UI[2];
 	Stage end;
@@ -74,11 +76,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	{
 		playerHPBar[0] = new UI("hp.png", 20, 700, 100, 20, true);
 		playerHPBar[1] = new UI("hp.png", 200, 700, 100, 20, true);
-		player[0] = new PlayerCharacter(25, 5, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, playerHPBar[0], PlayerWeapon.sword, PlayerWeapon.swordAnim);
+		player[0] = new PlayerCharacter(75, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, playerHPBar[0], PlayerWeapon.sword, PlayerWeapon.swordAnim);
 		
 		// playerweapon.sword ^ here
 		
-		player[1] = new PlayerCharacter(1270, 570, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, playerHPBar[1], PlayerWeapon.sword, PlayerWeapon.swordAnim);
+		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, playerHPBar[1], PlayerWeapon.sword, PlayerWeapon.swordAnim);
 		player[0].setTexture(PlayerCharacter.test);
 		player[1].setTexture(PlayerCharacter.cyclop);
 		attackEffectRenderer[0] = new EffectRenderer(player[0]);
@@ -114,19 +116,67 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		game.addActor(playerHPBar[0]);
 		game.addActor(playerHPBar[1]);
 		
+		
+		walls = new UnbreakableWall[136];
+		int posX = 0;
+		int posY = 0;
+		int boxX = 50;
+		int boxY = 50;
+		for(int i=0;i<=26;i++) {
+			walls[i] = new UnbreakableWall("block.png", posX, posY, boxX, boxY, true);
+			game.addActor(walls[i]);
+			posX += 50;
+		}
+		
+		posX = 0;
+		posY = 600;
+		for(int i=27;i<=53;i++) {
+			walls[i] = new UnbreakableWall("block.png", posX, posY, boxX, boxY, true);
+			game.addActor(walls[i]);
+			posX += 50;
+		}
+
+		posX = 0;
+		posY = 50;
+		for(int i=54;i<=64;i++) {
+			walls[i] = new UnbreakableWall("block.png", posX, posY, boxX, boxY, true);
+			game.addActor(walls[i]);
+			posY += 50;
+		}
+
+		posX = 1300;
+		posY = 50;
+		for(int i=65;i<=75;i++) {
+			walls[i] = new UnbreakableWall("block.png", posX, posY, boxX, boxY, true);
+			game.addActor(walls[i]);
+			posY += 50;
+		}
+		
+		posX = 100;
+		posY = 100;
+		int num_count = 76;
+		for(int i=0;i<5;i++) {
+			for(int j=0;j<12;j++) {
+				walls[j+num_count] = new UnbreakableWall("block.png", posX, posY, boxX, boxY, true);
+				game.addActor(walls[j+num_count]);
+				posX += 100;
+			}
+			posX = 100;
+			num_count += 12;
+			posY += 100;
+		}
+		
+//		int random = (int)(Math.random()*2);
+		
+//		normalWalls = new NormalWall[50];
+//		normalWalls[0] = new NormalWall("block2.png", 500, 50, 50, 50, true);
+//		
+//		game.addActor(normalWalls[50]);
+//		game.addActor(normalWalls[51]);
 		game.addActor(player[0]);
 		game.addActor(player[1]);
 		game.addActor(playerWeaponRenderer[0]);
 		game.addActor(playerWeaponRenderer[1]);
-		
-		game.addActor(walls[0]);
-		game.addActor(walls[1]);
-		game.addActor(walls[2]);
-		game.addActor(normalWalls[0]);
-		game.addActor(normalWalls[1]);
-		game.addActor(normalWalls[2]);
-		game.addActor(normalWalls[3]);
-		game.addActor(normalWalls[4]);
 		game.addActor(attackEffectRenderer[0]);
 		game.addActor(attackEffectRenderer[1]);
 	}
