@@ -16,6 +16,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	String screen = "menu";
 	PlayerCharacter player[] = new PlayerCharacter[2];
 	Stage menu;
+	int cursorPosition = 1;
 	UI menuBackground;
 	UI temparrow;
 	Stage character;
@@ -347,22 +348,38 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	{
 		if (keycode == Keys.ENTER)
 		{
-			if (temparrow.getY() == 350)
+			if (cursorPosition == 1)
 			{
 				screen = "character";
 			}
-			else if (temparrow.getY() == 100)
+			else if (cursorPosition == 2)
 			{
 				Gdx.app.exit();
 			}
 		}
 		else if (keycode == Keys.DOWN)
 		{
-			temparrow.setY(100);
+			cursorPosition += 1;
+			if (cursorPosition > 2)
+			{
+				cursorPosition = 1;
+			}
 		}
 		else if (keycode == Keys.UP)
 		{
+			cursorPosition -= 1;
+			if (cursorPosition <= 0)// change this if there is more than 2 button
+			{
+				cursorPosition = 2;
+			}
+		}
+		if (cursorPosition == 1)
+		{
 			temparrow.setY(350);
+		}
+		else if (cursorPosition == 2)
+		{
+			temparrow.setY(100);
 		}
 	}
 	
@@ -567,7 +584,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			{
 				if (wall instanceof NormalWall)
 				{
-					((NormalWall) wall).hp -= playerAttack.attack;// maybe change 1 to attack damage later
+					if (playerAttack.weaponName.equals("fist"))
+					{
+						((NormalWall) wall).hp -= 1;
+					}
+					else
+					{
+						((NormalWall) wall).hp -= 3;
+					}
 				}
 			}
 		}

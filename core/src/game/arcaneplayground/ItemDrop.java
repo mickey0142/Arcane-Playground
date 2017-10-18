@@ -10,19 +10,19 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class ItemDrop extends GameObject{
 	boolean dropped = false;
-	float attackWidth[] = new float[3], attackHeight[] = new float[3], attack[] = new float[3];
+	float attackWidth[] = new float[3], attackHeight[] = new float[3], attackChargeTime, attackCooldown;
 	TextureAtlas effectAtlas, weaponAtlas;
 	Animation<TextureRegion> effectAnimation, weaponAnimation;
 	String weaponName;
 	
 	static int dropCount = 0;
 	static Texture swordDropTexture = new Texture(Gdx.files.internal("swordweapon.png"));// static and final ! all value and texture here
+	static final float SWORD_ATTACK_COOLDOWN = 1;
+	static final float SWORD_CHARGE_TIME = 0.5f;
 	static final float SWORD_ATTACK_WIDTH = 40;
 	static final float SWORD_ATTACK_HEIGHT = 40;
-	static final float SWORD_ATTACK = 5;
 	static final float SWORDLV2_ATTACK_WIDTH = 40;
 	static final float SWORDLV2_ATTACK_HEIGHT = 80;
-	static final float SWORDLV2_ATTACK = 5;
 	public ItemDrop()
 	{
 		this.setVisible(dropped);
@@ -46,10 +46,11 @@ public class ItemDrop extends GameObject{
 		{
 			this.img = swordDropTexture;
 			this.weaponName = "sword";
+			attackCooldown = SWORD_ATTACK_COOLDOWN;
+			attackChargeTime = SWORD_CHARGE_TIME;
 			//lv1
 			attackWidth[0] = SWORD_ATTACK_WIDTH;
 			attackHeight[0] = SWORD_ATTACK_HEIGHT;
-			attack[0] = SWORD_ATTACK;
 			effectAtlas = EffectRenderer.swordAtlas;
 			effectAnimation = EffectRenderer.swordAnimation;
 			weaponAtlas = PlayerWeapon.sword;
@@ -57,7 +58,6 @@ public class ItemDrop extends GameObject{
 			//lv2
 			attackWidth[1] = SWORDLV2_ATTACK_WIDTH;
 			attackHeight[1] = SWORDLV2_ATTACK_HEIGHT;
-			attack[1] = SWORDLV2_ATTACK;
 			//lv3
 			
 			

@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class NormalWall extends GameObject{
-	double hp = 5;
+	double hp = 3;
 	boolean dropItem = false;
 	static ItemDrop itemdrop[];
 	public NormalWall()

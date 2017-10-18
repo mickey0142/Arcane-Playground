@@ -23,7 +23,6 @@ public class PlayerCharacter extends Actor{
 	float speed_y;
 	float speedLeft, speedRight, speedUp, speedDown;
 	float time;
-	float attack = 1;
 	float attackCooldown = 0.5f;
 	float currentAttackCooldown;
 	float attackChargeTime = 0.5f;
@@ -211,7 +210,6 @@ public class PlayerCharacter extends Actor{
 				//set value for lv2
 				attackWidth = item.attackWidth[1];
 				attackHeight = item.attackHeight[1];
-				attack = item.attack[1];
 				weaponLV = 2;
 			}
 			else if (weaponLV == 2)
@@ -225,7 +223,8 @@ public class PlayerCharacter extends Actor{
 			//set value for lv1
 			attackWidth = item.attackWidth[0];
 			attackHeight = item.attackHeight[0];
-			attack = item.attack[0];
+			attackCooldown = item.attackCooldown;
+			attackChargeTime = item.attackChargeTime;
 			updateAttackEffect(item.effectAtlas, item.effectAnimation);
 			weaponName = item.weaponName;
 			weaponLV = 1;

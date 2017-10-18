@@ -34,7 +34,7 @@ public class PlayerWeapon extends Actor{
 		this.setY(player.getY());
 		this.setWidth(47);
 		this.setHeight(67);
-		normalAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegions("0001"));// change this later
+		normalAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegions("0001"));
 		chargingAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegion("attack", 1));
 		attackingAnim = new Animation<TextureRegion>(0.1f, textureAtlas.findRegions("attack"));
 		currentAnim = normalAnim;
@@ -105,6 +105,7 @@ public class PlayerWeapon extends Actor{
 		this.animation = player.weaponAnim;
 		// this will be where memory leak happens
 		normalAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegions("0001"));
-		chargingAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegions("0002"));
+		chargingAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegion("attack", 1));
+		attackingAnim = new Animation<TextureRegion>(0.1f, textureAtlas.findRegions("attack"));
 	}
 }
