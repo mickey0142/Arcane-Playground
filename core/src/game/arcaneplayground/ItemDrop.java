@@ -10,19 +10,26 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class ItemDrop extends GameObject{
 	boolean dropped = false;
-	float attackWidth[] = new float[3], attackHeight[] = new float[3], attack[] = new float[3];
+	float attackWidth[] = new float[3], attackHeight[] = new float[3], attackChargeTime[] = new float[3], attackCooldown[] = new float[3];
 	TextureAtlas effectAtlas, weaponAtlas;
 	Animation<TextureRegion> effectAnimation, weaponAnimation;
 	String weaponName;
 	
 	static int dropCount = 0;
 	static Texture swordDropTexture = new Texture(Gdx.files.internal("swordweapon.png"));// static and final ! all value and texture here
-	static final float SWORD_ATTACK_WIDTH = 64;
-	static final float SWORD_ATTACK_HEIGHT = 64;
-	static final float SWORD_ATTACK = 5;
-	static final float SWORDLV2_ATTACK_WIDTH = 64;
-	static final float SWORDLV2_ATTACK_HEIGHT = 128;
-	static final float SWORDLV2_ATTACK = 5;
+	static final float SWORD_ATTACK_WIDTH = 40;
+	static final float SWORD_ATTACK_HEIGHT = 40;
+	static final float SWORD_CHARGE_TIME = 1;
+	static final float SWORD_ATTACK_COOLDOWN = 1.5f;
+	static final float SWORDLV2_ATTACK_WIDTH = 40;
+	static final float SWORDLV2_ATTACK_HEIGHT = 80;
+	static final float SWORDLV2_CHARGE_TIME = 1;
+	static final float SWORDLV2_ATTACK_COOLDOWN = 1;
+	static final float SWORDLV3_ATTACK_WIDTH = 40;
+	static final float SWORDLV3_ATTACK_HEIGHT = 80;
+	static final float SWORDLV3_CHARGE_TIME = 0.5f;
+	static final float SWORDLV3_ATTACK_COOLDOWN = 1;
+
 	public ItemDrop()
 	{
 		this.setVisible(dropped);
@@ -49,7 +56,8 @@ public class ItemDrop extends GameObject{
 			//lv1
 			attackWidth[0] = SWORD_ATTACK_WIDTH;
 			attackHeight[0] = SWORD_ATTACK_HEIGHT;
-			attack[0] = SWORD_ATTACK;
+			attackCooldown[0] = SWORD_ATTACK_COOLDOWN;
+			attackChargeTime[0] = SWORD_CHARGE_TIME;
 			effectAtlas = EffectRenderer.swordAtlas;
 			effectAnimation = EffectRenderer.swordAnimation;
 			weaponAtlas = PlayerWeapon.sword;
@@ -57,9 +65,13 @@ public class ItemDrop extends GameObject{
 			//lv2
 			attackWidth[1] = SWORDLV2_ATTACK_WIDTH;
 			attackHeight[1] = SWORDLV2_ATTACK_HEIGHT;
-			attack[1] = SWORDLV2_ATTACK;
+			attackCooldown[1] = SWORDLV2_ATTACK_COOLDOWN;
+			attackChargeTime[1] = SWORDLV2_CHARGE_TIME;
 			//lv3
-			
+			attackWidth[2] = SWORDLV3_ATTACK_WIDTH;
+			attackHeight[2] = SWORDLV3_ATTACK_HEIGHT;
+			attackCooldown[2] = SWORDLV3_ATTACK_COOLDOWN;
+			attackChargeTime[2] = SWORDLV3_CHARGE_TIME;
 			
 			
 			// change player weapon somehow...?

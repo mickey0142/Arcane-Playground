@@ -1,5 +1,5 @@
 
-testweapon.png
+heart.png
 size: 512,64
 format: RGBA8888
 filter: Nearest,Nearest
@@ -7,21 +7,28 @@ repeat: none
 0001
   rotate: false
   xy: 2, 2
-  size: 85, 40
-  orig: 85, 40
+  size: 98, 32
+  orig: 98, 32
   offset: 0, 0
   index: -1
 0002
   rotate: false
-  xy: 89, 2
-  size: 85, 40
-  orig: 85, 40
+  xy: 102, 2
+  size: 98, 32
+  orig: 98, 32
   offset: 0, 0
   index: -1
 0003
   rotate: false
-  xy: 176, 2
-  size: 85, 40
-  orig: 85, 40
+  xy: 202, 2
+  size: 98, 32
+  orig: 98, 32
+  offset: 0, 0
+  index: -1
+0004
+  rotate: false
+  xy: 302, 2
+  size: 98, 32
+  orig: 98, 32
   offset: 0, 0
   index: -1

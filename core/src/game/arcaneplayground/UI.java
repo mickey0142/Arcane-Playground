@@ -1,17 +1,22 @@
 package game.arcaneplayground;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
+//import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class UI extends Actor{
 	Texture img;
+	Animation<TextureRegion> currentAnim;
+	boolean animation = false;
 	boolean setColor = false;
 	float red;
 	float green;
 	float blue;
+	float time;
 	public UI()
 	{
 		
@@ -40,20 +45,15 @@ public class UI extends Actor{
 		{
 			batch.setColor(red, green, blue, 1);
 		}
-		batch.draw(img, this.getX(), this.getY(), this.getWidth(), this.getHeight());
-		batch.setColor(Color.WHITE);
-	}
-	public void setHPBarColor(float hp, float hpMax)
-	{
-		if (hp > hpMax/2)
+		time += Gdx.graphics.getDeltaTime();
+		if (animation)
 		{
-			green = 1;
-			red = 2*((hpMax-hp)/100);
+			batch.draw(currentAnim.getKeyFrame(time), this.getX(), this.getY(), this.getWidth(), this.getHeight());
 		}
 		else
 		{
-			red = 1;
-			green = 2*hp/100;
+			batch.draw(img, this.getX(), this.getY(), this.getWidth(), this.getHeight());
 		}
+//		batch.setColor(Color.WHITE);
 	}
 }

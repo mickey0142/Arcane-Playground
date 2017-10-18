@@ -15,7 +15,7 @@ public class EffectRenderer extends Actor{
 	
 	// keep all attack effect here
 	static TextureAtlas punchAtlas = new TextureAtlas(Gdx.files.internal("punch.atlas"));
-	static Animation<TextureRegion> punchAnimation = new Animation<TextureRegion>(0.3f, punchAtlas.getRegions());
+	static Animation<TextureRegion> punchAnimation = new Animation<TextureRegion>(0.2f, punchAtlas.getRegions());
 	static TextureAtlas swordAtlas = new TextureAtlas(Gdx.files.internal("sword.atlas"));
 	static Animation<TextureRegion> swordAnimation = new Animation<TextureRegion>(0.1f, swordAtlas.getRegions());
 	// keep all attack effect here
@@ -44,11 +44,13 @@ public class EffectRenderer extends Actor{
 			}
 			else if (direction.equals("left"))
 			{
-				batch.draw(player.attackEffectAnim.getKeyFrame(time), this.getX()+this.getWidth(), this.getY(), this.getWidth()/2, this.getHeight()/2, -this.getWidth(), this.getHeight(), 1, 1, 0);
+				batch.draw(player.attackEffectAnim.getKeyFrame(time), this.getX()+this.getWidth(), this.getY(), 0, 0, -this.getWidth(), this.getHeight(), 1, 1, 0);
+//				batch.draw(player.attackEffectAnim.getKeyFrame(time), this.getX()+this.getWidth(), this.getY(), this.getWidth()/2, this.getHeight()/2, -this.getWidth(), this.getHeight(), 1, 1, 0);
 			}
 			else if (direction.equals("right"))
 			{
-				batch.draw(player.attackEffectAnim.getKeyFrame(time), this.getX(), this.getY(), this.getWidth()/2, this.getHeight()/2, this.getWidth(), this.getHeight(), 1, 1, 0);
+				batch.draw(player.attackEffectAnim.getKeyFrame(time), this.getX(), this.getY(), 0, 0, this.getWidth(), this.getHeight(), 1, 1, 0);
+//				batch.draw(player.attackEffectAnim.getKeyFrame(time), this.getX(), this.getY(), this.getWidth()/2, this.getHeight()/2, this.getWidth(), this.getHeight(), 1, 1, 0);
 			}
 			if (player.attackEffectAnim.isAnimationFinished(time))
 			{

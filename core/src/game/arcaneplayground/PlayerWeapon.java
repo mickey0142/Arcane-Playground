@@ -12,12 +12,13 @@ public class PlayerWeapon extends Actor{
 	Animation<TextureRegion> animation, currentAnim, normalAnim, chargingAnim, attackingAnim;
 	PlayerCharacter player;
 	float time;
+	float originX, originY;
 	
 	// all weapon here
 	static TextureAtlas fist = new TextureAtlas(Gdx.files.internal("fistanim.atlas"));
 	static Animation<TextureRegion> fistAnim = new Animation<TextureRegion>(0.5f, fist.getRegions());
-	static TextureAtlas sword = new TextureAtlas(Gdx.files.internal("testweapon.atlas"));
-	static Animation<TextureRegion> swordAnim = new Animation<TextureRegion>(0.5f, sword.getRegions());
+	static TextureAtlas sword = new TextureAtlas(Gdx.files.internal("testrotate.atlas"));
+	static Animation<TextureRegion> swordAnim = new Animation<TextureRegion>(0.1f, sword.getRegions());
 	// all weapon here
 	
 	public PlayerWeapon()
@@ -31,10 +32,11 @@ public class PlayerWeapon extends Actor{
 		this.animation = player.weaponAnim;
 		this.setX(player.getX());
 		this.setY(player.getY());
-		this.setWidth(50);
-		this.setHeight(30);
+		this.setWidth(47);
+		this.setHeight(67);
 		normalAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegions("0001"));
-		chargingAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegions("0002"));
+		chargingAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegion("attack", 1));
+		attackingAnim = new Animation<TextureRegion>(0.1f, textureAtlas.findRegions("attack"));
 		currentAnim = normalAnim;
 	}
 	public void draw(Batch batch, float alpha)
@@ -60,6 +62,13 @@ public class PlayerWeapon extends Actor{
 		}
 		//batch.draw(currentAnim.getKeyFrame(time), this.getX(), this.getY(), 40, 20);// make weapon rotate according to direction and move weapon to where it should be here
 		// set rotate origin in hereeeee
+		if (player.weaponName.equals("sword"))
+		{
+			originX = 0;
+			originY = 15;
+			this.setWidth(47);
+			this.setHeight(67);
+		}
 		if (player.direction.equals("up"))
 		{
 			batch.draw(currentAnim.getKeyFrame(time), this.getX()+30, this.getY(), 0, 15, this.getWidth(), this.getHeight(), 1, 1, 90);
@@ -96,6 +105,7 @@ public class PlayerWeapon extends Actor{
 		this.animation = player.weaponAnim;
 		// this will be where memory leak happens
 		normalAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegions("0001"));
-		chargingAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegions("0002"));
+		chargingAnim = new Animation<TextureRegion>(0.5f, textureAtlas.findRegion("attack", 1));
+		attackingAnim = new Animation<TextureRegion>(0.1f, textureAtlas.findRegions("attack"));
 	}
 }
