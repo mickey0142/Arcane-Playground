@@ -10,8 +10,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class PlayerCharacter extends Actor{
-	TextureAtlas walkingAtlas, attackEffectAtlas, weaponAtlas;
-	Animation<TextureRegion> walkingAnim, standingAnim, attackEffectAnim, weaponAnim;
+	TextureAtlas walkingAtlas, attackEffectAtlas, weaponAtlas, deadAtlas;
+	Animation<TextureRegion> walkingAnim, standingAnim, attackEffectAnim, weaponAnim, deadAnim;
 	String direction;
 	String weaponName = "fist";
 	int weaponLV;
@@ -34,6 +34,7 @@ public class PlayerCharacter extends Actor{
 	boolean charging = false;
 	boolean attacking = false;
 	boolean hurt = false;
+	boolean dead = false;
 	UI hpBar;
 	UI cooldownBar;
 	EffectRenderer attackEffect;
@@ -48,6 +49,7 @@ public class PlayerCharacter extends Actor{
 	static TextureAtlas cyclop = new TextureAtlas(Gdx.files.internal("character4.atlas"));
 	static TextureAtlas pirate = new TextureAtlas(Gdx.files.internal("character2.atlas"));
 	static TextureAtlas cyborg = new TextureAtlas(Gdx.files.internal("character3.atlas"));
+	// new textureatlas and animation for dead animation for each character here
 	
 	// temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp
 	Texture temp;
@@ -295,4 +297,5 @@ public class PlayerCharacter extends Actor{
 		}
 		cooldownBar.setWidth(60-(currentAttackCooldown/attackCooldown*60));
 	}
+	
 }

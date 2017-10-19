@@ -25,6 +25,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	UI characterBackground;
 	UI playerCharacterSelect[];
 	Stage game;
+	float delay = 3; // this is how much time before switch to end stage reset this in end stage
 	GameObject playGround;
 	UI gameBackground;
 	UnbreakableWall walls[];
@@ -256,6 +257,18 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		else if (screen.equals("game"))
 		{
 			gameStageRender();
+			if (playerCount <= 1)
+			{
+				delay -= Gdx.graphics.getDeltaTime();
+			}
+			if (delay <= 0)
+			{
+				screen = "end";
+			}
+		}
+		else if (screen.equals("end"))
+		{
+			endStageRender();
 		}
 	}
 
@@ -385,7 +398,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	
 	public void endStageRender()
 	{
-		
+		end.draw();
 	}
 	
 	@Override
@@ -467,6 +480,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		else if (keycode == Keys.ESCAPE)
 		{
 			screen = "menu";
+			resetVariableInCharacterStage();
 		}
 		for (int i = 0; i<2; i++)// change this i<2 to i<numberofplayer later 
 		{
@@ -530,6 +544,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 //			{
 //				continue;
 //			}// comment this make player able to change direction of attack while charging}
+			if (allPlayer.dead  || playerCount <= 1)
+			{
+				continue;
+			}
 			if (keycode == allPlayer.controlLeft)
 			{
 				allPlayer.speedLeft = 5;
@@ -565,7 +583,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	
 	public void keyDownInEndStage(int keycode)
 	{
-		
+		if (keycode == Keys.ENTER)
+		{
+			screen = "menu";
+			resetVariableInCharacterStage();
+		}
 	}
 	
 	@Override
@@ -747,7 +769,31 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			{
 				allPlayer.hp -= 1;
 				allPlayer.hurt = true;
+				if (allPlayer.hp <= 0)
+				{
+					allPlayer.dead = true;
+					playerCount -= 1;
+				}
 			}
 		}
+	}
+	
+	public void resetVariableInCharacterStage()
+	{
+		playerCount = 0;
+		for (UI pcs : playerCharacterSelect)
+		{
+			pcs.setAnimation(PlayerCharacter.ninja, "0001");
+			pcs.setVisible(false);
+		}
+		for (int i = 0; i < 4; i++)
+		{
+			characterIndex[i] = 0;
+		}
+	}
+	
+	public void resetVariableInGameStage()
+	{
+		
 	}
 }
