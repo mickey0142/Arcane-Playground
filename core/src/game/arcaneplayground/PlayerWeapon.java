@@ -98,7 +98,7 @@ public class PlayerWeapon extends Actor{
 		this.setX(player.getX());// change weapon position later
 		this.setY(player.getY());
 	}
-	public void updateNewWeapon()
+	public void updateWeaponAnimation()
 	{
 		// change texture of weapon
 		this.textureAtlas = player.weaponAtlas;

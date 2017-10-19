@@ -587,6 +587,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		{
 			screen = "menu";
 			resetVariableInCharacterStage();
+			resetVariableInGameStage();
 		}
 	}
 	
@@ -794,6 +795,44 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	
 	public void resetVariableInGameStage()
 	{
-		
+		delay = 3;
+		for (ItemDrop item : itemDrop) {
+			item.dropped = false;
+			item.setVisible(false);
+			item.hitbox.setX(-1000);
+			item.hitbox.setY(-1000);
+		}
+		for (PlayerCharacter allPlayer : player) {
+			allPlayer.hp = 3;
+			allPlayer.weaponName = "fist";
+			allPlayer.attackCooldown = 0.5f;
+			allPlayer.attackChargeTime = 0.5f;
+			allPlayer.currentAttackCooldown = 0;
+			allPlayer.attackEffectAnim = EffectRenderer.punchAnimation;
+			allPlayer.hurt = false;
+			allPlayer.dead = false;
+			allPlayer.blink = false;
+			allPlayer.attacking = false;
+			allPlayer.charging = false;
+			allPlayer.blinkFrameCount = 0;
+			allPlayer.currentBlinkTime = 0;
+			allPlayer.attackHeight = 40;
+			allPlayer.attackWidth = 40;
+			allPlayer.direction = "right";
+			//allPlayer.time // should i reset this?
+			allPlayer.weaponLV = 0;
+			//allPlayer.weaponAtlas = PlayerWeapon.fist;
+			allPlayer.weapon.updateWeaponAnimation();
+			if (allPlayer == player[0])
+			{
+				allPlayer.setX(75);
+				allPlayer.setY(50);
+			}
+			else if (allPlayer == player[1])
+			{
+				allPlayer.setX(1250);
+				allPlayer.setY(550);
+			}
+		}
 	}
 }

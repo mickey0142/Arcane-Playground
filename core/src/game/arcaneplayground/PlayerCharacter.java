@@ -238,7 +238,7 @@ public class PlayerCharacter extends Actor{
 			weaponName = item.weaponName;
 			weaponLV = 1;
 			weaponAtlas = item.weaponAtlas;
-			weapon.updateNewWeapon();
+			weapon.updateWeaponAnimation();
 		}
 	}
 	public void setPlayerWeaponRenderer(PlayerWeapon weapon)
