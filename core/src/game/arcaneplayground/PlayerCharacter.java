@@ -48,7 +48,6 @@ public class PlayerCharacter extends Actor{
 	static TextureAtlas cyclop = new TextureAtlas(Gdx.files.internal("character4.atlas"));
 	static TextureAtlas pirate = new TextureAtlas(Gdx.files.internal("character2.atlas"));
 	static TextureAtlas cyborg = new TextureAtlas(Gdx.files.internal("character3.atlas"));
-	static TextureAtlas test = new TextureAtlas(Gdx.files.internal("testcharacter.atlas"));
 	
 	// temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp
 	Texture temp;

@@ -21,7 +21,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	UI menuBackground;
 	UI temparrow;
 	Stage character;
+	int characterIndex[] = new int[4];// change 4 to number of character texture here
 	UI characterBackground;
+	UI playerCharacterSelect[];
 	Stage game;
 	GameObject playGround;
 	UI gameBackground;
@@ -38,6 +40,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	float gametime;//temp
 	// default control for each player in this order {up, down, left, right, attack} change this in setting later
 	int controlKeeper[][] = {{Keys.W, Keys.S, Keys.A, Keys.D, Keys.F}, {Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_LEFT}};
+	int playerCount;
 	
 	@Override
 	public void create () {
@@ -48,7 +51,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		character = new Stage(new FitViewport(1350, 750));
 		end = new Stage(new FitViewport(1350, 750));
 		
-		screen = "menu";// use this to skip to game stage. remove this out after finishing menu and character stage
+		screen = "menu";
 		
 		itemDrop = new ItemDrop[10];
 		for (int i = 0; i < 10; i++)
@@ -85,7 +88,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		// playerweapon.sword ^ here
 		
 		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, playerHPBar[1], PlayerWeapon.sword, PlayerWeapon.swordAnim);
-		player[0].setTexture(PlayerCharacter.test);
+		player[0].setTexture(PlayerCharacter.ninja);
 		player[1].setTexture(PlayerCharacter.cyclop);
 		attackEffectRenderer[0] = new EffectRenderer(player[0]);
 		attackEffectRenderer[0].setValue(player[0].attackHitbox.getX(), player[0].attackHitbox.getY(), player[0].attackHitbox.getWidth(), player[0].attackHitbox.getHeight(), player[0].direction);
@@ -102,7 +105,19 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		
 		// ui in stage
 		characterBackground = new UI("characterbackground.jpg", 0, 0, 1350, 750);
+		playerCharacterSelect =  new UI[2];
+		playerCharacterSelect[0] = new UI("character1.png", 200, 600, 60, 60);
+		playerCharacterSelect[0].animation = true;
+		playerCharacterSelect[0].setAnimation(PlayerCharacter.ninja, "0001");
+		playerCharacterSelect[1] = new UI("character1.png", 400, 600, 60, 60);
+		playerCharacterSelect[1].animation = true;
+		playerCharacterSelect[1].setAnimation(PlayerCharacter.ninja, "0001");
+		
 		character.addActor(characterBackground);
+		character.addActor(playerCharacterSelect[0]);
+		playerCharacterSelect[0].setVisible(false);
+		character.addActor(playerCharacterSelect[1]);
+		playerCharacterSelect[1].setVisible(false);
 	}
 	
 	public void createInGameStage()
@@ -444,9 +459,67 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	
 	public void keyDownInCharacterStage(int keycode)
 	{
-		if (keycode == Keys.ENTER)
+		if (keycode == Keys.ENTER && playerCount >= 2)
 		{
 			screen = "game";
+			
+		}
+		else if (keycode == Keys.ESCAPE)
+		{
+			screen = "menu";
+		}
+		for (int i = 0; i<2; i++)// change this i<2 to i<numberofplayer later 
+		{
+			if (keycode == player[i].controlAttack)
+			{
+				if (!playerCharacterSelect[i].isVisible())
+				{
+					playerCharacterSelect[i].setVisible(true);
+					playerCount += 1;
+				}
+				else
+				{
+					playerCharacterSelect[i].setVisible(false);
+					playerCount -= 1;
+				}
+			}
+			if (playerCharacterSelect[i].isVisible())
+			{
+				if (keycode == player[i].controlLeft)
+				{
+					if (characterIndex[i]-1 >= 0)
+					{
+						characterIndex[i] -= 1;
+					}
+				}
+				else if (keycode == player[i].controlRight)
+				{
+					if (characterIndex[i]+1 <= 4)// change 4 to number of character texture here
+					{
+						characterIndex[i] += 1;
+					}
+				}
+				if (characterIndex[i] == 0)
+				{
+					playerCharacterSelect[i].setAnimation(PlayerCharacter.ninja, "0001");
+					player[i].setTexture(PlayerCharacter.ninja);
+				}
+				else if(characterIndex[i] == 1)
+				{
+					playerCharacterSelect[i].setAnimation(PlayerCharacter.cyclop, "0001");
+					player[i].setTexture(PlayerCharacter.cyclop);
+				}
+				else if(characterIndex[i] == 2)
+				{
+					playerCharacterSelect[i].setAnimation(PlayerCharacter.pirate, "0001");
+					player[i].setTexture(PlayerCharacter.pirate);
+				}
+				else if(characterIndex[i] == 3)
+				{
+					playerCharacterSelect[i].setAnimation(PlayerCharacter.cyborg, "0001");
+					player[i].setTexture(PlayerCharacter.cyborg);
+				}
+			}
 		}
 	}
 	
