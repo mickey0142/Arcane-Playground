@@ -29,16 +29,19 @@ public class PlayerCharacter extends Actor{
 	float currentChargeTime;
 	float blinkTime = 2f, currentBlinkTime;
 	int blinkFrameCount;
+	boolean moving = false;
 	boolean blink = false;
 	boolean faceLeft = false;
 	boolean charging = false;
 	boolean attacking = false;
 	boolean hurt = false;
 	boolean dead = false;
+	boolean upPressed = false, downPressed = false, leftPressed = false, rightPressed = false;
 	UI hpBar;
 	UI chargeBar;
 	EffectRenderer attackEffect;
 	PlayerWeapon weapon;
+	GameObject checkBlock;
 	
 	static TextureAtlas heart = new TextureAtlas(Gdx.files.internal("heart.atlas"));
 	static Animation<TextureRegion> heart3 = new Animation<TextureRegion>(1f, heart.findRegions("0003"));
@@ -155,10 +158,12 @@ public class PlayerCharacter extends Actor{
 			batch.draw(currentAnim.getKeyFrame(time, true), (faceLeft ? this.getX()+this.getWidth() : this.getX()), this.getY(), (faceLeft ? -this.getWidth() : this.getWidth()), this.getHeight());
 		}
 		batch.draw(temp2, attackHitbox.getX(), attackHitbox.getY(), attackHitbox.getWidth(), attackHitbox.getHeight());
-		if(currentChargeTime > 0)
+		//if(currentChargeTime > 0)
 		{
 			batch.draw(temp, hitbox.getX(), hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
 		}
+		
+		//updateCheckBlockPosition(hitbox.getX(), hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
 	}
 	public void setNewRect()
 	{
@@ -311,6 +316,21 @@ public class PlayerCharacter extends Actor{
 			chargeBar.setVisible(true);
 		}
 		chargeBar.setWidth(currentChargeTime/attackChargeTime*60);
+	}
+	public void setCheckBlockObject(GameObject check)
+	{
+		checkBlock = check;
+	}
+	public void updateCheckBlockPosition(float x, float y, float width, float height)
+	{
+		checkBlock.hitbox.setX(x);
+		checkBlock.hitbox.setY(y);
+		checkBlock.hitbox.setWidth(width);
+		checkBlock.hitbox.setHeight(height);
+		checkBlock.setX(checkBlock.hitbox.getX());
+		checkBlock.setY(checkBlock.hitbox.getY());
+		checkBlock.setWidth(checkBlock.hitbox.getWidth());
+		checkBlock.setHeight(checkBlock.hitbox.getHeight());
 	}
 	
 }
