@@ -22,13 +22,39 @@ public class ItemDrop extends GameObject{
 	static final float SWORD_CHARGE_TIME = 1;
 	static final float SWORD_ATTACK_COOLDOWN = 1.5f;
 	static final float SWORDLV2_ATTACK_WIDTH = 40;
-	static final float SWORDLV2_ATTACK_HEIGHT = 80;
+	static final float SWORDLV2_ATTACK_HEIGHT = 40;
 	static final float SWORDLV2_CHARGE_TIME = 1;
 	static final float SWORDLV2_ATTACK_COOLDOWN = 1;
 	static final float SWORDLV3_ATTACK_WIDTH = 40;
-	static final float SWORDLV3_ATTACK_HEIGHT = 80;
+	static final float SWORDLV3_ATTACK_HEIGHT = 40;
 	static final float SWORDLV3_CHARGE_TIME = 0.5f;
 	static final float SWORDLV3_ATTACK_COOLDOWN = 1;
+	
+	static final float SPEAR_ATTACK_WIDTH = 40;
+	static final float SPEAR_ATTACK_HEIGHT = 40;
+	static final float SPEAR_CHARGE_TIME = 1;
+	static final float SPEAR_ATTACK_COOLDOWN = 1.5f;
+	static final float SPEARLV2_ATTACK_WIDTH = 80;
+	static final float SPEARLV2_ATTACK_HEIGHT = 40;
+	static final float SPEARLV2_CHARGE_TIME = 1;
+	static final float SPEARLV2_ATTACK_COOLDOWN = 1;
+	static final float SPEARLV3_ATTACK_WIDTH = 80;
+	static final float SPEARLV3_ATTACK_HEIGHT = 40;
+	static final float SPEARLV3_CHARGE_TIME = 0.5f;
+	static final float SPEARLV3_ATTACK_COOLDOWN = 1;
+	
+	static final float AXE_ATTACK_WIDTH = 40;
+	static final float AXE_ATTACK_HEIGHT = 80;
+	static final float AXE_CHARGE_TIME = 1;
+	static final float AXE_ATTACK_COOLDOWN = 1.5f;
+	static final float AXELV2_ATTACK_WIDTH = 40;
+	static final float AXELV2_ATTACK_HEIGHT = 80;
+	static final float AXELV2_CHARGE_TIME = 1;
+	static final float AXELV2_ATTACK_COOLDOWN = 1;
+	static final float AXELV3_ATTACK_WIDTH = 40;
+	static final float AXELV3_ATTACK_HEIGHT = 80;
+	static final float AXELV3_CHARGE_TIME = 0.5f;
+	static final float AXELV3_ATTACK_COOLDOWN = 1;
 
 	public ItemDrop()
 	{
@@ -48,8 +74,9 @@ public class ItemDrop extends GameObject{
 	public void setValue(float locationX, float locationY)
 	{
 		// set x y width height attackhitbox value here and set dropped and visible to true +1 dropcount here -1 dropcount when pick item
-		int num = (int)(Math.random()*1);// random 0 to multiplier-1
-		if (num == 0)
+		int num = (int)(Math.random()*100+1);// random 1 to multiplier
+		System.out.println(num);
+		if (num >= 1 && num <= 35)
 		{
 			this.img = swordDropTexture;
 			this.weaponName = "sword";
@@ -72,9 +99,57 @@ public class ItemDrop extends GameObject{
 			attackHeight[2] = SWORDLV3_ATTACK_HEIGHT;
 			attackCooldown[2] = SWORDLV3_ATTACK_COOLDOWN;
 			attackChargeTime[2] = SWORDLV3_CHARGE_TIME;
-			
-			
-			// change player weapon somehow...?
+		}
+		else if (num >= 36 && num <= 70)
+		{
+			this.img = swordDropTexture;
+			this.weaponName = "spear";
+			//lv1
+			attackWidth[0] = SPEAR_ATTACK_WIDTH;
+			attackHeight[0] = SPEAR_ATTACK_HEIGHT;
+			attackCooldown[0] = SPEAR_ATTACK_COOLDOWN;
+			attackChargeTime[0] = SPEAR_CHARGE_TIME;
+			effectAtlas = EffectRenderer.swordAtlas;
+			effectAnimation = EffectRenderer.swordAnimation;
+			weaponAtlas = PlayerWeapon.spear;
+			weaponAnimation = PlayerWeapon.spearAnim;
+			//lv2
+			attackWidth[1] = SPEARLV2_ATTACK_WIDTH;
+			attackHeight[1] = SPEARLV2_ATTACK_HEIGHT;
+			attackCooldown[1] = SPEARLV2_ATTACK_COOLDOWN;
+			attackChargeTime[1] = SPEARLV2_CHARGE_TIME;
+			//lv3
+			attackWidth[2] = SPEARLV3_ATTACK_WIDTH;
+			attackHeight[2] = SPEARLV3_ATTACK_HEIGHT;
+			attackCooldown[2] = SPEARLV3_ATTACK_COOLDOWN;
+			attackChargeTime[2] = SPEARLV3_CHARGE_TIME;
+		}
+		else if (num >= 71 && num <= 95)
+		{
+			this.img = swordDropTexture;
+			this.weaponName = "axe";
+			//lv1
+			attackWidth[0] = AXE_ATTACK_WIDTH;
+			attackHeight[0] = AXE_ATTACK_HEIGHT;
+			attackCooldown[0] = AXE_ATTACK_COOLDOWN;
+			attackChargeTime[0] = AXE_CHARGE_TIME;
+			effectAtlas = EffectRenderer.swordAtlas;
+			effectAnimation = EffectRenderer.swordAnimation;
+			weaponAtlas = PlayerWeapon.axe;
+			weaponAnimation = PlayerWeapon.axeAnim;
+			//lv2
+			attackWidth[1] = AXELV2_ATTACK_WIDTH;
+			attackHeight[1] = AXELV2_ATTACK_HEIGHT;
+			attackCooldown[1] = AXELV2_ATTACK_COOLDOWN;
+			attackChargeTime[1] = AXELV2_CHARGE_TIME;
+			//lv3
+			attackWidth[2] = AXELV3_ATTACK_WIDTH;
+			attackHeight[2] = AXELV3_ATTACK_HEIGHT;
+			attackCooldown[2] = AXELV3_ATTACK_COOLDOWN;
+			attackChargeTime[2] = AXELV3_CHARGE_TIME;
+		}
+		if (num <= 95)
+		{
 			dropCount += 1;
 			dropped = true;
 			this.setX(locationX);
@@ -85,7 +160,7 @@ public class ItemDrop extends GameObject{
 		}
 		else
 		{
-			System.out.println("boom");
+			System.out.println("nothing");
 		}
 	}
 }

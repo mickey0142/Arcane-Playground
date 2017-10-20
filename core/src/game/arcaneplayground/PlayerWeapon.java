@@ -21,6 +21,8 @@ public class PlayerWeapon extends Actor{
 	static Animation<TextureRegion> swordAnim = new Animation<TextureRegion>(0.1f, sword.getRegions());
 	static TextureAtlas spear = new TextureAtlas(Gdx.files.internal("spear.atlas"));
 	static Animation<TextureRegion> spearAnim = new Animation<TextureRegion>(0.1f, spear.getRegions());
+	static TextureAtlas axe = new TextureAtlas(Gdx.files.internal("axe.atlas"));
+	static Animation<TextureRegion> axeAnim = new Animation<TextureRegion>(0.1f, axe.getRegions());
 	// all weapon here
 	
 	public PlayerWeapon()
@@ -81,6 +83,15 @@ public class PlayerWeapon extends Actor{
 			moveY = 7;
 			this.setWidth(110);
 			this.setHeight(20);
+		}
+		else if (player.weaponName.equals("axe"))
+		{
+			originX = 0;
+			originY = 10;
+			moveX = 30;
+			moveY = 5;
+			this.setWidth(30);
+			this.setHeight(42);
 		} 
 		if (player.direction.equals("up"))
 		{

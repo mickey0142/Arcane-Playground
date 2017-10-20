@@ -84,15 +84,15 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		playerHPBar[1] = new UI("hp.png", 250, 680, 150, 40);
 		playerCooldownBar[0] = new UI("box2.png", 0, 0, 60, 10);
 		playerCooldownBar[1] = new UI("box2.png", 0, 0, 60, 10);
-		player[0] = new PlayerCharacter(75, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, playerHPBar[0], PlayerWeapon.spear, PlayerWeapon.spearAnim);
+		player[0] = new PlayerCharacter(75, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, playerHPBar[0], PlayerWeapon.sword, PlayerWeapon.swordAnim);
 		
 		// playerweapon.sword ^ here
 		
-		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, playerHPBar[1], PlayerWeapon.spear, PlayerWeapon.spearAnim);
+		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, playerHPBar[1], PlayerWeapon.sword, PlayerWeapon.swordAnim);
 		
 		//temppppp 
-		player[0].weaponName = "spear";
-		player[1].weaponName = "spear";
+		//player[0].weaponName = "axe";
+		//player[1].weaponName = "spear";
 		
 		player[0].setTexture(PlayerCharacter.ninja);
 		player[1].setTexture(PlayerCharacter.cyclop);
