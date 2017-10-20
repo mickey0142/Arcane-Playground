@@ -584,7 +584,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			}
 			allPlayer.speed_x = allPlayer.speedRight - allPlayer.speedLeft;
 			allPlayer.speed_y = allPlayer.speedUp - allPlayer.speedDown;
-			if (keycode == allPlayer.controlAttack && allPlayer.currentChargeTime <= 0)
+			if (keycode == allPlayer.controlAttack && allPlayer.currentChargeTime <= 0 && allPlayer.currentAttackCooldown <= 0)
 			{
 //				if (allPlayer.currentAttackCooldown <= 0 && !allPlayer.charging)// change hereeeeeeeeeeeeeeee
 //				{
@@ -684,10 +684,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			}
 			allPlayer.speed_x = allPlayer.speedRight - allPlayer.speedLeft;
 			allPlayer.speed_y = allPlayer.speedUp - allPlayer.speedDown;
-			if (keycode == allPlayer.controlAttack)
+			if (keycode == allPlayer.controlAttack && allPlayer.charging)
 			{
 				allPlayer.attacking = true;
 				allPlayer.charging = false;
+				allPlayer.currentAttackCooldown = allPlayer.attackCooldown;
 			}
 		}
 	}

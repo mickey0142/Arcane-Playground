@@ -85,10 +85,6 @@ public class PlayerCharacter extends Actor{
 	{
 		time += Gdx.graphics.getDeltaTime();
 		Animation<TextureRegion> currentAnim;
-//		if (currentAttackCooldown > 0)
-//		{
-//			currentAttackCooldown -= Gdx.graphics.getDeltaTime();
-//		}
 //		if (currentChargeTime > 0)
 //		{
 //			currentChargeTime -= Gdx.graphics.getDeltaTime();
@@ -99,6 +95,10 @@ public class PlayerCharacter extends Actor{
 //				attacking = true;
 //			}
 //		}
+		if (currentAttackCooldown > 0)
+		{
+			currentAttackCooldown -= Gdx.graphics.getDeltaTime();
+		}
 		if (charging && currentChargeTime <= attackChargeTime)
 		{
 			currentChargeTime += Gdx.graphics.getDeltaTime();
