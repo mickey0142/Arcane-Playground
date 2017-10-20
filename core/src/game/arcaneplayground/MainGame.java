@@ -84,11 +84,16 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		playerHPBar[1] = new UI("hp.png", 250, 680, 150, 40);
 		playerCooldownBar[0] = new UI("box2.png", 0, 0, 60, 10);
 		playerCooldownBar[1] = new UI("box2.png", 0, 0, 60, 10);
-		player[0] = new PlayerCharacter(75, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, playerHPBar[0], PlayerWeapon.sword, PlayerWeapon.swordAnim);
+		player[0] = new PlayerCharacter(75, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, playerHPBar[0], PlayerWeapon.spear, PlayerWeapon.spearAnim);
 		
 		// playerweapon.sword ^ here
 		
-		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, playerHPBar[1], PlayerWeapon.sword, PlayerWeapon.swordAnim);
+		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, playerHPBar[1], PlayerWeapon.spear, PlayerWeapon.spearAnim);
+		
+		//temppppp 
+		player[0].weaponName = "spear";
+		player[1].weaponName = "spear";
+		
 		player[0].setTexture(PlayerCharacter.ninja);
 		player[1].setTexture(PlayerCharacter.cyclop);
 		attackEffectRenderer[0] = new EffectRenderer(player[0]);
@@ -195,6 +200,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 //		
 //		game.addActor(normalWalls[50]);
 //		game.addActor(normalWalls[51]);
+		
+		for(NormalWall normalWall : normalWalls)
+		{
+			game.addActor(normalWall);
+		}
 
 		game.addActor(player[0]);
 		game.addActor(player[1]);
@@ -210,6 +220,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	
 	public void createMap()
 	{
+		// set textureatlas for block here change wall1 to input
+		NormalWall.wallTexture = NormalWall.wall1;
+		NormalWall.hp3 = NormalWall.wall1.findRegion("0001");
+		NormalWall.hp2 = NormalWall.wall1.findRegion("0002");
+		NormalWall.hp1 = NormalWall.wall1.findRegion("0003");
+		NormalWall.hp0 = NormalWall.wall1.findRegion("0004");
 		int unbreakWallCount = 3;
 		int normalWallCount = 5;
 		walls = new UnbreakableWall[unbreakWallCount];
@@ -225,7 +241,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 //		normalWalls[0] = new NormalWall("block2.png", 300, 300, 64, 64, true);
 //		normalWalls[1] = new NormalWall("block2.png", 500, 500, 64, 64, true);
 //		normalWalls[2] = new NormalWall("block2.png", 700, 300, 64, 64, true);
-		float wallLocation2[][] = {{300, 300},{500, 500},{700, 300},{750, 300},{800, 300}};
+		float wallLocation2[][] = {{50, 150},{50, 200},{700, 350},{750, 350},{850, 300}};
 		for (int i = 0; i < normalWallCount; i++)
 		{
 			normalWalls[i] = new NormalWall("block2.png", wallLocation2[i][0], wallLocation2[i][1], 50, 50, true);

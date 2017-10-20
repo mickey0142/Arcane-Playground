@@ -12,13 +12,15 @@ public class PlayerWeapon extends Actor{
 	Animation<TextureRegion> animation, currentAnim, normalAnim, chargingAnim, attackingAnim;
 	PlayerCharacter player;
 	float time;
-	float originX, originY;
+	float originX, originY, moveX, moveY;
 	
 	// all weapon here
 	static TextureAtlas fist = new TextureAtlas(Gdx.files.internal("fistanim.atlas"));
 	static Animation<TextureRegion> fistAnim = new Animation<TextureRegion>(0.5f, fist.getRegions());
 	static TextureAtlas sword = new TextureAtlas(Gdx.files.internal("testrotate.atlas"));
 	static Animation<TextureRegion> swordAnim = new Animation<TextureRegion>(0.1f, sword.getRegions());
+	static TextureAtlas spear = new TextureAtlas(Gdx.files.internal("spear.atlas"));
+	static Animation<TextureRegion> spearAnim = new Animation<TextureRegion>(0.1f, spear.getRegions());
 	// all weapon here
 	
 	public PlayerWeapon()
@@ -66,24 +68,35 @@ public class PlayerWeapon extends Actor{
 		{
 			originX = 0;
 			originY = 15;
+			moveX = 30;
+			moveY = 0;
 			this.setWidth(47);
 			this.setHeight(67);
 		}
+		else if (player.weaponName.equals("spear"))
+		{
+			originX = 0;
+			originY = 9;
+			moveX = 30;
+			moveY = 7;
+			this.setWidth(110);
+			this.setHeight(20);
+		} 
 		if (player.direction.equals("up"))
 		{
-			batch.draw(currentAnim.getKeyFrame(time), this.getX()+30, this.getY(), 0, 15, this.getWidth(), this.getHeight(), 1, 1, 90);
+			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX, this.getY()+moveY, originX, originY, this.getWidth(), this.getHeight(), 1, 1, 90);
 		}
 		else if (player.direction.equals("down"))
 		{
-			batch.draw(currentAnim.getKeyFrame(time), this.getX()+30, this.getY(), 0, 15, -this.getWidth(), this.getHeight(), 1, 1, 90);
+			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX, this.getY()+moveY, originX, originY, -this.getWidth(), this.getHeight(), 1, 1, 90);
 		}
 		else if (player.direction.equals("left"))
 		{
-			batch.draw(currentAnim.getKeyFrame(time), this.getX()+30, this.getY(), 0, 15, -this.getWidth(), this.getHeight(), 1, 1, 0);
+			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX, this.getY()+moveY, originX, originY, -this.getWidth(), this.getHeight(), 1, 1, 0);
 		}
 		else if (player.direction.equals("right"))
 		{
-			batch.draw(currentAnim.getKeyFrame(time), this.getX()+30, this.getY(), 0, 15, this.getWidth(), this.getHeight(), 1, 1, 0);
+			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX, this.getY()+moveY, originX, originY, this.getWidth(), this.getHeight(), 1, 1, 0);
 		}
 		if (currentAnim == animation)
 		{

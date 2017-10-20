@@ -159,10 +159,17 @@ public class PlayerCharacter extends Actor{
 	}
 	public void updateHitbox()
 	{//temporary adjust hitbox to fit texture
-		hitbox.setX(this.getX()+15);
-		hitbox.setY(this.getY()+1);
-		hitbox.setWidth(this.getWidth()-30);
-		hitbox.setHeight(this.getHeight()-18);
+		if (faceLeft)
+		{
+			hitbox.setX(this.getX()+hitbox.getWidth());
+		}
+		else
+		{
+			hitbox.setX(this.getX()+10);
+		}
+		hitbox.setY(this.getY()+2);
+		hitbox.setWidth(this.getWidth()-35);
+		hitbox.setHeight(this.getHeight()-26);
 	}
 	public void updateAttackHitbox()
 	{
@@ -238,6 +245,7 @@ public class PlayerCharacter extends Actor{
 			weaponName = item.weaponName;
 			weaponLV = 1;
 			weaponAtlas = item.weaponAtlas;
+			weaponAnim = item.weaponAnimation;
 			weapon.updateWeaponAnimation();
 		}
 	}
