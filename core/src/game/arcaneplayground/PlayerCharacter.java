@@ -45,10 +45,10 @@ public class PlayerCharacter extends Actor{
 	static Animation<TextureRegion> heart2 = new Animation<TextureRegion>(1f, heart.findRegions("0002"));
 	static Animation<TextureRegion> heart1 = new Animation<TextureRegion>(1f, heart.findRegions("0001"));
 	static Animation<TextureRegion> heart0 = new Animation<TextureRegion>(1f, heart.findRegions("0004"));
-	static TextureAtlas ninja = new TextureAtlas(Gdx.files.internal("character1.atlas"));
-	static TextureAtlas cyclop = new TextureAtlas(Gdx.files.internal("character4.atlas"));
-	static TextureAtlas pirate = new TextureAtlas(Gdx.files.internal("character2.atlas"));
-	static TextureAtlas cyborg = new TextureAtlas(Gdx.files.internal("character3.atlas"));
+	static TextureAtlas character1 = new TextureAtlas(Gdx.files.internal("character1.atlas"));
+	static TextureAtlas character2 = new TextureAtlas(Gdx.files.internal("character2.atlas"));
+	static TextureAtlas character3 = new TextureAtlas(Gdx.files.internal("character3.atlas"));
+	static TextureAtlas character4 = new TextureAtlas(Gdx.files.internal("character4.atlas"));
 	// new textureatlas and animation for dead animation for each character here
 	
 	// temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp

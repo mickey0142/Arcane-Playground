@@ -93,9 +93,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		//temppppp 
 		//player[0].weaponName = "axe";
 		//player[1].weaponName = "spear";
-		
-		player[0].setTexture(PlayerCharacter.ninja);
-		player[1].setTexture(PlayerCharacter.cyclop);
+
 		attackEffectRenderer[0] = new EffectRenderer(player[0]);
 		attackEffectRenderer[0].setValue(player[0].attackHitbox.getX(), player[0].attackHitbox.getY(), player[0].attackHitbox.getWidth(), player[0].attackHitbox.getHeight(), player[0].direction);
 		attackEffectRenderer[1] = new EffectRenderer(player[1]);
@@ -114,10 +112,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		playerCharacterSelect =  new UI[2];
 		playerCharacterSelect[0] = new UI("character1.png", 200, 600, 60, 60);
 		playerCharacterSelect[0].animation = true;
-		playerCharacterSelect[0].setAnimation(PlayerCharacter.ninja, "0001");
+		playerCharacterSelect[0].setAnimation(PlayerCharacter.character1, "0001");
 		playerCharacterSelect[1] = new UI("character1.png", 400, 600, 60, 60);
 		playerCharacterSelect[1].animation = true;
-		playerCharacterSelect[1].setAnimation(PlayerCharacter.ninja, "0001");
+		playerCharacterSelect[1].setAnimation(PlayerCharacter.character1, "0001");
 		
 		character.addActor(characterBackground);
 		character.addActor(playerCharacterSelect[0]);
@@ -531,23 +529,23 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				}
 				if (characterIndex[i] == 0)
 				{
-					playerCharacterSelect[i].setAnimation(PlayerCharacter.ninja, "0001");
-					player[i].setTexture(PlayerCharacter.ninja);
+					playerCharacterSelect[i].setAnimation(PlayerCharacter.character1, "0001");
+					player[i].setTexture(PlayerCharacter.character1);
 				}
 				else if(characterIndex[i] == 1)
 				{
-					playerCharacterSelect[i].setAnimation(PlayerCharacter.cyclop, "0001");
-					player[i].setTexture(PlayerCharacter.cyclop);
+					playerCharacterSelect[i].setAnimation(PlayerCharacter.character2, "0001");
+					player[i].setTexture(PlayerCharacter.character2);
 				}
 				else if(characterIndex[i] == 2)
 				{
-					playerCharacterSelect[i].setAnimation(PlayerCharacter.pirate, "0001");
-					player[i].setTexture(PlayerCharacter.pirate);
+					playerCharacterSelect[i].setAnimation(PlayerCharacter.character3, "0001");
+					player[i].setTexture(PlayerCharacter.character3);
 				}
 				else if(characterIndex[i] == 3)
 				{
-					playerCharacterSelect[i].setAnimation(PlayerCharacter.cyborg, "0001");
-					player[i].setTexture(PlayerCharacter.cyborg);
+					playerCharacterSelect[i].setAnimation(PlayerCharacter.character4, "0001");
+					player[i].setTexture(PlayerCharacter.character4);
 				}
 			}
 		}
@@ -800,7 +798,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		playerCount = 0;
 		for (UI pcs : playerCharacterSelect)
 		{
-			pcs.setAnimation(PlayerCharacter.ninja, "0001");
+			pcs.setAnimation(PlayerCharacter.character1, "0001");
 			pcs.setVisible(false);
 		}
 		for (int i = 0; i < 4; i++)
