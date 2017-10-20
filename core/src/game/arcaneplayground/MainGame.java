@@ -35,7 +35,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	PlayerWeapon playerWeaponRenderer[] = new PlayerWeapon[2];
 	
 	ItemDrop itemDrop[];
-	UI playerCooldownBar[] = new UI[2];
+	UI playerChargeBar[] = new UI[2];
 	UI playerHPBar[] = new UI[2];
 	Stage end;
 	float gametime;//temp
@@ -82,8 +82,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	{
 		playerHPBar[0] = new UI("hp.png", 20, 680, 150, 40);
 		playerHPBar[1] = new UI("hp.png", 250, 680, 150, 40);
-		playerCooldownBar[0] = new UI("box2.png", 0, 0, 60, 10);
-		playerCooldownBar[1] = new UI("box2.png", 0, 0, 60, 10);
+		playerChargeBar[0] = new UI("box2.png", 0, 0, 60, 10);
+		playerChargeBar[1] = new UI("box2.png", 0, 0, 60, 10);
 		player[0] = new PlayerCharacter(75, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, playerHPBar[0], PlayerWeapon.sword, PlayerWeapon.swordAnim);
 		
 		// playerweapon.sword ^ here
@@ -104,8 +104,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		player[1].setPlayerAttackEffectRenderer(attackEffectRenderer[1]);
 		player[0].setPlayerWeaponRenderer(playerWeaponRenderer[0]);
 		player[1].setPlayerWeaponRenderer(playerWeaponRenderer[1]);
-		player[0].setCooldownBar(playerCooldownBar[0]);
-		player[1].setCooldownBar(playerCooldownBar[1]);
+		player[0].setChargeBar(playerChargeBar[0]);
+		player[1].setChargeBar(playerChargeBar[1]);
 		
 		// ui in stage
 		characterBackground = new UI("characterbackground.jpg", 0, 0, 1350, 750);
@@ -209,8 +209,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		game.addActor(playerWeaponRenderer[0]);
 		game.addActor(playerWeaponRenderer[1]);
 
-		game.addActor(playerCooldownBar[0]);
-		game.addActor(playerCooldownBar[1]);
+		game.addActor(playerChargeBar[0]);
+		game.addActor(playerChargeBar[1]);
 		
 		game.addActor(attackEffectRenderer[0]);
 		game.addActor(attackEffectRenderer[1]);
@@ -224,17 +224,17 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		NormalWall.hp2 = NormalWall.wall1.findRegion("0002");
 		NormalWall.hp1 = NormalWall.wall1.findRegion("0003");
 		NormalWall.hp0 = NormalWall.wall1.findRegion("0004");
-		int unbreakWallCount = 3;
+		//int unbreakWallCount = 3;
 		int normalWallCount = 5;
-		walls = new UnbreakableWall[unbreakWallCount];
+//		walls = new UnbreakableWall[unbreakWallCount];
 //		walls[0] = new UnbreakableWall("block.png", 400, 400, 64, 64, true);
 //		walls[1] = new UnbreakableWall("block.png", 128, 128, 64, 64, true);
 //		walls[2] = new UnbreakableWall("block.png", 0, 128, 64, 64, true);
-		float wallLocation[][] = {{0,128},{128, 128},{400, 400}};
-		for (int i = 0; i < unbreakWallCount; i++)
-		{
-			walls[i] = new UnbreakableWall("block.png", wallLocation[i][0], wallLocation[i][1], 50, 50, true);
-		}
+//		float wallLocation[][] = {{0,128},{128, 128},{400, 400}};
+//		for (int i = 0; i < unbreakWallCount; i++)
+//		{
+//			walls[i] = new UnbreakableWall("block.png", wallLocation[i][0], wallLocation[i][1], 50, 50, true);
+//		}
 		normalWalls = new NormalWall[5];
 //		normalWalls[0] = new NormalWall("block2.png", 300, 300, 64, 64, true);
 //		normalWalls[1] = new NormalWall("block2.png", 500, 500, 64, 64, true);
@@ -327,17 +327,17 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					break;
 				}
 			}
-			for (PlayerCharacter OtherPlayer : player) {
-				if (OtherPlayer == allPlayer)
-				{
-					continue;
-				}
-				else if (checkCollision(checkCollisionTemp, OtherPlayer))
-				{
-					movex = false;
-					break;
-				}
-			}
+//			for (PlayerCharacter OtherPlayer : player) {
+//				if (OtherPlayer == allPlayer)
+//				{
+//					continue;
+//				}
+//				else if (checkCollision(checkCollisionTemp, OtherPlayer))
+//				{
+//					movex = false;
+//					break;
+//				}
+//			}
 			boolean movey = true;
 			checkCollisionTemp.setX(allPlayer.getX());
 			checkCollisionTemp.setY(allPlayer.getY()+allPlayer.speed_y);
@@ -387,12 +387,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					}
 				}
 			}
-			if(movex && !allPlayer.charging)
+			if(movex)//if(movex && !allPlayer.charging)
 			{
 				allPlayer.setX(allPlayer.getX() + allPlayer.speed_x);
 				allPlayer.updateHitbox();
 			}
-			if(movey && !allPlayer.charging)
+			if(movey)//if(movey && !allPlayer.charging)
 			{
 				allPlayer.setY(allPlayer.getY() + allPlayer.speed_y);
 				allPlayer.updateHitbox();
@@ -584,13 +584,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			}
 			allPlayer.speed_x = allPlayer.speedRight - allPlayer.speedLeft;
 			allPlayer.speed_y = allPlayer.speedUp - allPlayer.speedDown;
-			if (keycode == allPlayer.controlAttack)
+			if (keycode == allPlayer.controlAttack && allPlayer.currentChargeTime <= 0)
 			{
-				if (allPlayer.currentAttackCooldown <= 0 && !allPlayer.charging)
-				{
-					allPlayer.currentChargeTime = allPlayer.attackChargeTime;
-					allPlayer.charging = true;
-				}
+//				if (allPlayer.currentAttackCooldown <= 0 && !allPlayer.charging)// change hereeeeeeeeeeeeeeee
+//				{
+//					allPlayer.currentChargeTime = allPlayer.attackChargeTime;
+//					allPlayer.charging = true;
+//				}
+				allPlayer.charging = true;
 			}
 		}
 	}
@@ -683,6 +684,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			}
 			allPlayer.speed_x = allPlayer.speedRight - allPlayer.speedLeft;
 			allPlayer.speed_y = allPlayer.speedUp - allPlayer.speedDown;
+			if (keycode == allPlayer.controlAttack)
+			{
+				allPlayer.attacking = true;
+				allPlayer.charging = false;
+			}
 		}
 	}
 

@@ -36,7 +36,7 @@ public class PlayerCharacter extends Actor{
 	boolean hurt = false;
 	boolean dead = false;
 	UI hpBar;
-	UI cooldownBar;
+	UI chargeBar;
 	EffectRenderer attackEffect;
 	PlayerWeapon weapon;
 	
@@ -85,23 +85,30 @@ public class PlayerCharacter extends Actor{
 	{
 		time += Gdx.graphics.getDeltaTime();
 		Animation<TextureRegion> currentAnim;
-		if (currentAttackCooldown > 0)
+//		if (currentAttackCooldown > 0)
+//		{
+//			currentAttackCooldown -= Gdx.graphics.getDeltaTime();
+//		}
+//		if (currentChargeTime > 0)
+//		{
+//			currentChargeTime -= Gdx.graphics.getDeltaTime();
+//			if (charging && currentChargeTime <= 0)
+//			{
+//				currentAttackCooldown = attackCooldown;
+//				charging = false;
+//				attacking = true;
+//			}
+//		}
+		if (charging && currentChargeTime <= attackChargeTime)
 		{
-			currentAttackCooldown -= Gdx.graphics.getDeltaTime();
+			currentChargeTime += Gdx.graphics.getDeltaTime();
 		}
-		if (currentChargeTime > 0)
+		else if (!charging && currentChargeTime > 0)
 		{
 			currentChargeTime -= Gdx.graphics.getDeltaTime();
-			if (charging && currentChargeTime <= 0)
-			{
-				currentAttackCooldown = attackCooldown;
-				charging = false;
-				attacking = true;
-			}
 		}
-		//hpBar.setHPBarColor(hp, hpMax);
 		updateHPBar();
-		updateCooldownBar();
+		updateChargeBar();
 		updateHitbox();
 		updateAttackHitbox();
 		if (speed_x > 0)
@@ -287,23 +294,23 @@ public class PlayerCharacter extends Actor{
 			hpBar.currentAnim = heart0;
 		}
 	}
-	public void setCooldownBar(UI cooldownBar)
+	public void setChargeBar(UI chargeBar)
 	{
-		this.cooldownBar = cooldownBar;
+		this.chargeBar = chargeBar;
 	}
-	public void updateCooldownBar()
+	public void updateChargeBar()
 	{
-		cooldownBar.setX(this.getX());
-		cooldownBar.setY(this.getY()+this.getHeight()+20);
-		if (currentAttackCooldown <= 0)
+		chargeBar.setX(this.getX());
+		chargeBar.setY(this.getY()+this.getHeight()+20);
+		if (currentChargeTime <= 0)
 		{
-			cooldownBar.setVisible(false);
+			chargeBar.setVisible(false);
 		}
 		else
 		{
-			cooldownBar.setVisible(true);
+			chargeBar.setVisible(true);
 		}
-		cooldownBar.setWidth(60-(currentAttackCooldown/attackCooldown*60));
+		chargeBar.setWidth(currentChargeTime/attackChargeTime*60);
 	}
 	
 }
