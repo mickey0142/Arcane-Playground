@@ -1,5 +1,5 @@
 
-spear.png
+spearlv3.png
 size: 1024,32
 format: RGBA8888
 filter: Nearest,Nearest
@@ -32,17 +32,3 @@ attack
   orig: 150, 20
   offset: 0, 0
   index: 3
-attack
-  rotate: false
-  xy: 610, 2
-  size: 150, 20
-  orig: 150, 20
-  offset: 0, 0
-  index: 4
-attack
-  rotate: false
-  xy: 762, 2
-  size: 150, 20
-  orig: 150, 20
-  offset: 0, 0
-  index: 5

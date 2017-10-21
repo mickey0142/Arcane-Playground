@@ -17,9 +17,9 @@ public class PlayerWeapon extends Actor{
 	// all weapon here
 	static TextureAtlas fist = new TextureAtlas(Gdx.files.internal("fistanim.atlas"));
 	static Animation<TextureRegion> fistAnim = new Animation<TextureRegion>(0.5f, fist.getRegions());
-	static TextureAtlas sword = new TextureAtlas(Gdx.files.internal("testrotate.atlas"));
+	static TextureAtlas sword = new TextureAtlas(Gdx.files.internal("sword.atlas"));
 	static Animation<TextureRegion> swordAnim = new Animation<TextureRegion>(0.1f, sword.getRegions());
-	static TextureAtlas spear = new TextureAtlas(Gdx.files.internal("spear.atlas"));
+	static TextureAtlas spear = new TextureAtlas(Gdx.files.internal("spearlv3.atlas"));
 	static Animation<TextureRegion> spearAnim = new Animation<TextureRegion>(0.1f, spear.getRegions());
 	static TextureAtlas axe = new TextureAtlas(Gdx.files.internal("axe.atlas"));
 	static Animation<TextureRegion> axeAnim = new Animation<TextureRegion>(0.1f, axe.getRegions());
