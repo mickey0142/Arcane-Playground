@@ -804,7 +804,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					}
 					else
 					{
-						((NormalWall) wall).hp -= 3;
+						if (playerAttack.chargeMax)
+						{
+							((NormalWall) wall).hp -= 3;
+						}
+						else
+						{
+							((NormalWall) wall).hp -= 2;
+						}
 					}
 				}
 			}
@@ -836,6 +843,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				}
 			}
 		}
+		playerAttack.chargeMax = false;
 	}
 
 	public void resetVariableInCharacterStage()
@@ -863,6 +871,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		}
 		for (PlayerCharacter allPlayer : player) {
 			allPlayer.hp = 3;
+			allPlayer.armor = 100;
 			allPlayer.weaponName = "fist";
 			allPlayer.attackCooldown = 0.5f;
 			allPlayer.attackChargeTime = 0.5f;
@@ -882,9 +891,19 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			allPlayer.weaponLV = 0;
 			//allPlayer.weaponAtlas = PlayerWeapon.fist;
 			allPlayer.weapon.updateWeaponAnimation();
+			allPlayer.leftPressed = false;
+			allPlayer.rightPressed = false;
+			allPlayer.upPressed = false;
+			allPlayer.rightPressed = false;
+			allPlayer.speed_x = 0;
+			allPlayer.speed_y = 0;
+			allPlayer.speedUp = 0;
+			allPlayer.speedDown = 0;
+			allPlayer.speedLeft = 0;
+			allPlayer.speedRight = 0;
 			if (allPlayer == player[0])
 			{
-				allPlayer.setX(75);
+				allPlayer.setX(50);
 				allPlayer.setY(50);
 			}
 			else if (allPlayer == player[1])

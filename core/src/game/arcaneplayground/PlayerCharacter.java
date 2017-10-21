@@ -19,6 +19,7 @@ public class PlayerCharacter extends Actor{
 	Rectangle hitbox, attackHitbox;
 	float attackWidth = 40, attackHeight = 40;
 	int hp = 3;//, hpMax = 100;// use hpmax if character have different hp
+	float armor = 100;
 	float speed_x;
 	float speed_y;
 	float speedLeft, speedRight, speedUp, speedDown;
@@ -36,6 +37,7 @@ public class PlayerCharacter extends Actor{
 	boolean attacking = false;
 	boolean hurt = false;
 	boolean dead = false;
+	boolean chargeMax = false;
 	boolean upPressed = false, downPressed = false, leftPressed = false, rightPressed = false;
 	UI hpBar;
 	UI chargeBar;
@@ -105,8 +107,12 @@ public class PlayerCharacter extends Actor{
 		if (charging && currentChargeTime <= attackChargeTime)
 		{
 			currentChargeTime += Gdx.graphics.getDeltaTime();
+			if (currentChargeTime >= attackChargeTime)
+			{
+				chargeMax = true;
+			}
 		}
-		else if (!charging && currentChargeTime > 0)
+		else if (!charging && currentChargeTime > 0 && !attacking)
 		{
 			currentChargeTime -= Gdx.graphics.getDeltaTime();
 		}
