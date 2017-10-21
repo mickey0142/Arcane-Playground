@@ -180,7 +180,7 @@ public class PlayerCharacter extends Actor{
 		{
 			batch.draw(currentAnim.getKeyFrame(time, true), (faceLeft ? this.getX()+this.getWidth() : this.getX()), this.getY(), (faceLeft ? -this.getWidth() : this.getWidth()), this.getHeight());
 		}
-		batch.draw(temp2, attackHitbox.getX(), attackHitbox.getY(), attackHitbox.getWidth(), attackHitbox.getHeight());
+		//batch.draw(temp2, attackHitbox.getX(), attackHitbox.getY(), attackHitbox.getWidth(), attackHitbox.getHeight());
 		//if(currentChargeTime > 0)
 		{
 			batch.draw(temp, hitbox.getX(), hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
@@ -200,11 +200,11 @@ public class PlayerCharacter extends Actor{
 		hitbox.setHeight(this.getHeight()-26);
 		if (faceLeft)
 		{
-			hitbox.setX(this.getX()-15+hitbox.getWidth());
+			hitbox.setX(this.getX()-10+hitbox.getWidth());
 		}
 		else
 		{
-			hitbox.setX(this.getX()+10);
+			hitbox.setX(this.getX()+15);
 		}
 	}
 	
