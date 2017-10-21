@@ -1,6 +1,7 @@
 package game.arcaneplayground;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 //import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -55,7 +56,7 @@ public class UI extends Actor{
 		{
 			batch.draw(img, this.getX(), this.getY(), this.getWidth(), this.getHeight());
 		}
-//		batch.setColor(Color.WHITE);
+		batch.setColor(Color.WHITE);
 	}
 	public void setAnimation(TextureAtlas textureatlas)
 	{

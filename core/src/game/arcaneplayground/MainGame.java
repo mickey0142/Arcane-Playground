@@ -37,6 +37,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	ItemDrop itemDrop[];
 	UI playerChargeBar[] = new UI[2];
 	UI playerHPBar[] = new UI[2];
+	UI playerArmorBar[] = new UI[2];
 	Stage end;
 	float gametime;//temp
 	// default control for each player in this order {up, down, left, right, attack} change this in setting later
@@ -81,15 +82,17 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	{
 		checkBlock[0] = new GameObject("box3.png", 0, 0, 100, 100, false);// remove box3.png and add null and don't add this actor to stage i think that can avoid nullpointerexception because this.draw don't get call
 		checkBlock[1] = new GameObject("box3.png", 0, 0, 100, 100, false);
-		playerHPBar[0] = new UI("hp.png", 20, 680, 150, 40);
-		playerHPBar[1] = new UI("hp.png", 250, 680, 150, 40);
-		playerChargeBar[0] = new UI("box2.png", 0, 0, 60, 10);
-		playerChargeBar[1] = new UI("box2.png", 0, 0, 60, 10);
-		player[0] = new PlayerCharacter(50, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, playerHPBar[0], PlayerWeapon.sword, PlayerWeapon.swordAnim);
+		playerHPBar[0] = new UI("hp.png", 100, 690, 150, 40);
+		playerHPBar[1] = new UI("hp.png", 400, 690, 150, 40);
+		playerArmorBar[0] = new UI ("box3.png", 100, 660, 10, 15);
+		playerArmorBar[1] = new UI ("box3.png", 400, 660, 10, 15);
+		playerChargeBar[0] = new UI("whitebox.png", 0, 0, 60, 10, true);
+		playerChargeBar[1] = new UI("whitebox.png", 0, 0, 60, 10, true);
+		player[0] = new PlayerCharacter(50, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, playerHPBar[0], playerArmorBar[0], PlayerWeapon.sword, PlayerWeapon.swordAnim);
 
 		// playerweapon.sword ^ here
 
-		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, playerHPBar[1], PlayerWeapon.sword, PlayerWeapon.swordAnim);
+		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, playerHPBar[1], playerArmorBar[1], PlayerWeapon.sword, PlayerWeapon.swordAnim);
 
 		//temppppp 
 		//player[0].weaponName = "axe";
@@ -148,6 +151,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 
 		game.addActor(playerHPBar[0]);
 		game.addActor(playerHPBar[1]);
+		game.addActor(playerArmorBar[0]);
+		game.addActor(playerArmorBar[1]);
 
 		walls = new UnbreakableWall[136];
 		int posX = 0;
@@ -721,7 +726,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			{
 				allPlayer.attacking = true;
 				allPlayer.charging = false;
-				allPlayer.currentAttackCooldown = allPlayer.attackCooldown;
+				if (allPlayer.currentChargeTime < 0.5f)
+				{
+					allPlayer.currentChargeTime = 0.5f;
+				}
+				//allPlayer.currentAttackCooldown = allPlayer.attackCooldown;
 			}
 		}
 	}
@@ -834,12 +843,32 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			}
 			if (checkCollision(playerAttack, allPlayer, "attack") && !allPlayer.hurt)
 			{
-				allPlayer.hp -= 1;
-				allPlayer.hurt = true;
-				if (allPlayer.hp <= 0)
+				allPlayer.regenDelay = 2f;
+				if (allPlayer.armor <= 0)
 				{
-					allPlayer.dead = true;
-					playerCount -= 1;
+					allPlayer.hp -= 1;
+					allPlayer.hurt = true;
+					allPlayer.armor += 10;
+					if (allPlayer.hp <= 0)
+					{
+						allPlayer.dead = true;
+						playerCount -= 1;
+					}
+				}
+				else
+				{
+					if (playerAttack.chargeMax)
+					{
+						allPlayer.armor -= playerAttack.attack*2;						
+					}
+					else
+					{
+						allPlayer.armor -= playerAttack.attack;
+					}
+					if (allPlayer.armor < 0)
+					{
+						allPlayer.armor = 0;
+					}
 				}
 			}
 		}
@@ -888,6 +917,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			allPlayer.attackWidth = 40;
 			allPlayer.direction = "right";
 			//allPlayer.time // should i reset this?
+			allPlayer.attack = 0;
 			allPlayer.weaponLV = 0;
 			//allPlayer.weaponAtlas = PlayerWeapon.fist;
 			allPlayer.weapon.updateWeaponAnimation();

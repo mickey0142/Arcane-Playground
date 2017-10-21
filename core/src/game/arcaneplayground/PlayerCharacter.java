@@ -29,6 +29,8 @@ public class PlayerCharacter extends Actor{
 	float attackChargeTime = 0.5f;
 	float currentChargeTime;
 	float blinkTime = 2f, currentBlinkTime;
+	float attack;
+	float regenDelay = 2;
 	int blinkFrameCount;
 	boolean moving = false;
 	boolean blink = false;
@@ -41,6 +43,7 @@ public class PlayerCharacter extends Actor{
 	boolean upPressed = false, downPressed = false, leftPressed = false, rightPressed = false;
 	UI hpBar;
 	UI chargeBar;
+	UI armorBar;
 	EffectRenderer attackEffect;
 	PlayerWeapon weapon;
 	GameObject checkBlock;
@@ -64,7 +67,7 @@ public class PlayerCharacter extends Actor{
 	{
 		attackHitbox = new Rectangle(-1000, -1000, attackWidth, attackHeight);
 	}
-	public PlayerCharacter(float x, float y, float width, float height, int up, int down, int left, int right, int attack, UI hpBar, TextureAtlas weaponAtlas, Animation<TextureRegion> weaponAnim)// have to add argument for setting player textureatlas animation weapon here later
+	public PlayerCharacter(float x, float y, float width, float height, int up, int down, int left, int right, int attack, UI hpBar, UI armorBar, TextureAtlas weaponAtlas, Animation<TextureRegion> weaponAnim)// have to add argument for setting player textureatlas animation weapon here later
 	{
 		attackEffectAtlas = EffectRenderer.punchAtlas;
 		attackEffectAnim = EffectRenderer.punchAnimation;
@@ -78,6 +81,7 @@ public class PlayerCharacter extends Actor{
 		direction = "right";
 		this.hpBar = hpBar;
 		this.hpBar.animation = true;
+		this.armorBar = armorBar;
 		updateHPBar();
 		this.weaponAtlas = weaponAtlas;
 		this.weaponAnim = weaponAnim;
@@ -116,8 +120,20 @@ public class PlayerCharacter extends Actor{
 		{
 			currentChargeTime -= Gdx.graphics.getDeltaTime();
 		}
+		if (armor < 100)// change max armor here
+		{
+			if (regenDelay > 0)
+			{
+				regenDelay -= Gdx.graphics.getDeltaTime();
+			}
+			else
+			{
+				armor += 0.1;
+			}
+		}
 		updateHPBar();
 		updateChargeBar();
+		updateArmorBar();
 		updateHitbox();
 		updateAttackHitbox();
 		if (speed_x > 0)
@@ -175,6 +191,7 @@ public class PlayerCharacter extends Actor{
 	{
 		hitbox = new Rectangle(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 	}
+	
 	public void updateHitbox()
 	{//temporary adjust hitbox to fit texture
 		if (faceLeft)
@@ -189,6 +206,7 @@ public class PlayerCharacter extends Actor{
 		hitbox.setWidth(this.getWidth()-35);
 		hitbox.setHeight(this.getHeight()-26);
 	}
+	
 	public void updateAttackHitbox()
 	{
 		if (direction.equals("up"))
@@ -220,15 +238,18 @@ public class PlayerCharacter extends Actor{
 			attackHitbox.setHeight(attackHeight);
 		}
 	}
+	
 	public void updateAttackEffect(TextureAtlas textureatlas, Animation<TextureRegion> animation)
 	{
 		attackEffectAtlas = textureatlas;
 		attackEffectAnim = animation;
 	}
+	
 	public void setPlayerAttackEffectRenderer(EffectRenderer effect)
 	{
 		this.attackEffect = effect;
 	}
+	
 	public void updateNewWeapon(ItemDrop item)
 	{
 		if (weaponName.equals(item.weaponName))
@@ -240,6 +261,7 @@ public class PlayerCharacter extends Actor{
 				attackHeight = item.attackHeight[1];
 				attackCooldown = item.attackCooldown[1];
 				attackChargeTime = item.attackChargeTime[1];
+				attack = item.attack[1];
 				weaponLV = 2;
 			}
 			else if (weaponLV == 2)
@@ -249,6 +271,7 @@ public class PlayerCharacter extends Actor{
 				attackHeight = item.attackHeight[2];
 				attackCooldown = item.attackCooldown[2];
 				attackChargeTime = item.attackChargeTime[2];
+				attack = item.attack[2];
 				weaponLV = 3;
 			}
 		}
@@ -259,6 +282,7 @@ public class PlayerCharacter extends Actor{
 			attackHeight = item.attackHeight[0];
 			attackCooldown = item.attackCooldown[0];
 			attackChargeTime = item.attackChargeTime[0];
+			attack = item.attack[0];
 			updateAttackEffect(item.effectAtlas, item.effectAnimation);
 			weaponName = item.weaponName;
 			weaponLV = 1;
@@ -267,10 +291,12 @@ public class PlayerCharacter extends Actor{
 			weapon.updateWeaponAnimation();
 		}
 	}
+	
 	public void setPlayerWeaponRenderer(PlayerWeapon weapon)
 	{
 		this.weapon = weapon;
 	}
+	
 	public void setControl(int up, int down, int left, int right, int attack)
 	{
 		controlLeft = left;
@@ -279,6 +305,7 @@ public class PlayerCharacter extends Actor{
 		controlDown = down;
 		controlAttack = attack;
 	}
+	
 	public void setTexture(TextureAtlas textureatlas)
 	{
 		walkingAtlas = textureatlas;
@@ -286,6 +313,7 @@ public class PlayerCharacter extends Actor{
 		walkingAnim.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
 		standingAnim = new Animation<TextureRegion>(0.5f, walkingAtlas.findRegions("0001"));
 	}
+	
 	public void updateHPBar()
 	{
 		if (hp == 3)
@@ -305,10 +333,12 @@ public class PlayerCharacter extends Actor{
 			hpBar.currentAnim = heart0;
 		}
 	}
+	
 	public void setChargeBar(UI chargeBar)
 	{
 		this.chargeBar = chargeBar;
 	}
+	
 	public void updateChargeBar()
 	{
 		chargeBar.setX(this.getX());
@@ -321,12 +351,26 @@ public class PlayerCharacter extends Actor{
 		{
 			chargeBar.setVisible(true);
 		}
+		if (charging)
+		{
+			chargeBar.red = 0f;
+			chargeBar.green = 1f;
+			chargeBar.blue = 0f;
+		}
+		else
+		{
+			chargeBar.red = 1f;
+			chargeBar.green = 0f;
+			chargeBar.blue = 0f;
+		}
 		chargeBar.setWidth(currentChargeTime/attackChargeTime*60);
 	}
+	
 	public void setCheckBlockObject(GameObject check)
 	{
 		checkBlock = check;
 	}
+	
 	public void updateCheckBlockPosition(float x, float y, float width, float height)
 	{
 		checkBlock.hitbox.setX(x);
@@ -337,6 +381,11 @@ public class PlayerCharacter extends Actor{
 		checkBlock.setY(checkBlock.hitbox.getY());
 		checkBlock.setWidth(checkBlock.hitbox.getWidth());
 		checkBlock.setHeight(checkBlock.hitbox.getHeight());
+	}
+	
+	public void updateArmorBar()
+	{
+		armorBar.setWidth(armor*1.5f);
 	}
 	
 }

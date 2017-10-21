@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class ItemDrop extends GameObject{
 	boolean dropped = false;
-	float attackWidth[] = new float[3], attackHeight[] = new float[3], attackChargeTime[] = new float[3], attackCooldown[] = new float[3];
+	float attackWidth[] = new float[3], attackHeight[] = new float[3], attackChargeTime[] = new float[3], attackCooldown[] = new float[3], attack[] = new float[3];
 	TextureAtlas effectAtlas, weaponAtlas;
 	Animation<TextureRegion> effectAnimation, weaponAnimation;
 	String weaponName;
@@ -21,40 +21,49 @@ public class ItemDrop extends GameObject{
 	static final float SWORD_ATTACK_HEIGHT = 40;
 	static final float SWORD_CHARGE_TIME = 1;
 	static final float SWORD_ATTACK_COOLDOWN = 1.5f;
+	static final float SWORD_ATTACK = 5;
 	static final float SWORDLV2_ATTACK_WIDTH = 40;
 	static final float SWORDLV2_ATTACK_HEIGHT = 40;
 	static final float SWORDLV2_CHARGE_TIME = 1;
 	static final float SWORDLV2_ATTACK_COOLDOWN = 1;
+	static final float SWORDLV2_ATTACK = 10;
 	static final float SWORDLV3_ATTACK_WIDTH = 40;
 	static final float SWORDLV3_ATTACK_HEIGHT = 40;
 	static final float SWORDLV3_CHARGE_TIME = 0.5f;
 	static final float SWORDLV3_ATTACK_COOLDOWN = 1;
+	static final float SWORDLV3_ATTACK = 15;
 	
 	static final float SPEAR_ATTACK_WIDTH = 40;
 	static final float SPEAR_ATTACK_HEIGHT = 40;
 	static final float SPEAR_CHARGE_TIME = 1;
 	static final float SPEAR_ATTACK_COOLDOWN = 1.5f;
+	static final float SPEAR_ATTACK = 5;
 	static final float SPEARLV2_ATTACK_WIDTH = 80;
 	static final float SPEARLV2_ATTACK_HEIGHT = 40;
 	static final float SPEARLV2_CHARGE_TIME = 1;
 	static final float SPEARLV2_ATTACK_COOLDOWN = 1;
+	static final float SPEARLV2_ATTACK = 10;
 	static final float SPEARLV3_ATTACK_WIDTH = 80;
 	static final float SPEARLV3_ATTACK_HEIGHT = 40;
 	static final float SPEARLV3_CHARGE_TIME = 0.5f;
 	static final float SPEARLV3_ATTACK_COOLDOWN = 1;
+	static final float SPEARLV3_ATTACK = 15;
 	
 	static final float AXE_ATTACK_WIDTH = 40;
 	static final float AXE_ATTACK_HEIGHT = 80;
 	static final float AXE_CHARGE_TIME = 1;
 	static final float AXE_ATTACK_COOLDOWN = 1.5f;
+	static final float AXE_ATTACK = 5;
 	static final float AXELV2_ATTACK_WIDTH = 40;
 	static final float AXELV2_ATTACK_HEIGHT = 80;
 	static final float AXELV2_CHARGE_TIME = 1;
 	static final float AXELV2_ATTACK_COOLDOWN = 1;
+	static final float AXELV2_ATTACK = 10;
 	static final float AXELV3_ATTACK_WIDTH = 40;
 	static final float AXELV3_ATTACK_HEIGHT = 80;
 	static final float AXELV3_CHARGE_TIME = 0.5f;
 	static final float AXELV3_ATTACK_COOLDOWN = 1;
+	static final float AXELV3_ATTACK = 15;
 
 	public ItemDrop()
 	{
@@ -85,6 +94,7 @@ public class ItemDrop extends GameObject{
 			attackHeight[0] = SWORD_ATTACK_HEIGHT;
 			attackCooldown[0] = SWORD_ATTACK_COOLDOWN;
 			attackChargeTime[0] = SWORD_CHARGE_TIME;
+			attack[0] = SWORD_ATTACK;
 			effectAtlas = EffectRenderer.swordAtlas;
 			effectAnimation = EffectRenderer.swordAnimation;
 			weaponAtlas = PlayerWeapon.sword;
@@ -94,11 +104,13 @@ public class ItemDrop extends GameObject{
 			attackHeight[1] = SWORDLV2_ATTACK_HEIGHT;
 			attackCooldown[1] = SWORDLV2_ATTACK_COOLDOWN;
 			attackChargeTime[1] = SWORDLV2_CHARGE_TIME;
+			attack[1] = SWORDLV2_ATTACK;
 			//lv3
 			attackWidth[2] = SWORDLV3_ATTACK_WIDTH;
 			attackHeight[2] = SWORDLV3_ATTACK_HEIGHT;
 			attackCooldown[2] = SWORDLV3_ATTACK_COOLDOWN;
 			attackChargeTime[2] = SWORDLV3_CHARGE_TIME;
+			attack[2] = SWORDLV3_ATTACK;
 		}
 		else if (num >= 36 && num <= 70)
 		{
@@ -109,6 +121,7 @@ public class ItemDrop extends GameObject{
 			attackHeight[0] = SPEAR_ATTACK_HEIGHT;
 			attackCooldown[0] = SPEAR_ATTACK_COOLDOWN;
 			attackChargeTime[0] = SPEAR_CHARGE_TIME;
+			attack[0] = SPEAR_ATTACK;
 			effectAtlas = EffectRenderer.swordAtlas;
 			effectAnimation = EffectRenderer.swordAnimation;
 			weaponAtlas = PlayerWeapon.spear;
@@ -118,11 +131,13 @@ public class ItemDrop extends GameObject{
 			attackHeight[1] = SPEARLV2_ATTACK_HEIGHT;
 			attackCooldown[1] = SPEARLV2_ATTACK_COOLDOWN;
 			attackChargeTime[1] = SPEARLV2_CHARGE_TIME;
+			attack[1] = SPEARLV2_ATTACK;
 			//lv3
 			attackWidth[2] = SPEARLV3_ATTACK_WIDTH;
 			attackHeight[2] = SPEARLV3_ATTACK_HEIGHT;
 			attackCooldown[2] = SPEARLV3_ATTACK_COOLDOWN;
 			attackChargeTime[2] = SPEARLV3_CHARGE_TIME;
+			attack[2] = SPEARLV3_ATTACK;
 		}
 		else if (num >= 71 && num <= 95)
 		{
@@ -133,6 +148,7 @@ public class ItemDrop extends GameObject{
 			attackHeight[0] = AXE_ATTACK_HEIGHT;
 			attackCooldown[0] = AXE_ATTACK_COOLDOWN;
 			attackChargeTime[0] = AXE_CHARGE_TIME;
+			attack[0] = AXE_ATTACK;
 			effectAtlas = EffectRenderer.swordAtlas;
 			effectAnimation = EffectRenderer.swordAnimation;
 			weaponAtlas = PlayerWeapon.axe;
@@ -142,11 +158,13 @@ public class ItemDrop extends GameObject{
 			attackHeight[1] = AXELV2_ATTACK_HEIGHT;
 			attackCooldown[1] = AXELV2_ATTACK_COOLDOWN;
 			attackChargeTime[1] = AXELV2_CHARGE_TIME;
+			attack[1] = AXELV2_ATTACK;
 			//lv3
 			attackWidth[2] = AXELV3_ATTACK_WIDTH;
 			attackHeight[2] = AXELV3_ATTACK_HEIGHT;
 			attackCooldown[2] = AXELV3_ATTACK_COOLDOWN;
 			attackChargeTime[2] = AXELV3_CHARGE_TIME;
+			attack[2] = AXELV3_ATTACK;
 		}
 		if (num <= 95)
 		{
