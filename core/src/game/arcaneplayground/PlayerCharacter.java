@@ -128,9 +128,10 @@ public class PlayerCharacter extends Actor{
 			}
 			else
 			{
-				armor += 0.1;
+				armor += 5*Gdx.graphics.getDeltaTime();
 			}
 		}
+		if (armor > 100)armor = 100;
 		updateHPBar();
 		updateChargeBar();
 		updateArmorBar();
