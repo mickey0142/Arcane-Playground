@@ -82,8 +82,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	{
 		checkBlock[0] = new GameObject("box3.png", 0, 0, 100, 100, false);// remove box3.png and add null and don't add this actor to stage i think that can avoid nullpointerexception because this.draw don't get call
 		checkBlock[1] = new GameObject("box3.png", 0, 0, 100, 100, false);
-		playerHPBar[0] = new UI("hp.png", 100, 690, 150, 40);
-		playerHPBar[1] = new UI("hp.png", 400, 690, 150, 40);
+		playerHPBar[0] = new UI("heart.png", 100, 690, 150, 40);
+		playerHPBar[1] = new UI("heart.png", 400, 690, 150, 40);
 		playerArmorBar[0] = new UI ("box3.png", 100, 660, 10, 15);
 		playerArmorBar[1] = new UI ("box3.png", 400, 660, 10, 15);
 		playerChargeBar[0] = new UI("whitebox.png", 0, 0, 60, 10, true);
@@ -789,7 +789,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	{
 		return player.hitbox.overlaps(player2.hitbox);
 	}
-
+	
 	public boolean checkCollision(PlayerCharacter player, GameObject object, String attack)
 	{
 		return player.attackHitbox.overlaps(object.hitbox);
