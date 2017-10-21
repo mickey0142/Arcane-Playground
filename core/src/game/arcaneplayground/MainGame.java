@@ -63,7 +63,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 
 		createInMenuStage();
 		createInCharacterStage();
-		createMap();
 		createInGameStage();
 		createInEndStage();
 
@@ -211,10 +210,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		//		game.addActor(normalWalls[50]);
 		//		game.addActor(normalWalls[51]);
 
-		for(NormalWall normalWall : normalWalls)
-		{
-			game.addActor(normalWall);
-		}
+//		for(NormalWall normalWall : normalWalls)
+//		{
+//			game.addActor(normalWall);
+//		}
 
 		game.addActor(player[0]);
 		game.addActor(player[1]);
@@ -225,14 +224,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		game.addActor(playerChargeBar[1]);
 
 		//temp remove this latertemp remove this latertemp remove this latertemp remove this latertemp remove this latertemp remove this latertemp remove this later
-		game.addActor(checkBlock[0]);
-		game.addActor(checkBlock[1]);
+		//game.addActor(checkBlock[0]);
+		//game.addActor(checkBlock[1]);
 
 		game.addActor(attackEffectRenderer[0]);
 		game.addActor(attackEffectRenderer[1]);
 	}
 
-	public void createMap()
+	public void createMap()// maybe add argument in this method and set map and wall texture according to that
 	{
 		// set textureatlas for block here change wall1 to input
 		NormalWall.wallTexture = NormalWall.wall1;
@@ -259,7 +258,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		for (int i = 0; i < normalWallCount; i++)
 		{
 			normalWalls[i] = new NormalWall("block2.png", wallLocation2[i][0], wallLocation2[i][1], 50, 50, true);
+			game.addActor(normalWalls[i]);
 		}
+
+		moveNormalWallZIndex();
 	}
 
 	public void createInEndStage()
@@ -294,6 +296,27 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			if (delay <= 0)
 			{
 				screen = "end";
+				if (playerCount == 1)
+				{
+					int numPlayerWin = 0;
+					for (PlayerCharacter allPlayer : player)
+					{
+						if (allPlayer.dead)
+						{
+							numPlayerWin += 1;
+							continue;
+						}
+						else
+						{
+							System.out.println("Player : " + numPlayerWin + " Win!");
+							break;
+						}
+					}
+				}
+				else
+				{
+					System.out.println("Draw!");
+				}
 			}
 		}
 		else if (screen.equals("end"))
@@ -534,6 +557,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	{
 		if (keycode == Keys.ENTER && playerCount >= 2)
 		{
+			createMap();
 			screen = "game";
 
 		}
@@ -967,4 +991,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			}
 		}
 	}
+
+	public void moveNormalWallZIndex()
+	{
+		for (NormalWall wall : normalWalls)
+		{
+			wall.setZIndex(3);
+		}
+	}
+
 }

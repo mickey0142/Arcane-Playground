@@ -180,10 +180,10 @@ public class PlayerCharacter extends Actor{
 		{
 			batch.draw(currentAnim.getKeyFrame(time, true), (faceLeft ? this.getX()+this.getWidth() : this.getX()), this.getY(), (faceLeft ? -this.getWidth() : this.getWidth()), this.getHeight());
 		}
-		//batch.draw(temp2, attackHitbox.getX(), attackHitbox.getY(), attackHitbox.getWidth(), attackHitbox.getHeight());
+		batch.draw(temp2, attackHitbox.getX(), attackHitbox.getY(), attackHitbox.getWidth(), attackHitbox.getHeight());
 		//if(currentChargeTime > 0)
 		{
-			batch.draw(temp, hitbox.getX(), hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
+			//batch.draw(temp, hitbox.getX(), hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
 		}
 		
 		//updateCheckBlockPosition(hitbox.getX(), hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
@@ -265,7 +265,10 @@ public class PlayerCharacter extends Actor{
 				attackCooldown = item.attackCooldown[1];
 				attackChargeTime = item.attackChargeTime[1];
 				attack = item.attack[1];
+				weaponAtlas = item.weaponAtlas[1];
+				weaponAnim = item.weaponLV2Animation;
 				weaponLV = 2;
+				weapon.updateWeaponAnimation();
 			}
 			else if (weaponLV == 2)
 			{
@@ -275,7 +278,10 @@ public class PlayerCharacter extends Actor{
 				attackCooldown = item.attackCooldown[2];
 				attackChargeTime = item.attackChargeTime[2];
 				attack = item.attack[2];
+				weaponAtlas = item.weaponAtlas[2];
+//				weaponAnim = item.weaponLV3Animation;
 				weaponLV = 3;
+				weapon.updateWeaponAnimation();
 			}
 		}
 		else
@@ -289,7 +295,7 @@ public class PlayerCharacter extends Actor{
 			updateAttackEffect(item.effectAtlas, item.effectAnimation);
 			weaponName = item.weaponName;
 			weaponLV = 1;
-			weaponAtlas = item.weaponAtlas;
+			weaponAtlas = item.weaponAtlas[0];
 			weaponAnim = item.weaponAnimation;
 			weapon.updateWeaponAnimation();
 		}

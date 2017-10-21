@@ -15,14 +15,29 @@ public class PlayerWeapon extends Actor{
 	float originX, originY, moveX, moveY;
 	
 	// all weapon here
-	static TextureAtlas fist = new TextureAtlas(Gdx.files.internal("fistanim.atlas"));
-	static Animation<TextureRegion> fistAnim = new Animation<TextureRegion>(0.5f, fist.getRegions());
+//	static TextureAtlas fist = new TextureAtlas(Gdx.files.internal("fist.atlas"));
+//	static Animation<TextureRegion> fistAnim = new Animation<TextureRegion>(0.5f, fist.getRegions());
+	
 	static TextureAtlas sword = new TextureAtlas(Gdx.files.internal("sword.atlas"));
 	static Animation<TextureRegion> swordAnim = new Animation<TextureRegion>(0.1f, sword.getRegions());
-	static TextureAtlas spear = new TextureAtlas(Gdx.files.internal("spearlv3.atlas"));
+	static TextureAtlas swordLV2 = new TextureAtlas(Gdx.files.internal("swordlv2.atlas"));
+	static Animation<TextureRegion> swordLV2Anim = new Animation<TextureRegion>(0.1f, swordLV2.getRegions());
+//	static TextureAtlas swordLV3 = new TextureAtlas(Gdx.files.internal("swordlv3.atlas"));
+//	static Animation<TextureRegion> swordLV3Anim = new Animation<TextureRegion>(0.1f, swordLV3.getRegions());
+	
+	static TextureAtlas spear = new TextureAtlas(Gdx.files.internal("spear.atlas"));
 	static Animation<TextureRegion> spearAnim = new Animation<TextureRegion>(0.1f, spear.getRegions());
+//	static TextureAtlas spearLV2 = new TextureAtlas(Gdx.files.internal("spearlv2.atlas"));
+//	static Animation<TextureRegion> spearLV2Anim = new Animation<TextureRegion>(0.1f, spearLV2.getRegions());
+	static TextureAtlas spearLV3 = new TextureAtlas(Gdx.files.internal("spearlv3.atlas"));
+	static Animation<TextureRegion> spearLV3Anim = new Animation<TextureRegion>(0.1f, spearLV3.getRegions());
+	
 	static TextureAtlas axe = new TextureAtlas(Gdx.files.internal("axe.atlas"));
 	static Animation<TextureRegion> axeAnim = new Animation<TextureRegion>(0.1f, axe.getRegions());
+//	static TextureAtlas axeLV2 = new TextureAtlas(Gdx.files.internal("axelv2.atlas"));
+//	static Animation<TextureRegion> axeLV2Anim = new Animation<TextureRegion>(0.1f, axeLV2.getRegions());
+//	static TextureAtlas axeLV3 = new TextureAtlas(Gdx.files.internal("axelv3.atlas"));
+//	static Animation<TextureRegion> axeLV3Anim = new Animation<TextureRegion>(0.1f, axeLV3.getRegions());
 	// all weapon here
 	
 	public PlayerWeapon()
@@ -111,7 +126,7 @@ public class PlayerWeapon extends Actor{
 			{
 				this.setHeight(-1*this.getHeight());
 				if(player.weaponName.equals("axe"))this.setX(this.getX()-15);
-				else if(player.weaponName.equals("axe"))this.setX(this.getX()-15);
+				else if(player.weaponName.equals("spear"))this.setX(this.getX()-15);
 				else if(player.weaponName.equals("sword"))this.setX(this.getX()-25);
 			}
 			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX, this.getY()+moveY, originX, originY, -this.getWidth(), this.getHeight(), 1, 1, 90);

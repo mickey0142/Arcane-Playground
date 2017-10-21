@@ -16,8 +16,8 @@ public class EffectRenderer extends Actor{
 	// keep all attack effect here
 	static TextureAtlas punchAtlas = new TextureAtlas(Gdx.files.internal("punch.atlas"));
 	static Animation<TextureRegion> punchAnimation = new Animation<TextureRegion>(0.2f, punchAtlas.getRegions());
-	static TextureAtlas swordAtlas = new TextureAtlas(Gdx.files.internal("swordeffect.atlas"));
-	static Animation<TextureRegion> swordAnimation = new Animation<TextureRegion>(0.1f, swordAtlas.getRegions());
+	static TextureAtlas swordEffectAtlas = new TextureAtlas(Gdx.files.internal("swordeffect.atlas"));
+	static Animation<TextureRegion> swordAnimation = new Animation<TextureRegion>(0.1f, swordEffectAtlas.getRegions());
 	// keep all attack effect here
 	
 	public EffectRenderer()
