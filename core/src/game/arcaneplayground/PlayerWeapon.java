@@ -95,11 +95,27 @@ public class PlayerWeapon extends Actor{
 		} 
 		if (player.direction.equals("up"))
 		{
+			if (player.faceLeft && this.getHeight() > 0)
+			{
+				this.setHeight(-1*this.getHeight());
+				if(player.weaponName.equals("axe"))this.setX(this.getX()-15);
+				else if(player.weaponName.equals("spear"))this.setX(this.getX()-15);
+				else if(player.weaponName.equals("sword"))this.setX(this.getX()-25);
+			}
 			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX, this.getY()+moveY, originX, originY, this.getWidth(), this.getHeight(), 1, 1, 90);
+			
 		}
 		else if (player.direction.equals("down"))
 		{
+			if (player.faceLeft && this.getHeight() > 0)
+			{
+				this.setHeight(-1*this.getHeight());
+				if(player.weaponName.equals("axe"))this.setX(this.getX()-15);
+				else if(player.weaponName.equals("axe"))this.setX(this.getX()-15);
+				else if(player.weaponName.equals("sword"))this.setX(this.getX()-25);
+			}
 			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX, this.getY()+moveY, originX, originY, -this.getWidth(), this.getHeight(), 1, 1, 90);
+			
 		}
 		else if (player.direction.equals("left"))
 		{

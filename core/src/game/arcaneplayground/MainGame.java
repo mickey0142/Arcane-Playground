@@ -315,6 +315,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public void gameStageRender()
 	{
 		game.draw();
+		//System.out.println("x " + player[0].getX() + " y " + player[0].getY() + " w " + player[0].getWidth() + "h" + player[0].getHeight());
 		int loopCount = 0;
 		for (PlayerCharacter allPlayer : player) 
 		{
@@ -428,6 +429,24 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 						allPlayer.updateCheckBlockPosition(allPlayer.hitbox.getX(), allPlayer.hitbox.getY(), allPlayer.hitbox.getWidth(), allPlayer.hitbox.getHeight());
 					}
 				}
+//				for (PlayerCharacter otherPlayer : player)// this check collision between player
+//				{
+//					if (otherPlayer == allPlayer)
+//					{
+//						continue;
+//					}
+//					if (checkCollision(otherPlayer, allPlayer, true))
+//					{
+//						allPlayer.moving = false;
+//						allPlayer.speedUp = 0;
+//						allPlayer.speedDown = 0;
+//						allPlayer.speedLeft = 0;
+//						allPlayer.speedRight = 0;
+//						allPlayer.speed_x = 0;
+//						allPlayer.speed_y = 0;
+//						allPlayer.updateCheckBlockPosition(allPlayer.hitbox.getX(), allPlayer.hitbox.getY(), allPlayer.hitbox.getWidth(), allPlayer.hitbox.getHeight());
+//					}
+//				}
 			}
 			if (allPlayer.moving)
 			{
@@ -788,6 +807,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public boolean checkCollision(PlayerCharacter player, PlayerCharacter player2)
 	{
 		return player.hitbox.overlaps(player2.hitbox);
+	}
+	
+	public boolean checkCollision(PlayerCharacter player, PlayerCharacter player2, boolean checkBlock)
+	{
+		return player.checkBlock.hitbox.overlaps(player2.checkBlock.hitbox);
 	}
 	
 	public boolean checkCollision(PlayerCharacter player, GameObject object, String attack)

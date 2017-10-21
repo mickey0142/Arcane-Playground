@@ -200,7 +200,7 @@ public class PlayerCharacter extends Actor{
 		hitbox.setHeight(this.getHeight()-26);
 		if (faceLeft)
 		{
-			hitbox.setX(this.getX()-10+hitbox.getWidth());
+			hitbox.setX(this.getX()-15+hitbox.getWidth());
 		}
 		else
 		{
