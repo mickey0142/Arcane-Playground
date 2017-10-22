@@ -32,4 +32,11 @@ public class GameObject extends Actor{
 	{
 		img.dispose();
 	}
+	public void updateHitbox()
+	{
+		hitbox.setX(this.getX());
+		hitbox.setY(this.getY());
+		hitbox.setWidth(this.getWidth());
+		hitbox.setHeight(this.getHeight());
+	}
 }

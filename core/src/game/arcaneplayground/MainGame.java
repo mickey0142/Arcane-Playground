@@ -1,5 +1,7 @@
 package game.arcaneplayground;
 
+import java.util.Random;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -239,28 +241,53 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		NormalWall.hp2 = NormalWall.wall1.findRegion("0002");
 		NormalWall.hp1 = NormalWall.wall1.findRegion("0003");
 		NormalWall.hp0 = NormalWall.wall1.findRegion("0004");
-		//int unbreakWallCount = 3;
-		int normalWallCount = 5;
-		//		walls = new UnbreakableWall[unbreakWallCount];
-		//		walls[0] = new UnbreakableWall("block.png", 400, 400, 64, 64, true);
-		//		walls[1] = new UnbreakableWall("block.png", 128, 128, 64, 64, true);
-		//		walls[2] = new UnbreakableWall("block.png", 0, 128, 64, 64, true);
-		//		float wallLocation[][] = {{0,128},{128, 128},{400, 400}};
-		//		for (int i = 0; i < unbreakWallCount; i++)
-		//		{
-		//			walls[i] = new UnbreakableWall("block.png", wallLocation[i][0], wallLocation[i][1], 50, 50, true);
-		//		}
-		normalWalls = new NormalWall[5];
-		//		normalWalls[0] = new NormalWall("block2.png", 300, 300, 64, 64, true);
-		//		normalWalls[1] = new NormalWall("block2.png", 500, 500, 64, 64, true);
-		//		normalWalls[2] = new NormalWall("block2.png", 700, 300, 64, 64, true);
-		float wallLocation2[][] = {{50, 150},{50, 200},{700, 350},{750, 350},{850, 300}};
-		for (int i = 0; i < normalWallCount; i++)
+		int normalWallCount = 0;
+		normalWalls = new NormalWall[126];
+		float[] possibleY1 = {50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550};
+		float[] possibleY2 = {50, 150, 250, 350, 450, 550};
+		float x = 50;
+		for (int i = 0; i < 25; i++)
 		{
-			normalWalls[i] = new NormalWall("block2.png", wallLocation2[i][0], wallLocation2[i][1], 50, 50, true);
-			game.addActor(normalWalls[i]);
+			if (x % 100 == 0)
+			{
+				int[] y = new Random().ints(0, 6).distinct().limit(4).toArray();
+				for (int j = 0; j < 4; j++)
+				{
+					normalWalls[normalWallCount] = new NormalWall("block2.png", x, possibleY2[y[j]], 50, 50, true);
+					game.addActor(normalWalls[normalWallCount]);
+					normalWallCount += 1;
+				}
+			}
+			else
+			{
+				int[] y = new Random().ints(0, 11).distinct().limit(6).toArray();
+				if (x == 50 || x == 1250)
+				{
+					boolean playerLocation = false;
+					do {
+						playerLocation = false;
+						for (int j = 0; j < 6; j++)
+						{
+							if (y[j] == 0 || y[j] == 10)
+							{
+								playerLocation = true;
+								y = new Random().ints(0, 11).distinct().limit(6).toArray();
+								break;
+							}
+						}
+					}
+					while (playerLocation);
+				}
+				for (int j = 0; j < 6; j++)
+				{
+					normalWalls[normalWallCount] = new NormalWall("block2.png", x, possibleY1[y[j]], 50, 50, true);
+					game.addActor(normalWalls[normalWallCount]);
+					normalWallCount += 1;
+				}
+			}
+			x += 50;
 		}
-
+		
 		moveNormalWallZIndex();
 	}
 
@@ -996,6 +1023,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	{
 		for (NormalWall wall : normalWalls)
 		{
+//			if (wall != null)
 			wall.setZIndex(3);
 		}
 	}
