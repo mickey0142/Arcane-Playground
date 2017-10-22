@@ -56,8 +56,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 
 		screen = "menu";
 
-		itemDrop = new ItemDrop[10];
-		for (int i = 0; i < 10; i++)
+		itemDrop = new ItemDrop[126];
+		for (int i = 0; i < 126; i++)
 		{
 			itemDrop[i] = new ItemDrop();
 		}
@@ -145,10 +145,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		game.addActor(gameBackground);
 		game.addActor(playGround);
 
-		for (int i = 0; i < 10; i++)// change 10 to how many itemdrop hereeeeeee
-		{
-			game.addActor(itemDrop[i]);
-		}
 
 		game.addActor(playerHPBar[0]);
 		game.addActor(playerHPBar[1]);
@@ -973,6 +969,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			item.hitbox.setX(-1000);
 			item.hitbox.setY(-1000);
 		}
+		ItemDrop.dropCount = 0;
 		for (PlayerCharacter allPlayer : player) {
 			allPlayer.hp = 3;
 			allPlayer.armor = 100;
