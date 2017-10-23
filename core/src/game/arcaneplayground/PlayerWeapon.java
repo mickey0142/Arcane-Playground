@@ -38,6 +38,13 @@ public class PlayerWeapon extends Actor{
 	static Animation<TextureRegion> axeLV2Anim = new Animation<TextureRegion>(0.1f, axeLV2.getRegions());
 //	static TextureAtlas axeLV3 = new TextureAtlas(Gdx.files.internal("axelv3.atlas"));
 //	static Animation<TextureRegion> axeLV3Anim = new Animation<TextureRegion>(0.1f, axeLV3.getRegions());
+	
+	static TextureAtlas bow = new TextureAtlas(Gdx.files.internal("axe.atlas"));
+	static Animation<TextureRegion> bowAnim = new Animation<TextureRegion>(0.1f, bow.getRegions());
+//	static TextureAtlas bowLV2 = new TextureAtlas(Gdx.files.internal("bowlv2.atlas"));
+//	static Animation<TextureRegion> bowLV2Anim = new Animation<TextureRegion>(0.1f, bowLV2.getRegions());
+//	static TextureAtlas bowLV3 = new TextureAtlas(Gdx.files.internal("bowlv3.atlas"));
+//	static Animation<TextureRegion> bowLV3Anim = new Animation<TextureRegion>(0.1f, bowLV3.getRegions());
 	// all weapon here
 	
 	public PlayerWeapon()
@@ -116,7 +123,11 @@ public class PlayerWeapon extends Actor{
 				this.setWidth(47);
 				this.setHeight(67);
 			}
-		} 
+		}
+		else if (player.weaponName.equals("bow"))
+		{
+			//set width height origin for bow here
+		}
 		if (player.direction.equals("up"))
 		{
 			if (player.faceLeft && this.getHeight() > 0)

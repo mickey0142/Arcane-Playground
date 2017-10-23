@@ -64,6 +64,22 @@ public class ItemDrop extends GameObject{
 	static final float AXELV3_CHARGE_TIME = 0.5f;
 	static final float AXELV3_ATTACK_COOLDOWN = 1;
 	static final float AXELV3_ATTACK = 15;
+	
+	static final float BOW_ATTACK_WIDTH = 40;
+	static final float BOW_ATTACK_HEIGHT = 40;
+	static final float BOW_CHARGE_TIME = 1;
+	static final float BOW_ATTACK_COOLDOWN = 1.5f;
+	static final float BOW_ATTACK = 5;
+	static final float BOWLV2_ATTACK_WIDTH = 40;
+	static final float BOWLV2_ATTACK_HEIGHT = 40;
+	static final float BOWLV2_CHARGE_TIME = 1;
+	static final float BOWLV2_ATTACK_COOLDOWN = 1;
+	static final float BOWLV2_ATTACK = 10;
+	static final float BOWLV3_ATTACK_WIDTH = 40;
+	static final float BOWLV3_ATTACK_HEIGHT = 40;
+	static final float BOWLV3_CHARGE_TIME = 0.5f;
+	static final float BOWLV3_ATTACK_COOLDOWN = 1;
+	static final float BOWLV3_ATTACK = 15;
 
 	public ItemDrop()
 	{
@@ -84,9 +100,9 @@ public class ItemDrop extends GameObject{
 	{
 		// set x y width height attackhitbox value here and set dropped and visible to true +1 dropcount here -1 dropcount when pick item
 		int num = (int)(Math.random()*100+1);// random 1 to multiplier
-		System.out.println(num);
-		if (num >= 1 && num <= 35)// 35
+		if (num >= 1 && num <= 20)
 		{
+			System.out.println("sword drop");
 			this.img = swordDropTexture;
 			this.weaponName = "sword";
 			//lv1
@@ -116,9 +132,9 @@ public class ItemDrop extends GameObject{
 //			weaponAtlas[2] = PlayerWeapon.swordLV3;
 //			weaponLV3Animation = PlayerWeapon.swordLV3Anim;
 		}
-		else if (num >= 36 && num <= 70)//36 -> 70
+		else if (num >= 21 && num <= 40)//36 -> 70
 		{
-			System.out.println("spear");
+			System.out.println("spear drop");
 			this.img = swordDropTexture;
 			this.weaponName = "spear";
 			//lv1
@@ -148,8 +164,9 @@ public class ItemDrop extends GameObject{
 			weaponAtlas[2] = PlayerWeapon.spearLV3;
 			weaponLV3Animation = PlayerWeapon.spearLV3Anim;
 		}
-		else if (num >= 71 && num <= 95)
+		else if (num >= 41 && num <= 60)
 		{
+			System.out.println("axe drop");
 			this.img = swordDropTexture;
 			this.weaponName = "axe";
 			//lv1
@@ -179,7 +196,43 @@ public class ItemDrop extends GameObject{
 //			weaponAtlas[2] = PlayerWeapon.axeLV3;
 //			weaponLV3Animation = PlayerWeapon.axeLV3Anim;
 		}
-		if (num <= 95)
+		else if (num > 61 && num <= 80)
+		{
+			System.out.println("bow drop");
+			this.img = swordDropTexture;
+			this.weaponName = "bow";
+			//lv1
+			attackWidth[0] = BOW_ATTACK_WIDTH;
+			attackHeight[0] = BOW_ATTACK_HEIGHT;
+			attackCooldown[0] = BOW_ATTACK_COOLDOWN;
+			attackChargeTime[0] = BOW_CHARGE_TIME;
+			attack[0] = BOW_ATTACK;
+			effectAtlas = EffectRenderer.punchAtlas;
+			effectAnimation = EffectRenderer.punchAnimation;
+			weaponAtlas[0] = PlayerWeapon.bow;
+			weaponAnimation = PlayerWeapon.bowAnim;
+			//lv2
+			attackWidth[1] = BOWLV2_ATTACK_WIDTH;
+			attackHeight[1] = BOWLV2_ATTACK_HEIGHT;
+			attackCooldown[1] = BOWLV2_ATTACK_COOLDOWN;
+			attackChargeTime[1] = BOWLV2_CHARGE_TIME;
+			attack[1] = BOWLV2_ATTACK;
+//			weaponAtlas[1] = PlayerWeapon.bowLV2;
+//			weaponLV2Animation = PlayerWeapon.bowLV2Anim;
+			weaponAtlas[1] = PlayerWeapon.bow;
+			weaponLV2Animation = PlayerWeapon.bowAnim;
+			//lv3
+			attackWidth[2] = BOWLV3_ATTACK_WIDTH;
+			attackHeight[2] = BOWLV3_ATTACK_HEIGHT;
+			attackCooldown[2] = BOWLV3_ATTACK_COOLDOWN;
+			attackChargeTime[2] = BOWLV3_CHARGE_TIME;
+			attack[2] = BOWLV3_ATTACK;
+//			weaponAtlas[2] = PlayerWeapon.bowLV3;
+//			weaponLV3Animation = PlayerWeapon.bowLV3Anim;
+			weaponAtlas[2] = PlayerWeapon.bow;
+			weaponLV3Animation = PlayerWeapon.bowAnim;
+		}
+		if (num <= 80)
 		{
 			dropCount += 1;
 			dropped = true;

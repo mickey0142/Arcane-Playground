@@ -47,6 +47,7 @@ public class PlayerCharacter extends Actor{
 	EffectRenderer attackEffect;
 	PlayerWeapon weapon;
 	GameObject checkBlock;
+	Arrow arrow;
 	
 	static TextureAtlas heart = new TextureAtlas(Gdx.files.internal("heart.atlas"));
 	static Animation<TextureRegion> heart3 = new Animation<TextureRegion>(1f, heart.findRegions("0003"));
@@ -299,6 +300,7 @@ public class PlayerCharacter extends Actor{
 			weaponAnim = item.weaponAnimation;
 			weapon.updateWeaponAnimation();
 		}
+		System.out.println(weaponName + " lv " + weaponLV);
 	}
 	
 	public void setPlayerWeaponRenderer(PlayerWeapon weapon)
@@ -397,4 +399,8 @@ public class PlayerCharacter extends Actor{
 		armorBar.setWidth(armor*1.5f);
 	}
 	
+	public void setArrowRenderer(Arrow arrow)
+	{
+		this.arrow = arrow;
+	}
 }

@@ -42,6 +42,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	UI playerChargeBar[] = new UI[2];
 	UI playerHPBar[] = new UI[2];
 	UI playerArmorBar[] = new UI[2];
+	Arrow playerArrow[];
+	boolean arrowCharged[] = {false, false};
 	Stage end;
 	Stage pause;
 	int pauseCursorPosition = 1;
@@ -126,7 +128,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		player[1].updateHitbox();
 		player[0].updateCheckBlockPosition(player[0].hitbox.getX(), player[0].hitbox.getY(), player[0].hitbox.getWidth(), player[0].hitbox.getHeight());
 		player[1].updateCheckBlockPosition(player[1].hitbox.getX(), player[1].hitbox.getY(), player[1].hitbox.getWidth(), player[1].hitbox.getHeight());
-
+		playerArrow = new Arrow[2];
+		playerArrow[0] = new Arrow(-100, -100);
+		playerArrow[1] = new Arrow(-100, -100);
+		player[0].setArrowRenderer(playerArrow[0]);
+		player[1].setArrowRenderer(playerArrow[1]);
+		
+		
 		// ui in stage
 		characterBackground = new UI("characterbackground.jpg", 0, 0, 1350, 750);
 		playerCharacterSelect =  new UI[2];
@@ -221,11 +229,18 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 //			game.addActor(normalWall);
 //		}
 
+		for (ItemDrop item : itemDrop) {
+			game.addActor(item);
+		}
+		
 		game.addActor(player[0]);
 		game.addActor(player[1]);
 		game.addActor(playerWeaponRenderer[0]);
 		game.addActor(playerWeaponRenderer[1]);
 
+		game.addActor(playerArrow[0]);
+		game.addActor(playerArrow[1]);
+		
 		game.addActor(playerChargeBar[0]);
 		game.addActor(playerChargeBar[1]);
 
@@ -421,17 +436,125 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			allPlayer.setY(allPlayer.getY() + allPlayer.speed_y);
 			allPlayer.updateHitbox();
 		}
+		int arrowCount = 0;
 		for (PlayerCharacter allPlayer : player) 
 		{
 			if (allPlayer.attacking)
 			{
-				checkPlayerAttack(allPlayer);
-				attackEffectRenderer[loopCount].setValue(allPlayer.attackHitbox.getX(), allPlayer.attackHitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-				attackEffectRenderer[loopCount].check = true;
-				attackEffectRenderer[loopCount].time = 0;
+				if (allPlayer.weaponName.equals("bow"))
+				{
+					if (!allPlayer.arrow.isVisible())
+					{
+						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
+						allPlayer.arrow.setVisible(true);
+						if (allPlayer.chargeMax)
+						{
+							arrowCharged[arrowCount] = true;
+						}
+						allPlayer.chargeMax = false;
+					}
+				}
+				else
+				{
+					checkPlayerAttack(allPlayer);
+					attackEffectRenderer[loopCount].setValue(allPlayer.attackHitbox.getX(), allPlayer.attackHitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+					attackEffectRenderer[loopCount].check = true;
+					attackEffectRenderer[loopCount].time = 0;
+				}
 				allPlayer.attacking = false;
 			}
 			loopCount += 1;
+			if (allPlayer.arrow.isVisible())
+			{
+				for (GameObject wall : walls)
+				{
+					if (checkCollision(allPlayer.arrow, wall))
+					{
+						if (allPlayer.arrow.speedX != 0)attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						else attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						attackEffectRenderer[loopCount].check = true;
+						attackEffectRenderer[loopCount].time = 0;
+						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
+						allPlayer.arrow.setVisible(false);
+						arrowCharged[arrowCount] = false;
+					}
+				}
+				for (GameObject wall : normalWalls)
+				{
+					if (checkCollision(allPlayer.arrow, wall))
+					{
+						if (wall instanceof NormalWall)
+						{
+							if (arrowCharged[arrowCount])
+							{
+								((NormalWall) wall).hp -= 3;
+							}
+							else
+							{
+								((NormalWall) wall).hp -= 2;
+							}
+						}
+						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
+						allPlayer.arrow.setVisible(false);
+						arrowCharged[arrowCount] = false;
+					}
+				}
+				for (ItemDrop item : itemDrop)
+				{
+					if (checkCollision(allPlayer.arrow, item))
+					{
+						item.dropped = false;
+						item.setVisible(item.dropped);
+						ItemDrop.dropCount -= 1;
+						item.hitbox.setX(-1000);
+						item.hitbox.setY(-1000);
+						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
+						allPlayer.arrow.setVisible(false);
+						arrowCharged[arrowCount] = false;
+					}
+				}
+				for (PlayerCharacter otherPlayer : player)
+				{
+					if (allPlayer == otherPlayer)
+					{
+						continue;
+					}
+					if (checkCollision(otherPlayer, allPlayer.arrow) && !otherPlayer.hurt)
+					{
+						otherPlayer.regenDelay = 2f;
+						if (otherPlayer.armor <= 0)
+						{
+							otherPlayer.hp -= 1;
+							otherPlayer.hurt = true;
+							otherPlayer.armor += 10;
+							if (otherPlayer.hp <= 0)
+							{
+								otherPlayer.dead = true;
+								playerCount -= 1;
+							}
+						}
+						else
+						{
+							if (arrowCharged[arrowCount])
+							{
+								otherPlayer.armor -= allPlayer.attack*2;						
+							}
+							else
+							{
+								otherPlayer.armor -= allPlayer.attack;
+							}
+							if (otherPlayer.armor < 0)
+							{
+								otherPlayer.armor = 0;
+							}
+						}
+						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
+						allPlayer.arrow.setVisible(false);
+						arrowCharged[arrowCount] = false;
+					}
+				}
+			}
+			arrowCount += 1;
 		}
 		for (PlayerCharacter allPlayer : player)
 		{
