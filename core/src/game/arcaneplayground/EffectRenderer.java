@@ -19,7 +19,7 @@ public class EffectRenderer extends Actor{
 	static TextureAtlas swordEffectAtlas = new TextureAtlas(Gdx.files.internal("swordeffect.atlas"));
 	static Animation<TextureRegion> swordAnimation = new Animation<TextureRegion>(0.1f, swordEffectAtlas.getRegions());
 	// keep all attack effect here
-	
+
 	public EffectRenderer()
 	{
 		
@@ -36,10 +36,20 @@ public class EffectRenderer extends Actor{
 			//batch.draw(player.attackEffectAnim.getKeyFrame(time), this.getX(), this.getY(), this.getWidth(), this.getHeight());
 			if (direction.equals("up"))
 			{
+				if (player.faceLeft && this.getWidth() > 0)
+				{
+					this.setWidth(-1*this.getWidth());
+					this.setX(this.getX() - this.getWidth());
+				}
 				batch.draw(player.attackEffectAnim.getKeyFrame(time), this.getX()+this.getWidth(), this.getY(), 0, 0, this.getHeight(), this.getWidth(), 1, 1, 90);
 			}
 			else if (direction.equals("down"))
 			{
+				if (player.faceLeft && this.getWidth() > 0)
+				{
+					this.setWidth(-1*this.getWidth());
+					this.setX(this.getX() - this.getWidth());
+				}
 				batch.draw(player.attackEffectAnim.getKeyFrame(time), this.getX()+this.getWidth(), this.getY()+this.getHeight(), 0, 0, -this.getHeight(), this.getWidth(), 1, 1, 90);
 			}
 			else if (direction.equals("left"))
