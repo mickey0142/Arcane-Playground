@@ -118,6 +118,7 @@ public class ItemDrop extends GameObject{
 		}
 		else if (num >= 36 && num <= 70)//36 -> 70
 		{
+			System.out.println("spear");
 			this.img = swordDropTexture;
 			this.weaponName = "spear";
 			//lv1
@@ -128,7 +129,7 @@ public class ItemDrop extends GameObject{
 			attack[0] = SPEAR_ATTACK;
 			effectAtlas = EffectRenderer.swordEffectAtlas;
 			effectAnimation = EffectRenderer.swordAnimation;
-			weaponAtlas[0] = PlayerWeapon.spear;// temporary change this to level 3
+			weaponAtlas[0] = PlayerWeapon.spear;
 			weaponAnimation = PlayerWeapon.spearAnim;
 			//lv2
 			attackWidth[1] = SPEARLV2_ATTACK_WIDTH;
@@ -136,16 +137,16 @@ public class ItemDrop extends GameObject{
 			attackCooldown[1] = SPEARLV2_ATTACK_COOLDOWN;
 			attackChargeTime[1] = SPEARLV2_CHARGE_TIME;
 			attack[1] = SPEARLV2_ATTACK;
-//			weaponAtlas[1] = PlayerWeapon.spearLV2;
-//			weaponLV2Animation = PlayerWeapon.spearLV2Anim;
+			weaponAtlas[1] = PlayerWeapon.spearLV2;
+			weaponLV2Animation = PlayerWeapon.spearLV2Anim;
 			//lv3
 			attackWidth[2] = SPEARLV3_ATTACK_WIDTH;
 			attackHeight[2] = SPEARLV3_ATTACK_HEIGHT;
 			attackCooldown[2] = SPEARLV3_ATTACK_COOLDOWN;
 			attackChargeTime[2] = SPEARLV3_CHARGE_TIME;
 			attack[2] = SPEARLV3_ATTACK;
-//			weaponAtlas[2] = PlayerWeapon.spearLV3;
-//			weaponLV3Animation = PlayerWeapon.spearLV3Anim;
+			weaponAtlas[2] = PlayerWeapon.spearLV3;
+			weaponLV3Animation = PlayerWeapon.spearLV3Anim;
 		}
 		else if (num >= 71 && num <= 95)
 		{
@@ -167,8 +168,8 @@ public class ItemDrop extends GameObject{
 			attackCooldown[1] = AXELV2_ATTACK_COOLDOWN;
 			attackChargeTime[1] = AXELV2_CHARGE_TIME;
 			attack[1] = AXELV2_ATTACK;
-//			weaponAtlas[1] = PlayerWeapon.axeLV2;
-//			weaponLV2Animation = PlayerWeapon.axeLV2Anim;
+			weaponAtlas[1] = PlayerWeapon.axeLV2;
+			weaponLV2Animation = PlayerWeapon.axeLV2Anim;
 			//lv3
 			attackWidth[2] = AXELV3_ATTACK_WIDTH;
 			attackHeight[2] = AXELV3_ATTACK_HEIGHT;

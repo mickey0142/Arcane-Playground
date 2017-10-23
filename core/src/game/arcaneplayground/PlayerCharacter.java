@@ -279,7 +279,7 @@ public class PlayerCharacter extends Actor{
 				attackChargeTime = item.attackChargeTime[2];
 				attack = item.attack[2];
 				weaponAtlas = item.weaponAtlas[2];
-//				weaponAnim = item.weaponLV3Animation;
+				weaponAnim = item.weaponLV3Animation;
 				weaponLV = 3;
 				weapon.updateWeaponAnimation();
 			}
