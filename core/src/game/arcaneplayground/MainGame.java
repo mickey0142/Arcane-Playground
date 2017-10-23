@@ -9,6 +9,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -16,6 +17,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class MainGame extends ApplicationAdapter implements InputProcessor{
 	SpriteBatch batch;
 	Texture img;
+	Vector2 mousePositionScreen = new Vector2();
+	Vector2 mousePositionStage = new Vector2();
 	String screen = "menu";
 	PlayerCharacter player[] = new PlayerCharacter[2];
 	Stage menu;
@@ -35,12 +38,15 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	EffectRenderer attackEffectRenderer[] = new EffectRenderer[2];
 	PlayerWeapon playerWeaponRenderer[] = new PlayerWeapon[2];
 	GameObject checkBlock[] = new GameObject[2];
-
 	ItemDrop itemDrop[];
 	UI playerChargeBar[] = new UI[2];
 	UI playerHPBar[] = new UI[2];
 	UI playerArmorBar[] = new UI[2];
 	Stage end;
+	Stage pause;
+	int pauseCursorPosition = 1;
+	UI pauseBackground;
+	UI pauseArrow;
 	float gametime;//temp
 	// default control for each player in this order {up, down, left, right, attack} change this in setting later
 	int controlKeeper[][] = {{Keys.W, Keys.S, Keys.A, Keys.D, Keys.F}, {Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_LEFT}};
@@ -52,7 +58,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 
 		menu = new Stage(new FitViewport(1350, 750));
 		character = new Stage(new FitViewport(1350, 750));
+		game = new Stage(new FitViewport(1350, 750));
 		end = new Stage(new FitViewport(1350, 750));
+		pause = new Stage(new FitViewport(1350, 750));
 
 		screen = "menu";
 
@@ -67,6 +75,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		createInCharacterStage();
 		createInGameStage();
 		createInEndStage();
+		createInPauseStage();
 
 		Gdx.input.setInputProcessor(this);
 	}
@@ -137,7 +146,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 
 	public void createInGameStage()
 	{
-		game = new Stage(new FitViewport(1350, 750));
 		gameBackground = new UI("gamebackground.jpg", 0, 0, 1350, 750, false);
 		playGround = new GameObject("playground.png", 25, 0, 1300, 650, false);
 
@@ -292,6 +300,15 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 
 	}
 
+	public void createInPauseStage()
+	{
+		pauseBackground = new UI("pausebackground.jpg", 0, 0, 1350, 750);
+		pauseArrow = new UI("arrow.png", 335, 482, 32, 32);
+		
+		pause.addActor(pauseBackground);
+		pause.addActor(pauseArrow);
+	}
+	
 	@Override
 	public void render () {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -345,6 +362,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		else if (screen.equals("end"))
 		{
 			endStageRender();
+		}
+		else if (screen.equals("pause"))
+		{
+			pauseStageRender();
 		}
 	}
 
@@ -507,6 +528,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		end.draw();
 	}
 
+	public void pauseStageRender()
+	{
+		pause.draw();
+	}
+	
 	@Override
 	public void dispose () {
 		batch.dispose();
@@ -534,6 +560,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		{
 			keyDownInEndStage(keycode);
 		}
+		else if (screen.equals("pause"))
+		{
+			keyDownInPauseStage(keycode);
+		}
 		return true;
 	}
 
@@ -550,20 +580,34 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				Gdx.app.exit();
 			}
 		}
-		else if (keycode == Keys.DOWN)
+		for (PlayerCharacter allPlayer : player)
 		{
-			cursorPosition += 1;
-			if (cursorPosition > 2)
+			if (keycode == allPlayer.controlDown)
 			{
-				cursorPosition = 1;
+				cursorPosition += 1;
+				if (cursorPosition > 2)
+				{
+					cursorPosition = 1;
+				}
 			}
-		}
-		else if (keycode == Keys.UP)
-		{
-			cursorPosition -= 1;
-			if (cursorPosition <= 0)// change this if there is more than 2 button
+			else if (keycode == allPlayer.controlUp)
 			{
-				cursorPosition = 2;
+				cursorPosition -= 1;
+				if (cursorPosition <= 0)// change this if there is more than 2 button
+				{
+					cursorPosition = 2;
+				}
+			}
+			if (keycode == allPlayer.controlAttack)
+			{
+				if (cursorPosition == 1)
+				{
+					screen = "character";
+				}
+				else if (cursorPosition == 2)
+				{
+					Gdx.app.exit();
+				}
 			}
 		}
 		if (cursorPosition == 1)
@@ -646,6 +690,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 
 	public void keyDownInGameStage(int keycode)
 	{
+		if (keycode == Keys.ESCAPE)
+		{
+			screen = "pause";
+		}
 		for (PlayerCharacter allPlayer : player) {
 			//			if (allPlayer.charging)
 			//			{
@@ -706,6 +754,130 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		}
 	}
 
+	public void keyDownInPauseStage(int keycode)
+	{
+		if (keycode == Keys.ESCAPE)
+		{
+			screen = "game";
+			// end all lingering input
+			for (PlayerCharacter allPlayer : player)
+			{
+				if (allPlayer.charging)
+				{
+					allPlayer.attacking = true;
+					allPlayer.charging = false;
+					if (allPlayer.currentChargeTime < 0.5f)
+					{
+						allPlayer.currentChargeTime = 0.5f;
+					}
+				}
+				allPlayer.upPressed = false;
+				allPlayer.downPressed = false;
+				allPlayer.leftPressed = false;
+				allPlayer.rightPressed = false;
+			}
+		}
+		else if (keycode == Keys.ENTER)
+		{
+			if (pauseCursorPosition == 1)// continue
+			{
+				screen = "game";
+				// end all lingering input
+				for (PlayerCharacter allPlayer2 : player)
+				{
+					if (allPlayer2.charging)
+					{
+						allPlayer2.attacking = true;
+						allPlayer2.charging = false;
+						if (allPlayer2.currentChargeTime < 0.5f)
+						{
+							allPlayer2.currentChargeTime = 0.5f;
+						}
+					}
+					allPlayer2.upPressed = false;
+					allPlayer2.downPressed = false;
+					allPlayer2.leftPressed = false;
+					allPlayer2.rightPressed = false;
+				}
+			}
+			else if (pauseCursorPosition == 2)// setting
+			{
+				// change to setting screen
+			}
+			else if (pauseCursorPosition == 3)// go back to menu
+			{
+				screen = "menu";
+				resetVariableInCharacterStage();
+				resetVariableInGameStage();
+			}
+		}
+		for (PlayerCharacter allPlayer : player)
+		{
+			if (keycode == allPlayer.controlDown)
+			{
+				pauseCursorPosition += 1;
+				if (pauseCursorPosition > 3)
+				{
+					pauseCursorPosition -= 1;
+				}
+			}
+			else if (keycode == allPlayer.controlUp)
+			{
+				pauseCursorPosition -= 1;
+				if (pauseCursorPosition < 1)
+				{
+					pauseCursorPosition += 1;
+				}
+			}
+			else if (keycode == allPlayer.controlAttack)
+			{
+				if (pauseCursorPosition == 1)// continue
+				{
+					screen = "game";
+					// end all lingering input
+					for (PlayerCharacter allPlayer2 : player)
+					{
+						if (allPlayer2.charging)
+						{
+							allPlayer2.attacking = true;
+							allPlayer2.charging = false;
+							if (allPlayer2.currentChargeTime < 0.5f)
+							{
+								allPlayer2.currentChargeTime = 0.5f;
+							}
+						}
+						allPlayer2.upPressed = false;
+						allPlayer2.downPressed = false;
+						allPlayer2.leftPressed = false;
+						allPlayer2.rightPressed = false;
+					}
+				}
+				else if (pauseCursorPosition == 2)// setting
+				{
+					// change to setting screen
+				}
+				else if (pauseCursorPosition == 3)// go back to menu
+				{
+					screen = "menu";
+					resetVariableInCharacterStage();
+					resetVariableInGameStage();
+				}
+			}
+		}
+		if (pauseCursorPosition == 1)
+		{
+			pauseArrow.setY(482);
+		}
+		else if (pauseCursorPosition == 2)
+		{
+			pauseArrow.setY(296);
+		}
+		else if (pauseCursorPosition == 3)
+		{
+			pauseArrow.setY(160);
+		}
+	}
+	
 	@Override
 	public boolean keyUp(int keycode) {
 		if (screen.equals("game"))
@@ -808,11 +980,18 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		mousePositionScreen.x = screenX;
+		mousePositionScreen.y = screenY;
+		mousePositionStage = menu.screenToStageCoordinates(mousePositionScreen);
+		System.out.println(mousePositionStage.x + " " + mousePositionStage.y);
 		return false;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		mousePositionScreen.x = screenX;
+		mousePositionScreen.y = screenY;
+		mousePositionStage = menu.screenToStageCoordinates(mousePositionScreen);
 		return false;
 	}
 
@@ -823,6 +1002,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
+		mousePositionScreen.x = screenX;
+		mousePositionScreen.y = screenY;
+		mousePositionStage = menu.screenToStageCoordinates(mousePositionScreen);
+		//System.out.println(mousePositionStage.x + " " + mousePositionStage.y);
 		return false;
 	}
 
