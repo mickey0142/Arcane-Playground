@@ -463,7 +463,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				}
 				allPlayer.attacking = false;
 			}
-			loopCount += 1;
 			if (allPlayer.arrow.isVisible())
 			{
 				for (GameObject wall : walls)
@@ -494,6 +493,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 								((NormalWall) wall).hp -= 2;
 							}
 						}
+						if (allPlayer.arrow.speedX != 0)attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						else attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						attackEffectRenderer[loopCount].check = true;
+						attackEffectRenderer[loopCount].time = 0;
 						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
 						allPlayer.arrow.setVisible(false);
 						arrowCharged[arrowCount] = false;
@@ -508,6 +511,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 						ItemDrop.dropCount -= 1;
 						item.hitbox.setX(-1000);
 						item.hitbox.setY(-1000);
+						if (allPlayer.arrow.speedX != 0)attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						else attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						attackEffectRenderer[loopCount].check = true;
+						attackEffectRenderer[loopCount].time = 0;
 						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
 						allPlayer.arrow.setVisible(false);
 						arrowCharged[arrowCount] = false;
@@ -548,6 +555,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 								otherPlayer.armor = 0;
 							}
 						}
+						if (allPlayer.arrow.speedX != 0)attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						else attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						attackEffectRenderer[loopCount].check = true;
+						attackEffectRenderer[loopCount].time = 0;
 						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
 						allPlayer.arrow.setVisible(false);
 						arrowCharged[arrowCount] = false;
@@ -555,6 +566,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				}
 			}
 			arrowCount += 1;
+			loopCount += 1;
 		}
 		for (PlayerCharacter allPlayer : player)
 		{
