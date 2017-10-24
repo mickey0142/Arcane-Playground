@@ -399,6 +399,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		game.draw();
 		//System.out.println("x " + player[0].getX() + " y " + player[0].getY() + " w " + player[0].getWidth() + "h" + player[0].getHeight());
 		int loopCount = 0;
+//		System.out.println("p1 " + playerArrow[0].getX() + " " + playerArrow[0].getY() + " " + playerArrow[0].getWidth() + " " + playerArrow[0].getHeight());
+//		System.out.println("p2 " + playerArrow[1].getX() + " " + playerArrow[1].getY() + " " + playerArrow[1].getWidth() + " " + playerArrow[1].getHeight());
+//		System.out.println();
 		for (PlayerCharacter allPlayer : player) 
 		{
 			if (!allPlayer.moving)
@@ -463,8 +466,38 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				}
 				allPlayer.attacking = false;
 			}
+			// attack check for arrow
 			if (allPlayer.arrow.isVisible())
 			{
+				int arrowCount2 = 0;
+				// check collision between arrow
+				for (GameObject arrow : playerArrow)
+				{
+					if (arrow == allPlayer.arrow)
+					{
+						arrowCount2 += 1;
+						continue;
+					}
+					if (checkCollision(allPlayer.arrow, arrow))// attack effect bug may happen here because of arrowcount arrowcount2 loopcount three of these is confusing 
+					{
+						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
+						allPlayer.arrow.setVisible(false);
+						((Arrow)arrow).setArrow(player[arrowCount2].getX()+25, player[arrowCount2].getY()+20, player[arrowCount2].direction, player[arrowCount2].weaponLV);
+						((Arrow)arrow).setVisible(false);
+						arrowCharged[arrowCount] = false;
+						arrowCharged[arrowCount2] = false;
+						if (allPlayer.arrow.speedX != 0)attackEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						else attackEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						attackEffectRenderer[arrowCount].check = true;
+						attackEffectRenderer[arrowCount].time = 0;
+						if (((Arrow)arrow).speedX != 0)attackEffectRenderer[arrowCount].setValue(((Arrow)arrow).hitbox.getX(), ((Arrow)arrow).hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						else attackEffectRenderer[arrowCount].setValue(((Arrow)arrow).hitbox.getX(), ((Arrow)arrow).hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						attackEffectRenderer[arrowCount].check = true;
+						attackEffectRenderer[arrowCount].time = 0;
+					}
+					arrowCount2 += 1;
+				}
+				//checkcollision between arrow and unbreakable wall
 				for (GameObject wall : walls)
 				{
 					if (checkCollision(allPlayer.arrow, wall))
@@ -478,6 +511,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 						arrowCharged[arrowCount] = false;
 					}
 				}
+				//checkcollision between arrow and normal wall
 				for (GameObject wall : normalWalls)
 				{
 					if (checkCollision(allPlayer.arrow, wall))
@@ -502,6 +536,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 						arrowCharged[arrowCount] = false;
 					}
 				}
+				// checkcollision between arrow and itemdrop
 				for (ItemDrop item : itemDrop)
 				{
 					if (checkCollision(allPlayer.arrow, item))
@@ -520,6 +555,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 						arrowCharged[arrowCount] = false;
 					}
 				}
+				//checkcollision between arrow and player
 				for (PlayerCharacter otherPlayer : player)
 				{
 					if (allPlayer == otherPlayer)
@@ -1260,6 +1296,21 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					}
 				}
 			}
+		}
+		int arrowCount = 0;
+		for (Arrow arrow : playerArrow)
+		{
+			if (checkCollision(playerAttack, arrow, "attack"))
+			{
+				if (((Arrow)arrow).speedX != 0)attackEffectRenderer[arrowCount].setValue(((Arrow)arrow).hitbox.getX(), ((Arrow)arrow).hitbox.getY()-15, player[arrowCount].attackHitbox.getWidth(), player[arrowCount].attackHitbox.getHeight(), player[arrowCount].direction);
+				else attackEffectRenderer[arrowCount].setValue(((Arrow)arrow).hitbox.getX(), ((Arrow)arrow).hitbox.getY(), player[arrowCount].attackHitbox.getWidth(), player[arrowCount].attackHitbox.getHeight(), player[arrowCount].direction);
+				attackEffectRenderer[arrowCount].check = true;
+				attackEffectRenderer[arrowCount].time = 0;
+				((Arrow)arrow).setArrow(player[arrowCount].getX()+25, player[arrowCount].getY()+20, player[arrowCount].direction, player[arrowCount].weaponLV);
+				((Arrow)arrow).setVisible(false);
+				arrowCharged[arrowCount] = false;
+			}
+			arrowCount += 1;
 		}
 		playerAttack.chargeMax = false;
 	}
