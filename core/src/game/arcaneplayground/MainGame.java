@@ -101,39 +101,28 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		playerChargeBar[0] = new UI("whitebox.png", 0, 0, 60, 10, true);
 		playerChargeBar[1] = new UI("whitebox.png", 0, 0, 60, 10, true);
 		player[0] = new PlayerCharacter(50, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, playerHPBar[0], playerArmorBar[0], PlayerWeapon.sword, PlayerWeapon.swordAnim);
-
-		// playerweapon.sword ^ here
-
 		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, playerHPBar[1], playerArmorBar[1], PlayerWeapon.sword, PlayerWeapon.swordAnim);
 
 		//temppppp 
 		//player[0].weaponName = "axe";
 		//player[1].weaponName = "spear";
 
-		attackEffectRenderer[0] = new EffectRenderer(player[0]);
-		attackEffectRenderer[0].setValue(player[0].attackHitbox.getX(), player[0].attackHitbox.getY(), player[0].attackHitbox.getWidth(), player[0].attackHitbox.getHeight(), player[0].direction);
-		attackEffectRenderer[1] = new EffectRenderer(player[1]);
-		attackEffectRenderer[1].setValue(player[1].attackHitbox.getX(), player[1].attackHitbox.getY(), player[1].attackHitbox.getWidth(), player[1].attackHitbox.getHeight(), player[1].direction);
-		playerWeaponRenderer[0] = new PlayerWeapon(player[0]);
-		playerWeaponRenderer[1] = new PlayerWeapon(player[1]);
-		player[0].setPlayerAttackEffectRenderer(attackEffectRenderer[0]);
-		player[1].setPlayerAttackEffectRenderer(attackEffectRenderer[1]);
-		player[0].setPlayerWeaponRenderer(playerWeaponRenderer[0]);
-		player[1].setPlayerWeaponRenderer(playerWeaponRenderer[1]);
-		player[0].setChargeBar(playerChargeBar[0]);
-		player[1].setChargeBar(playerChargeBar[1]);
-		player[0].setCheckBlockObject(checkBlock[0]);
-		player[1].setCheckBlockObject(checkBlock[1]);
-		player[0].updateHitbox();
-		player[1].updateHitbox();
-		player[0].updateCheckBlockPosition(player[0].hitbox.getX(), player[0].hitbox.getY(), player[0].hitbox.getWidth(), player[0].hitbox.getHeight());
-		player[1].updateCheckBlockPosition(player[1].hitbox.getX(), player[1].hitbox.getY(), player[1].hitbox.getWidth(), player[1].hitbox.getHeight());
 		playerArrow = new Arrow[2];
-		playerArrow[0] = new Arrow(-100, -100);
-		playerArrow[1] = new Arrow(-100, -100);
-		player[0].setArrowRenderer(playerArrow[0]);
-		player[1].setArrowRenderer(playerArrow[1]);
-		
+		for (int i = 0; i < 2; i++)
+		{
+			player[i].setVisible(false);
+			attackEffectRenderer[i] = new EffectRenderer(player[i]);
+			attackEffectRenderer[i].setValue(player[i].attackHitbox.getX(), player[i].attackHitbox.getY(), player[i].attackHitbox.getWidth(), player[i].attackHitbox.getHeight(), player[i].direction);
+			playerWeaponRenderer[i] = new PlayerWeapon(player[i]);
+			player[i].setPlayerAttackEffectRenderer(attackEffectRenderer[i]);
+			player[i].setPlayerWeaponRenderer(playerWeaponRenderer[i]);
+			player[i].setChargeBar(playerChargeBar[i]);
+			player[i].setCheckBlockObject(checkBlock[i]);
+			player[i].updateHitbox();
+			player[i].updateCheckBlockPosition(player[i].hitbox.getX(), player[i].hitbox.getY(), player[i].hitbox.getWidth(), player[i].hitbox.getHeight());
+			playerArrow[i] = new Arrow(-100, -100);
+			player[i].setArrowRenderer(playerArrow[i]);
+		}	
 		
 		// ui in stage
 		characterBackground = new UI("characterbackground.jpg", 0, 0, 1350, 750);
@@ -215,19 +204,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			num_count += 12;
 			posY += 100;
 		}
-
-		//		int random = (int)(Math.random()*2);
-
-		//		normalWalls = new NormalWall[50];
-		//		normalWalls[0] = new NormalWall("block2.png", 500, 50, 50, 50, true);
-		//		
-		//		game.addActor(normalWalls[50]);
-		//		game.addActor(normalWalls[51]);
-
-//		for(NormalWall normalWall : normalWalls)
-//		{
-//			game.addActor(normalWall);
-//		}
 
 		for (ItemDrop item : itemDrop) {
 			game.addActor(item);
@@ -811,11 +787,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				if (!playerCharacterSelect[i].isVisible())
 				{
 					playerCharacterSelect[i].setVisible(true);
+					player[i].setVisible(true);
 					playerCount += 1;
 				}
 				else
 				{
 					playerCharacterSelect[i].setVisible(false);
+					player[i].setVisible(false);
 					playerCount -= 1;
 				}
 			}
