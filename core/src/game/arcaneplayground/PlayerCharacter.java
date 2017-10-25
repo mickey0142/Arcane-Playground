@@ -403,4 +403,15 @@ public class PlayerCharacter extends Actor{
 	{
 		this.arrow = arrow;
 	}
+	
+	public void setIngame(boolean ingame)
+	{
+		hpBar.setVisible(ingame);
+		chargeBar.setVisible(ingame);
+		armorBar.setVisible(ingame);
+		attackEffect.setVisible(ingame);
+		weapon.setVisible(ingame);
+		checkBlock.setVisible(ingame);
+		arrow.setVisible(ingame);
+	}
 }

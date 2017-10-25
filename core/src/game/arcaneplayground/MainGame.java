@@ -110,7 +110,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		playerArrow = new Arrow[2];
 		for (int i = 0; i < 2; i++)
 		{
-			player[i].setVisible(false);
 			attackEffectRenderer[i] = new EffectRenderer(player[i]);
 			attackEffectRenderer[i].setValue(player[i].attackHitbox.getX(), player[i].attackHitbox.getY(), player[i].attackHitbox.getWidth(), player[i].attackHitbox.getHeight(), player[i].direction);
 			playerWeaponRenderer[i] = new PlayerWeapon(player[i]);
@@ -122,6 +121,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			player[i].updateCheckBlockPosition(player[i].hitbox.getX(), player[i].hitbox.getY(), player[i].hitbox.getWidth(), player[i].hitbox.getHeight());
 			playerArrow[i] = new Arrow(-100, -100);
 			player[i].setArrowRenderer(playerArrow[i]);
+			player[i].setIngame(false);
 		}	
 		
 		// ui in stage
@@ -380,7 +380,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 //		System.out.println();
 		for (PlayerCharacter allPlayer : player) 
 		{
-			if (!allPlayer.moving)
+			if (!allPlayer.moving || !allPlayer.isVisible())
 			{
 				continue;
 			}
@@ -418,6 +418,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		int arrowCount = 0;
 		for (PlayerCharacter allPlayer : player) 
 		{
+			if (!allPlayer.isVisible())
+			{
+				continue;
+			}
 			if (allPlayer.attacking)
 			{
 				if (allPlayer.weaponName.equals("bow"))
@@ -534,7 +538,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				//checkcollision between arrow and player
 				for (PlayerCharacter otherPlayer : player)
 				{
-					if (allPlayer == otherPlayer)
+					if (allPlayer == otherPlayer || !allPlayer.isVisible())
 					{
 						continue;
 					}
@@ -582,6 +586,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		}
 		for (PlayerCharacter allPlayer : player)
 		{
+			if (!allPlayer.isVisible())
+			{
+				continue;
+			}
 			if (!allPlayer.moving)
 			{
 				if (allPlayer.leftPressed)
@@ -645,7 +653,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				}
 //				for (PlayerCharacter otherPlayer : player)// this check collision between player
 //				{
-//					if (otherPlayer == allPlayer)
+//					if (otherPlayer == allPlayer || !allPlayer.isVisible())
 //					{
 //						continue;
 //					}
@@ -787,14 +795,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				if (!playerCharacterSelect[i].isVisible())
 				{
 					playerCharacterSelect[i].setVisible(true);
-					player[i].setVisible(true);
 					playerCount += 1;
+					player[i].setIngame(true);
 				}
 				else
 				{
 					playerCharacterSelect[i].setVisible(false);
-					player[i].setVisible(false);
 					playerCount -= 1;
+					player[i].setIngame(false);
 				}
 			}
 			if (playerCharacterSelect[i].isVisible())
@@ -848,7 +856,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			//			{
 			//				continue;
 			//			}// comment this make player able to change direction of attack while charging}
-			if (allPlayer.dead  || playerCount <= 1)
+			if (allPlayer.dead  || playerCount <= 1 || !allPlayer.isVisible())
 			{
 				continue;
 			}
@@ -1240,7 +1248,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			}
 		}
 		for (PlayerCharacter allPlayer : player) {
-			if (allPlayer == playerAttack)
+			if (allPlayer == playerAttack || !allPlayer.isVisible())
 			{
 				continue;
 			}
@@ -1317,6 +1325,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			item.hitbox.setY(-1000);
 		}
 		ItemDrop.dropCount = 0;
+		arrowCharged[0] = false;
+		arrowCharged[1] = false;
 		for (PlayerCharacter allPlayer : player) {
 			allPlayer.hp = 3;
 			allPlayer.armor = 100;
@@ -1350,6 +1360,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			allPlayer.speedDown = 0;
 			allPlayer.speedLeft = 0;
 			allPlayer.speedRight = 0;
+			allPlayer.arrow.setX(-100);
+			allPlayer.arrow.setY(-100);
 			if (allPlayer == player[0])
 			{
 				allPlayer.setX(50);
@@ -1360,6 +1372,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				allPlayer.setX(1250);
 				allPlayer.setY(550);
 			}
+			allPlayer.setIngame(false);
 		}
 	}
 
