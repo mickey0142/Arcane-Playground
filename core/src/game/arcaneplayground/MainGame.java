@@ -6,9 +6,13 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -20,6 +24,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	Vector2 mousePositionScreen = new Vector2();
 	Vector2 mousePositionStage = new Vector2();
 	String screen = "menu";
+	String back = "";
 	PlayerCharacter player[] = new PlayerCharacter[2];
 	Stage menu;
 	int cursorPosition = 1;
@@ -49,6 +54,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	int pauseCursorPosition = 1;
 	UI pauseBackground;
 	UI pauseArrow;
+	Stage setting;
+	UI settingBackground;
+	UI playerSetting[] = new UI[4];
+	BitmapFont font12;
+	String playerControlString[][] = new String[2][6];
 	float gametime;//temp
 	// default control for each player in this order {up, down, left, right, attack} change this in setting later
 	int controlKeeper[][] = {{Keys.W, Keys.S, Keys.A, Keys.D, Keys.F}, {Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_LEFT}};
@@ -63,9 +73,17 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		game = new Stage(new FitViewport(1350, 750));
 		end = new Stage(new FitViewport(1350, 750));
 		pause = new Stage(new FitViewport(1350, 750));
+		setting = new Stage(new FitViewport(1350, 750));
 
 		screen = "menu";
 
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/font.ttf"));
+		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+		parameter.size = 32;
+		parameter.color = Color.BLACK;
+		font12 = generator.generateFont(parameter); // font size 12 pixels
+		generator.dispose();
+		
 		itemDrop = new ItemDrop[126];
 		for (int i = 0; i < 126; i++)
 		{
@@ -78,6 +96,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		createInGameStage();
 		createInEndStage();
 		createInPauseStage();
+		createInSettingStage();
 
 		Gdx.input.setInputProcessor(this);
 	}
@@ -300,6 +319,21 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		pause.addActor(pauseArrow);
 	}
 	
+	public void createInSettingStage()
+	{
+		settingBackground = new UI("settingbackground.jpg", 0, 0, 1350, 750);
+		playerSetting[0] = new UI("playersetting.jpg", 39, 50, 300, 400);
+		playerSetting[1] = new UI("playersetting.jpg", 376, 50, 300, 400);
+		playerSetting[2] = new UI("playersetting.jpg", 713, 50, 300, 400);
+		playerSetting[3] = new UI("playersetting.jpg", 1050, 50, 300, 400);
+		
+		setting.addActor(settingBackground);
+		setting.addActor(playerSetting[0]);
+		setting.addActor(playerSetting[1]);
+		setting.addActor(playerSetting[2]);
+		setting.addActor(playerSetting[3]);
+	}
+	
 	@Override
 	public void render () {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -357,6 +391,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		else if (screen.equals("pause"))
 		{
 			pauseStageRender();
+		}
+		else if (screen.equals("setting"))
+		{
+			settingStageRender();
 		}
 	}
 
@@ -688,6 +726,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		pause.draw();
 	}
 	
+	public void settingStageRender()
+	{
+		setting.draw();
+		batch.begin();
+		font12.draw(batch, Keys.toString(player[0].controlUp), 150, 420);
+		batch.end();
+	}
+	
 	@Override
 	public void dispose () {
 		batch.dispose();
@@ -732,6 +778,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			}
 			else if (cursorPosition == 2)
 			{
+				screen = "setting";
+			}
+			else if (cursorPosition == 3)
+			{
 				Gdx.app.exit();
 			}
 		}
@@ -740,7 +790,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			if (keycode == allPlayer.controlDown)
 			{
 				cursorPosition += 1;
-				if (cursorPosition > 2)
+				if (cursorPosition > 3)
 				{
 					cursorPosition = 1;
 				}
@@ -750,7 +800,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				cursorPosition -= 1;
 				if (cursorPosition <= 0)// change this if there is more than 2 button
 				{
-					cursorPosition = 2;
+					cursorPosition = 3;
 				}
 			}
 			if (keycode == allPlayer.controlAttack)
@@ -760,6 +810,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					screen = "character";
 				}
 				else if (cursorPosition == 2)
+				{
+					screen = "setting";
+				}
+				else if (cursorPosition == 3)
 				{
 					Gdx.app.exit();
 				}
@@ -771,7 +825,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		}
 		else if (cursorPosition == 2)
 		{
-			temparrow.setY(100);
+			temparrow.setY(180);
+		}
+		else if (cursorPosition == 3)
+		{
+			temparrow.setY(80);
 		}
 	}
 
