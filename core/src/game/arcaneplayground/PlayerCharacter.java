@@ -413,5 +413,6 @@ public class PlayerCharacter extends Actor{
 		weapon.setVisible(ingame);
 		checkBlock.setVisible(ingame);
 		arrow.setVisible(ingame);
+		this.setVisible(ingame);
 	}
 }

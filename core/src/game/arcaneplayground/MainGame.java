@@ -25,7 +25,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	Vector2 mousePositionStage = new Vector2();
 	String screen = "menu";
 	String back = "";
-	PlayerCharacter player[] = new PlayerCharacter[2];
+	PlayerCharacter player[] = new PlayerCharacter[4];
 	Stage menu;
 	int cursorPosition = 1;
 	UI menuBackground;
@@ -40,13 +40,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	UI gameBackground;
 	UnbreakableWall walls[];
 	NormalWall normalWalls[];
-	EffectRenderer attackEffectRenderer[] = new EffectRenderer[2];
-	PlayerWeapon playerWeaponRenderer[] = new PlayerWeapon[2];
-	GameObject checkBlock[] = new GameObject[2];
+	EffectRenderer attackEffectRenderer[] = new EffectRenderer[4];
+	PlayerWeapon playerWeaponRenderer[] = new PlayerWeapon[4];
+	GameObject checkBlock[] = new GameObject[4];
 	ItemDrop itemDrop[];
-	UI playerChargeBar[] = new UI[2];
-	UI playerHPBar[] = new UI[2];
-	UI playerArmorBar[] = new UI[2];
+	UI playerChargeBar[] = new UI[4];
+	UI playerHPBar[] = new UI[4];
+	UI playerArmorBar[] = new UI[4];
 	Arrow playerArrow[];
 	boolean arrowCharged[] = {false, false};
 	Stage end;
@@ -113,21 +113,31 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	{
 		checkBlock[0] = new GameObject("box3.png", 0, 0, 100, 100, false);// remove box3.png and add null and don't add this actor to stage i think that can avoid nullpointerexception because this.draw don't get call
 		checkBlock[1] = new GameObject("box3.png", 0, 0, 100, 100, false);
+		checkBlock[2] = new GameObject("box3.png", 0, 0, 100, 100, false);
+		checkBlock[3] = new GameObject("box3.png", 0, 0, 100, 100, false);
 		playerHPBar[0] = new UI("heart.png", 100, 690, 150, 40);
 		playerHPBar[1] = new UI("heart.png", 400, 690, 150, 40);
+		playerHPBar[2] = new UI("heart.png", 700, 690, 150, 40);
+		playerHPBar[3] = new UI("heart.png", 1000, 690, 150, 40);
 		playerArmorBar[0] = new UI ("box3.png", 100, 660, 10, 15);
 		playerArmorBar[1] = new UI ("box3.png", 400, 660, 10, 15);
+		playerArmorBar[2] = new UI ("box3.png", 700, 660, 10, 15);
+		playerArmorBar[3] = new UI ("box3.png", 1000, 660, 10, 15);
 		playerChargeBar[0] = new UI("whitebox.png", 0, 0, 60, 10, true);
 		playerChargeBar[1] = new UI("whitebox.png", 0, 0, 60, 10, true);
+		playerChargeBar[2] = new UI("whitebox.png", 0, 0, 60, 10, true);
+		playerChargeBar[3] = new UI("whitebox.png", 0, 0, 60, 10, true);
 		player[0] = new PlayerCharacter(50, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, playerHPBar[0], playerArmorBar[0], PlayerWeapon.sword, PlayerWeapon.swordAnim);
 		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, playerHPBar[1], playerArmorBar[1], PlayerWeapon.sword, PlayerWeapon.swordAnim);
+		player[2] = new PlayerCharacter(50, 550, 60, 60, 999, 999, 999, 999, 999, playerHPBar[2], playerArmorBar[2], PlayerWeapon.sword, PlayerWeapon.swordAnim);
+		player[3] = new PlayerCharacter(1250, 50, 60, 60, 999, 999, 999, 999, 999, playerHPBar[3], playerArmorBar[3], PlayerWeapon.sword, PlayerWeapon.swordAnim);
 
 		//temppppp 
 		//player[0].weaponName = "axe";
 		//player[1].weaponName = "spear";
 
-		playerArrow = new Arrow[2];
-		for (int i = 0; i < 2; i++)
+		playerArrow = new Arrow[4];
+		for (int i = 0; i < 4; i++)
 		{
 			attackEffectRenderer[i] = new EffectRenderer(player[i]);
 			attackEffectRenderer[i].setValue(player[i].attackHitbox.getX(), player[i].attackHitbox.getY(), player[i].attackHitbox.getWidth(), player[i].attackHitbox.getHeight(), player[i].direction);
@@ -145,19 +155,29 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		
 		// ui in stage
 		characterBackground = new UI("characterbackground.jpg", 0, 0, 1350, 750);
-		playerCharacterSelect =  new UI[2];
+		playerCharacterSelect =  new UI[4];
 		playerCharacterSelect[0] = new UI("character1.png", 200, 600, 60, 60);
 		playerCharacterSelect[0].animation = true;
 		playerCharacterSelect[0].setAnimation(PlayerCharacter.character1, "0001");
 		playerCharacterSelect[1] = new UI("character1.png", 400, 600, 60, 60);
 		playerCharacterSelect[1].animation = true;
 		playerCharacterSelect[1].setAnimation(PlayerCharacter.character1, "0001");
+		playerCharacterSelect[2] = new UI("character1.png", 600, 600, 60, 60);
+		playerCharacterSelect[2].animation = true;
+		playerCharacterSelect[2].setAnimation(PlayerCharacter.character1, "0001");
+		playerCharacterSelect[3] = new UI("character1.png", 800, 600, 60, 60);
+		playerCharacterSelect[3].animation = true;
+		playerCharacterSelect[3].setAnimation(PlayerCharacter.character1, "0001");
 
 		character.addActor(characterBackground);
 		character.addActor(playerCharacterSelect[0]);
 		playerCharacterSelect[0].setVisible(false);
 		character.addActor(playerCharacterSelect[1]);
 		playerCharacterSelect[1].setVisible(false);
+		character.addActor(playerCharacterSelect[2]);
+		playerCharacterSelect[2].setVisible(false);
+		character.addActor(playerCharacterSelect[3]);
+		playerCharacterSelect[3].setVisible(false);
 	}
 
 	public void createInGameStage()
@@ -172,8 +192,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 
 		game.addActor(playerHPBar[0]);
 		game.addActor(playerHPBar[1]);
+		game.addActor(playerHPBar[2]);
+		game.addActor(playerHPBar[3]);
 		game.addActor(playerArmorBar[0]);
 		game.addActor(playerArmorBar[1]);
+		game.addActor(playerArmorBar[2]);
+		game.addActor(playerArmorBar[3]);
 
 		walls = new UnbreakableWall[136];
 		int posX = 0;
@@ -228,16 +252,25 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			game.addActor(item);
 		}
 		
+		//change this to loop later
 		game.addActor(player[0]);
 		game.addActor(player[1]);
+		game.addActor(player[2]);
+		game.addActor(player[3]);
 		game.addActor(playerWeaponRenderer[0]);
 		game.addActor(playerWeaponRenderer[1]);
+		game.addActor(playerWeaponRenderer[2]);
+		game.addActor(playerWeaponRenderer[3]);
 
 		game.addActor(playerArrow[0]);
 		game.addActor(playerArrow[1]);
+		game.addActor(playerArrow[2]);
+		game.addActor(playerArrow[3]);
 		
 		game.addActor(playerChargeBar[0]);
 		game.addActor(playerChargeBar[1]);
+		game.addActor(playerChargeBar[2]);
+		game.addActor(playerChargeBar[3]);
 
 		//temp remove this latertemp remove this latertemp remove this latertemp remove this latertemp remove this latertemp remove this latertemp remove this later
 		//game.addActor(checkBlock[0]);
@@ -245,6 +278,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 
 		game.addActor(attackEffectRenderer[0]);
 		game.addActor(attackEffectRenderer[1]);
+		game.addActor(attackEffectRenderer[2]);
+		game.addActor(attackEffectRenderer[3]);
 	}
 
 	public void createMap()// maybe add argument in this method and set map and wall texture according to that
@@ -846,7 +881,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			screen = "menu";
 			resetVariableInCharacterStage();
 		}
-		for (int i = 0; i<2; i++)// change this i<2 to i<numberofplayer later 
+		for (int i = 0; i<4; i++)// change this i<2 to i<numberofplayer later 
 		{
 			if (keycode == player[i].controlAttack)
 			{
