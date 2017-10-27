@@ -58,7 +58,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	UI settingBackground;
 	UI playerSetting[] = new UI[4];
 	BitmapFont font12;
-	String playerControlString[][] = new String[2][6];
 	float gametime;//temp
 	// default control for each player in this order {up, down, left, right, attack} change this in setting later
 	int controlKeeper[][] = {{Keys.W, Keys.S, Keys.A, Keys.D, Keys.F}, {Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_LEFT}};
@@ -127,10 +126,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		playerChargeBar[1] = new UI("whitebox.png", 0, 0, 60, 10, true);
 		playerChargeBar[2] = new UI("whitebox.png", 0, 0, 60, 10, true);
 		playerChargeBar[3] = new UI("whitebox.png", 0, 0, 60, 10, true);
-		player[0] = new PlayerCharacter(50, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, playerHPBar[0], playerArmorBar[0], PlayerWeapon.sword, PlayerWeapon.swordAnim);
-		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, playerHPBar[1], playerArmorBar[1], PlayerWeapon.sword, PlayerWeapon.swordAnim);
-		player[2] = new PlayerCharacter(50, 550, 60, 60, 999, 999, 999, 999, 999, playerHPBar[2], playerArmorBar[2], PlayerWeapon.sword, PlayerWeapon.swordAnim);
-		player[3] = new PlayerCharacter(1250, 50, 60, 60, 999, 999, 999, 999, 999, playerHPBar[3], playerArmorBar[3], PlayerWeapon.sword, PlayerWeapon.swordAnim);
+		player[0] = new PlayerCharacter(50, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, Keys.Q, playerHPBar[0], playerArmorBar[0], PlayerWeapon.sword, PlayerWeapon.swordAnim);
+		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, Keys.ALT_RIGHT, playerHPBar[1], playerArmorBar[1], PlayerWeapon.sword, PlayerWeapon.swordAnim);
+		player[2] = new PlayerCharacter(50, 550, 60, 60, 0, 0, 0, 0, 0, 0, playerHPBar[2], playerArmorBar[2], PlayerWeapon.sword, PlayerWeapon.swordAnim);
+		player[3] = new PlayerCharacter(1250, 50, 60, 60, 0, 0, 0, 0, 0, 0, playerHPBar[3], playerArmorBar[3], PlayerWeapon.sword, PlayerWeapon.swordAnim);
 
 		//temppppp 
 		//player[0].weaponName = "axe";
@@ -357,10 +356,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public void createInSettingStage()
 	{
 		settingBackground = new UI("settingbackground.jpg", 0, 0, 1350, 750);
-		playerSetting[0] = new UI("playersetting.jpg", 39, 50, 300, 400);
-		playerSetting[1] = new UI("playersetting.jpg", 376, 50, 300, 400);
-		playerSetting[2] = new UI("playersetting.jpg", 713, 50, 300, 400);
-		playerSetting[3] = new UI("playersetting.jpg", 1050, 50, 300, 400);
+		playerSetting[0] = new UI("playersetting.jpg", 15, 50, 300, 400);
+		playerSetting[1] = new UI("playersetting.jpg", 355, 50, 300, 400);
+		playerSetting[2] = new UI("playersetting.jpg", 695, 50, 300, 400);
+		playerSetting[3] = new UI("playersetting.jpg", 1035, 50, 300, 400);
 		
 		setting.addActor(settingBackground);
 		setting.addActor(playerSetting[0]);
@@ -765,7 +764,20 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	{
 		setting.draw();
 		batch.begin();
-		font12.draw(batch, Keys.toString(player[0].controlUp), 150, 420);
+		float xPosition = 200;
+		for (int i = 0; i < 4; i++)
+		{
+			//if player[i] use keyboard
+			font12.draw(batch, Keys.toString(player[i].controlUp), xPosition, 430);
+			font12.draw(batch, Keys.toString(player[i].controlDown), xPosition, 370);
+			font12.draw(batch, Keys.toString(player[i].controlLeft), xPosition, 310);
+			font12.draw(batch, Keys.toString(player[i].controlRight), xPosition, 250);
+			font12.draw(batch, Keys.toString(player[i].controlAttack), xPosition, 190);
+			font12.draw(batch, Keys.toString(player[i].controlBack), xPosition, 130);
+			//else if player[i] use controller
+			xPosition += 350;
+		}
+		//font12.draw(batch, Keys.toString(player[0].controlBack), 200, 370);
 		batch.end();
 	}
 	
@@ -780,6 +792,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 
 	@Override
 	public boolean keyDown(int keycode) {
+		System.out.println(keycode);
 		if (screen.equals("menu"))
 		{
 			keyDownInMenuStage(keycode);
@@ -883,6 +896,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		}
 		for (int i = 0; i<4; i++)// change this i<2 to i<numberofplayer later 
 		{
+			if (keycode == player[i].controlBack)
+			{
+				screen = "menu";
+				resetVariableInCharacterStage();
+			}
 			if (keycode == player[i].controlAttack)
 			{
 				if (!playerCharacterSelect[i].isVisible())
@@ -952,6 +970,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			if (allPlayer.dead  || playerCount <= 1 || !allPlayer.isVisible())
 			{
 				continue;
+			}
+			if (keycode == allPlayer.controlBack)
+			{
+				screen = "pause";
 			}
 			if (keycode == allPlayer.controlLeft)
 			{
@@ -1063,6 +1085,27 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		}
 		for (PlayerCharacter allPlayer : player)
 		{
+			if (keycode == allPlayer.controlBack)
+			{
+				screen = "game";
+				// end all lingering input
+				for (PlayerCharacter allPlayer2 : player)
+				{
+					if (allPlayer2.charging)
+					{
+						allPlayer2.attacking = true;
+						allPlayer2.charging = false;
+						if (allPlayer2.currentChargeTime < 0.5f)
+						{
+							allPlayer2.currentChargeTime = 0.5f;
+						}
+					}
+					allPlayer2.upPressed = false;
+					allPlayer2.downPressed = false;
+					allPlayer2.leftPressed = false;
+					allPlayer2.rightPressed = false;
+				}
+			}
 			if (keycode == allPlayer.controlDown)
 			{
 				pauseCursorPosition += 1;

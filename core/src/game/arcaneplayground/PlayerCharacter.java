@@ -15,7 +15,7 @@ public class PlayerCharacter extends Actor{
 	String direction;
 	String weaponName = "fist";
 	int weaponLV;
-	int controlLeft, controlRight, controlUp, controlDown, controlAttack;
+	int controlLeft, controlRight, controlUp, controlDown, controlAttack, controlBack;
 	Rectangle hitbox, attackHitbox;
 	float attackWidth = 40, attackHeight = 40;
 	int hp = 3;//, hpMax = 100;// use hpmax if character have different hp
@@ -68,7 +68,7 @@ public class PlayerCharacter extends Actor{
 	{
 		attackHitbox = new Rectangle(-1000, -1000, attackWidth, attackHeight);
 	}
-	public PlayerCharacter(float x, float y, float width, float height, int up, int down, int left, int right, int attack, UI hpBar, UI armorBar, TextureAtlas weaponAtlas, Animation<TextureRegion> weaponAnim)// have to add argument for setting player textureatlas animation weapon here later
+	public PlayerCharacter(float x, float y, float width, float height, int up, int down, int left, int right, int attack, int back, UI hpBar, UI armorBar, TextureAtlas weaponAtlas, Animation<TextureRegion> weaponAnim)// have to add argument for setting player textureatlas animation weapon here later
 	{
 		attackEffectAtlas = EffectRenderer.punchAtlas;
 		attackEffectAnim = EffectRenderer.punchAnimation;
@@ -76,7 +76,7 @@ public class PlayerCharacter extends Actor{
 		this.setY(y);
 		this.setWidth(width);
 		this.setHeight(height);
-		setControl(up, down, left, right, attack);
+		setControl(up, down, left, right, attack, back);
 		hitbox = new Rectangle(x, y , width, height);
 		attackHitbox = new Rectangle(x, y, attackWidth, attackHeight);
 		direction = "right";
@@ -308,13 +308,14 @@ public class PlayerCharacter extends Actor{
 		this.weapon = weapon;
 	}
 	
-	public void setControl(int up, int down, int left, int right, int attack)
+	public void setControl(int up, int down, int left, int right, int attack, int back)
 	{
 		controlLeft = left;
 		controlRight = right;
 		controlUp = up;
 		controlDown = down;
 		controlAttack = attack;
+		controlBack = back;
 	}
 	
 	public void setTexture(TextureAtlas textureatlas)
