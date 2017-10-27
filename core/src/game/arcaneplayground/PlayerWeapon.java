@@ -22,8 +22,8 @@ public class PlayerWeapon extends Actor{
 	static Animation<TextureRegion> swordAnim = new Animation<TextureRegion>(0.1f, sword.getRegions());
 	static TextureAtlas swordLV2 = new TextureAtlas(Gdx.files.internal("swordlv2.atlas"));
 	static Animation<TextureRegion> swordLV2Anim = new Animation<TextureRegion>(0.1f, swordLV2.getRegions());
-//	static TextureAtlas swordLV3 = new TextureAtlas(Gdx.files.internal("swordlv3.atlas"));
-//	static Animation<TextureRegion> swordLV3Anim = new Animation<TextureRegion>(0.1f, swordLV3.getRegions());
+	static TextureAtlas swordLV3 = new TextureAtlas(Gdx.files.internal("swordlv3.atlas"));
+	static Animation<TextureRegion> swordLV3Anim = new Animation<TextureRegion>(0.1f, swordLV3.getRegions());
 	
 	static TextureAtlas spear = new TextureAtlas(Gdx.files.internal("spear.atlas"));
 	static Animation<TextureRegion> spearAnim = new Animation<TextureRegion>(0.1f, spear.getRegions());
@@ -36,8 +36,8 @@ public class PlayerWeapon extends Actor{
 	static Animation<TextureRegion> axeAnim = new Animation<TextureRegion>(0.1f, axe.getRegions());
 	static TextureAtlas axeLV2 = new TextureAtlas(Gdx.files.internal("axelv2.atlas"));
 	static Animation<TextureRegion> axeLV2Anim = new Animation<TextureRegion>(0.1f, axeLV2.getRegions());
-//	static TextureAtlas axeLV3 = new TextureAtlas(Gdx.files.internal("axelv3.atlas"));
-//	static Animation<TextureRegion> axeLV3Anim = new Animation<TextureRegion>(0.1f, axeLV3.getRegions());
+	static TextureAtlas axeLV3 = new TextureAtlas(Gdx.files.internal("axelv3.atlas"));
+	static Animation<TextureRegion> axeLV3Anim = new Animation<TextureRegion>(0.1f, axeLV3.getRegions());
 	
 	static TextureAtlas bow = new TextureAtlas(Gdx.files.internal("axe.atlas"));
 	static Animation<TextureRegion> bowAnim = new Animation<TextureRegion>(0.1f, bow.getRegions());
@@ -102,7 +102,8 @@ public class PlayerWeapon extends Actor{
 			originX = 0;
 			originY = 9;
 			moveX = 30;
-			moveY = 7;
+			//moveY = 7;
+			moveY = 3;
 			this.setWidth(110);
 			this.setHeight(20);
 		}
@@ -111,15 +112,25 @@ public class PlayerWeapon extends Actor{
 			originX = 0;
 			originY = 10;
 			moveX = 30;
-			moveY = 5;
+			//moveY = 5;
+			moveY = 0;
 			this.setWidth(30);
 			this.setHeight(42);
 			if (player.weaponLV == 2)
 			{
 				originX = 8;
-				originY = 23;
+				originY = 22;
 				moveX = 25;
-				moveY = -3;
+				moveY = -5;
+				this.setWidth(47);
+				this.setHeight(67);
+			}
+			else if (player.weaponLV == 3)
+			{
+				originX = 10;
+				originY = 25;
+				moveX = 25;
+				moveY = -5;
 				this.setWidth(47);
 				this.setHeight(67);
 			}
@@ -128,40 +139,55 @@ public class PlayerWeapon extends Actor{
 		{
 			//set width height origin for bow here
 		}
+		float shiftX = 0;
+		float shiftY = 0;
 		if (player.direction.equals("up"))
 		{
+			shiftX = 0;
+			shiftY = 0;
 			if (player.faceLeft && this.getHeight() > 0)
 			{
+				shiftX = originX;
 				this.setHeight(-1*this.getHeight());
-				if (player.weaponName.equals("axe") && player.weaponLV == 2)this.setX(this.getX()-50);
+				if (player.weaponName.equals("axe") && player.weaponLV == 2)this.setX(this.getX()-55);
+				else if (player.weaponName.equals("axe") && player.weaponLV == 3)this.setX(this.getX()-65);
 				else if(player.weaponName.equals("axe"))this.setX(this.getX()-15);
 				else if(player.weaponName.equals("spear"))this.setX(this.getX()-15);
+				else if (player.weaponName.equals("sword") && player.weaponLV == 3)this.setX(this.getX()-35);
 				else if(player.weaponName.equals("sword"))this.setX(this.getX()-25);
 			}
-			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX, this.getY()+moveY, originX, originY, this.getWidth(), this.getHeight(), 1, 1, 90);
+			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX+shiftX, this.getY()+moveY+shiftY, originX, originY, this.getWidth(), this.getHeight(), 1, 1, 90);
 			
 		}
 		else if (player.direction.equals("down"))
 		{
+			shiftX = 0;
+			shiftY = originX;
 			if (player.faceLeft && this.getHeight() > 0)
 			{
+				shiftX = originX;
 				this.setHeight(-1*this.getHeight());
-				if (player.weaponName.equals("axe") && player.weaponLV == 2)this.setX(this.getX()-50);
+				if (player.weaponName.equals("axe") && player.weaponLV == 2)this.setX(this.getX()-55);
+				else if (player.weaponName.equals("axe") && player.weaponLV == 3)this.setX(this.getX()-65);
 				else if(player.weaponName.equals("axe"))this.setX(this.getX()-15);
 				else if(player.weaponName.equals("spear"))this.setX(this.getX()-15);
+				else if (player.weaponName.equals("sword") && player.weaponLV == 3)this.setX(this.getX()-35);
 				else if(player.weaponName.equals("sword"))this.setX(this.getX()-25);
 			}
-			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX, this.getY()+moveY, originX, originY, -this.getWidth(), this.getHeight(), 1, 1, 90);
+			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX+shiftX, this.getY()+moveY+shiftY, originX, originY, -this.getWidth(), this.getHeight(), 1, 1, 90);
 			
 		}
 		else if (player.direction.equals("left"))
 		{
-			if (player.weaponName.equals("axe") && player.weaponLV == 2)this.setX(this.getX()+10);
-			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX, this.getY()+moveY, originX, originY, -this.getWidth(), this.getHeight(), 1, 1, 0);
+			shiftX = originX;
+			shiftY = 0;
+			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX+shiftX, this.getY()+moveY+shiftY, originX, originY, -this.getWidth(), this.getHeight(), 1, 1, 0);
 		}
 		else if (player.direction.equals("right"))
 		{
-			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX, this.getY()+moveY, originX, originY, this.getWidth(), this.getHeight(), 1, 1, 0);
+			shiftX = 0;
+			shiftY = 0;
+			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX+shiftX, this.getY()+moveY+shiftY, originX, originY, this.getWidth(), this.getHeight(), 1, 1, 0);
 		}
 		if (currentAnim == animation)
 		{

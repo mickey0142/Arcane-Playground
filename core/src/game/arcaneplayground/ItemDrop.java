@@ -129,8 +129,8 @@ public class ItemDrop extends GameObject{
 			attackCooldown[2] = SWORDLV3_ATTACK_COOLDOWN;
 			attackChargeTime[2] = SWORDLV3_CHARGE_TIME;
 			attack[2] = SWORDLV3_ATTACK;
-//			weaponAtlas[2] = PlayerWeapon.swordLV3;
-//			weaponLV3Animation = PlayerWeapon.swordLV3Anim;
+			weaponAtlas[2] = PlayerWeapon.swordLV3;
+			weaponLV3Animation = PlayerWeapon.swordLV3Anim;
 		}
 		else if (num >= 21 && num <= 40)//36 -> 70
 		{
@@ -193,8 +193,8 @@ public class ItemDrop extends GameObject{
 			attackCooldown[2] = AXELV3_ATTACK_COOLDOWN;
 			attackChargeTime[2] = AXELV3_CHARGE_TIME;
 			attack[2] = AXELV3_ATTACK;
-//			weaponAtlas[2] = PlayerWeapon.axeLV3;
-//			weaponLV3Animation = PlayerWeapon.axeLV3Anim;
+			weaponAtlas[2] = PlayerWeapon.axeLV3;
+			weaponLV3Animation = PlayerWeapon.axeLV3Anim;
 		}
 		else if (num > 61 && num <= 80)
 		{
