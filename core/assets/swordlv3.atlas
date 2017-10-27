@@ -1,0 +1,48 @@
+
+swordlv3.png
+size: 128,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+0001
+  rotate: false
+  xy: 2, 140
+  size: 47, 67
+  orig: 47, 67
+  offset: 0, 0
+  index: -1
+attack
+  rotate: false
+  xy: 2, 71
+  size: 47, 67
+  orig: 47, 67
+  offset: 0, 0
+  index: 1
+attack
+  rotate: false
+  xy: 51, 140
+  size: 47, 67
+  orig: 47, 67
+  offset: 0, 0
+  index: 2
+attack
+  rotate: false
+  xy: 2, 2
+  size: 47, 67
+  orig: 47, 67
+  offset: 0, 0
+  index: 3
+attack
+  rotate: false
+  xy: 51, 71
+  size: 47, 67
+  orig: 47, 67
+  offset: 0, 0
+  index: 4
+attack
+  rotate: false
+  xy: 51, 2
+  size: 47, 67
+  orig: 47, 67
+  offset: 0, 0
+  index: 5

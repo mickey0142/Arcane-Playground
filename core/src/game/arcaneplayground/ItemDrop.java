@@ -100,7 +100,7 @@ public class ItemDrop extends GameObject{
 	{
 		// set x y width height attackhitbox value here and set dropped and visible to true +1 dropcount here -1 dropcount when pick item
 		int num = (int)(Math.random()*100+1);// random 1 to multiplier
-		if (num >= 1 && num <= 20)
+		if (num >= 1 && num <= 20 && false)
 		{
 			System.out.println("sword drop");
 			this.img = swordDropTexture;
@@ -129,10 +129,10 @@ public class ItemDrop extends GameObject{
 			attackCooldown[2] = SWORDLV3_ATTACK_COOLDOWN;
 			attackChargeTime[2] = SWORDLV3_CHARGE_TIME;
 			attack[2] = SWORDLV3_ATTACK;
-//			weaponAtlas[2] = PlayerWeapon.swordLV3;
-//			weaponLV3Animation = PlayerWeapon.swordLV3Anim;
+			weaponAtlas[2] = PlayerWeapon.swordLV3;
+			weaponLV3Animation = PlayerWeapon.swordLV3Anim;
 		}
-		else if (num >= 21 && num <= 40)//36 -> 70
+		else if (num >= 21 && num <= 40 || true)//36 -> 70
 		{
 			System.out.println("spear drop");
 			this.img = swordDropTexture;
@@ -193,8 +193,8 @@ public class ItemDrop extends GameObject{
 			attackCooldown[2] = AXELV3_ATTACK_COOLDOWN;
 			attackChargeTime[2] = AXELV3_CHARGE_TIME;
 			attack[2] = AXELV3_ATTACK;
-//			weaponAtlas[2] = PlayerWeapon.axeLV3;
-//			weaponLV3Animation = PlayerWeapon.axeLV3Anim;
+			weaponAtlas[2] = PlayerWeapon.axeLV3;
+			weaponLV3Animation = PlayerWeapon.axeLV3Anim;
 		}
 		else if (num > 61 && num <= 80)
 		{
