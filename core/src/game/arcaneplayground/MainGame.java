@@ -935,22 +935,22 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				if (characterIndex[i] == 0)
 				{
 					playerCharacterSelect[i].setAnimation(PlayerCharacter.character1, "0001");
-					player[i].setTexture(PlayerCharacter.character1);
+					player[i].setTexture(PlayerCharacter.character1, PlayerCharacter.character1Dead);
 				}
 				else if(characterIndex[i] == 1)
 				{
 					playerCharacterSelect[i].setAnimation(PlayerCharacter.character2, "0001");
-					player[i].setTexture(PlayerCharacter.character2);
+					player[i].setTexture(PlayerCharacter.character2, PlayerCharacter.character2Dead);
 				}
 				else if(characterIndex[i] == 2)
 				{
 					playerCharacterSelect[i].setAnimation(PlayerCharacter.character3, "0001");
-					player[i].setTexture(PlayerCharacter.character3);
+					player[i].setTexture(PlayerCharacter.character3, PlayerCharacter.character3Dead);
 				}
 				else if(characterIndex[i] == 3)
 				{
 					playerCharacterSelect[i].setAnimation(PlayerCharacter.character4, "0001");
-					player[i].setTexture(PlayerCharacter.character4);
+					player[i].setTexture(PlayerCharacter.character4, PlayerCharacter.character4Dead);
 				}
 			}
 		}

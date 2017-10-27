@@ -58,6 +58,10 @@ public class PlayerCharacter extends Actor{
 	static TextureAtlas character2 = new TextureAtlas(Gdx.files.internal("character2.atlas"));
 	static TextureAtlas character3 = new TextureAtlas(Gdx.files.internal("character3.atlas"));
 	static TextureAtlas character4 = new TextureAtlas(Gdx.files.internal("character4.atlas"));
+	static TextureAtlas character1Dead = new TextureAtlas(Gdx.files.internal("char1death.atlas"));
+	static TextureAtlas character2Dead = new TextureAtlas(Gdx.files.internal("char2death.atlas"));
+	static TextureAtlas character3Dead = new TextureAtlas(Gdx.files.internal("char3death.atlas"));
+	static TextureAtlas character4Dead = new TextureAtlas(Gdx.files.internal("char4death.atlas"));
 	// new textureatlas and animation for dead animation for each character here
 	
 	// temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp
@@ -95,16 +99,6 @@ public class PlayerCharacter extends Actor{
 	{
 		time += Gdx.graphics.getDeltaTime();
 		Animation<TextureRegion> currentAnim;
-//		if (currentChargeTime > 0)
-//		{
-//			currentChargeTime -= Gdx.graphics.getDeltaTime();
-//			if (charging && currentChargeTime <= 0)
-//			{
-//				currentAttackCooldown = attackCooldown;
-//				charging = false;
-//				attacking = true;
-//			}
-//		}
 		if (currentAttackCooldown > 0)
 		{
 			currentAttackCooldown -= Gdx.graphics.getDeltaTime();
@@ -121,7 +115,7 @@ public class PlayerCharacter extends Actor{
 		{
 			currentChargeTime -= Gdx.graphics.getDeltaTime();
 		}
-		if (armor < 100)// change max armor here
+		if (armor < 100 && !dead)// change max armor here
 		{
 			if (regenDelay > 0)
 			{
@@ -153,6 +147,10 @@ public class PlayerCharacter extends Actor{
 		else
 		{
 			currentAnim = walkingAnim;
+		}
+		if (dead)
+		{
+			currentAnim = deadAnim;
 		}
 		if (hurt)
 		{
@@ -318,12 +316,14 @@ public class PlayerCharacter extends Actor{
 		controlBack = back;
 	}
 	
-	public void setTexture(TextureAtlas textureatlas)
+	public void setTexture(TextureAtlas textureatlas, TextureAtlas deadatlas)
 	{
 		walkingAtlas = textureatlas;
 		walkingAnim = new Animation<TextureRegion>(0.2f, walkingAtlas.getRegions());
 		walkingAnim.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
 		standingAnim = new Animation<TextureRegion>(0.5f, walkingAtlas.findRegions("0001"));
+		deadAtlas = deadatlas;
+		deadAnim = new Animation<TextureRegion>(0.5f, deadAtlas.getRegions());
 	}
 	
 	public void updateHPBar()
