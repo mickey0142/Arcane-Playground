@@ -1,0 +1,34 @@
+
+fist.png
+size: 256,32
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+0001
+  rotate: false
+  xy: 2, 2
+  size: 60, 27
+  orig: 60, 27
+  offset: 0, 0
+  index: -1
+attack
+  rotate: false
+  xy: 64, 2
+  size: 60, 27
+  orig: 60, 27
+  offset: 0, 0
+  index: 1
+attack
+  rotate: false
+  xy: 126, 2
+  size: 60, 27
+  orig: 60, 27
+  offset: 0, 0
+  index: 2
+attack
+  rotate: false
+  xy: 188, 2
+  size: 60, 27
+  orig: 60, 27
+  offset: 0, 0
+  index: 3

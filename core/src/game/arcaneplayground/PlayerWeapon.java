@@ -15,8 +15,8 @@ public class PlayerWeapon extends Actor{
 	float originX, originY, moveX, moveY;
 	
 	// all weapon here
-//	static TextureAtlas fist = new TextureAtlas(Gdx.files.internal("fist.atlas"));
-//	static Animation<TextureRegion> fistAnim = new Animation<TextureRegion>(0.5f, fist.getRegions());
+	static TextureAtlas fist = new TextureAtlas(Gdx.files.internal("fist.atlas"));
+	static Animation<TextureRegion> fistAnim = new Animation<TextureRegion>(0.1f, fist.getRegions());
 	
 	static TextureAtlas sword = new TextureAtlas(Gdx.files.internal("sword.atlas"));
 	static Animation<TextureRegion> swordAnim = new Animation<TextureRegion>(0.1f, sword.getRegions());
@@ -88,7 +88,16 @@ public class PlayerWeapon extends Actor{
 		}
 		//batch.draw(currentAnim.getKeyFrame(time), this.getX(), this.getY(), 40, 20);// make weapon rotate according to direction and move weapon to where it should be here
 		// set rotate origin in hereeeee
-		if (player.weaponName.equals("sword"))
+		if (player.weaponName.equals("fist"))
+		{
+			originX = 10;
+			originY = 13;
+			moveX = 20;
+			moveY = 0;
+			this.setWidth(60);
+			this.setHeight(27);
+		}
+		else if (player.weaponName.equals("sword"))
 		{
 			originX = 0;
 			originY = 15;
@@ -155,6 +164,7 @@ public class PlayerWeapon extends Actor{
 				else if(player.weaponName.equals("spear"))this.setX(this.getX()-15);
 				else if (player.weaponName.equals("sword") && player.weaponLV == 3)this.setX(this.getX()-35);
 				else if(player.weaponName.equals("sword"))this.setX(this.getX()-25);
+				else if (player.weaponName.equals("fist"))this.setX(this.getX()-35);
 			}
 			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX+shiftX, this.getY()+moveY+shiftY, originX, originY, this.getWidth(), this.getHeight(), 1, 1, 90);
 			
@@ -173,6 +183,7 @@ public class PlayerWeapon extends Actor{
 				else if(player.weaponName.equals("spear"))this.setX(this.getX()-15);
 				else if (player.weaponName.equals("sword") && player.weaponLV == 3)this.setX(this.getX()-35);
 				else if(player.weaponName.equals("sword"))this.setX(this.getX()-25);
+				else if (player.weaponName.equals("fist"))this.setX(this.getX()-35);
 			}
 			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX+shiftX, this.getY()+moveY+shiftY, originX, originY, -this.getWidth(), this.getHeight(), 1, 1, 90);
 			

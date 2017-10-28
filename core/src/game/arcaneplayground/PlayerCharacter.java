@@ -151,6 +151,7 @@ public class PlayerCharacter extends Actor{
 		if (dead)
 		{
 			currentAnim = deadAnim;
+			weapon.setVisible(false);
 		}
 		if (hurt)
 		{

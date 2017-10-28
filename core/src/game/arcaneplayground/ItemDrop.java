@@ -38,12 +38,12 @@ public class ItemDrop extends GameObject{
 	static final float SPEAR_CHARGE_TIME = 1;
 	static final float SPEAR_ATTACK_COOLDOWN = 1.5f;
 	static final float SPEAR_ATTACK = 5;
-	static final float SPEARLV2_ATTACK_WIDTH = 80;
+	static final float SPEARLV2_ATTACK_WIDTH = 100;
 	static final float SPEARLV2_ATTACK_HEIGHT = 40;
 	static final float SPEARLV2_CHARGE_TIME = 1;
 	static final float SPEARLV2_ATTACK_COOLDOWN = 1;
 	static final float SPEARLV2_ATTACK = 10;
-	static final float SPEARLV3_ATTACK_WIDTH = 80;
+	static final float SPEARLV3_ATTACK_WIDTH = 100;
 	static final float SPEARLV3_ATTACK_HEIGHT = 40;
 	static final float SPEARLV3_CHARGE_TIME = 0.5f;
 	static final float SPEARLV3_ATTACK_COOLDOWN = 1;
@@ -196,7 +196,7 @@ public class ItemDrop extends GameObject{
 			weaponAtlas[2] = PlayerWeapon.axeLV3;
 			weaponLV3Animation = PlayerWeapon.axeLV3Anim;
 		}
-		else if (num > 61 && num <= 80)
+		else if (num >= 61 && num <= 80)
 		{
 			System.out.println("bow drop");
 			this.img = swordDropTexture;

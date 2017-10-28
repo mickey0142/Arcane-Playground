@@ -5,6 +5,7 @@ import java.util.Random;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -24,7 +25,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	Vector2 mousePositionScreen = new Vector2();
 	Vector2 mousePositionStage = new Vector2();
 	String screen = "menu";
-	String back = "";
+	String back = "menu";
 	PlayerCharacter player[] = new PlayerCharacter[4];
 	Stage menu;
 	int cursorPosition = 1;
@@ -57,6 +58,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	Stage setting;
 	UI settingBackground;
 	UI playerSetting[] = new UI[4];
+	boolean changeControl = false;
+	Texture gray;
+	int playerNumber = -1;
+	String controlName = "";
 	BitmapFont font12;
 	float gametime;//temp
 	// default control for each player in this order {up, down, left, right, attack} change this in setting later
@@ -126,10 +131,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		playerChargeBar[1] = new UI("whitebox.png", 0, 0, 60, 10, true);
 		playerChargeBar[2] = new UI("whitebox.png", 0, 0, 60, 10, true);
 		playerChargeBar[3] = new UI("whitebox.png", 0, 0, 60, 10, true);
-		player[0] = new PlayerCharacter(50, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, Keys.Q, playerHPBar[0], playerArmorBar[0], PlayerWeapon.sword, PlayerWeapon.swordAnim);
-		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, Keys.ALT_RIGHT, playerHPBar[1], playerArmorBar[1], PlayerWeapon.sword, PlayerWeapon.swordAnim);
-		player[2] = new PlayerCharacter(50, 550, 60, 60, 0, 0, 0, 0, 0, 0, playerHPBar[2], playerArmorBar[2], PlayerWeapon.sword, PlayerWeapon.swordAnim);
-		player[3] = new PlayerCharacter(1250, 50, 60, 60, 0, 0, 0, 0, 0, 0, playerHPBar[3], playerArmorBar[3], PlayerWeapon.sword, PlayerWeapon.swordAnim);
+		player[0] = new PlayerCharacter(50, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, Keys.Q, playerHPBar[0], playerArmorBar[0], PlayerWeapon.fist, PlayerWeapon.fistAnim);
+		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, Keys.ALT_RIGHT, playerHPBar[1], playerArmorBar[1], PlayerWeapon.fist, PlayerWeapon.fistAnim);
+		player[2] = new PlayerCharacter(50, 550, 60, 60, 0, 0, 0, 0, 0, 0, playerHPBar[2], playerArmorBar[2], PlayerWeapon.fist, PlayerWeapon.fistAnim);
+		player[3] = new PlayerCharacter(1250, 50, 60, 60, 0, 0, 0, 0, 0, 0, playerHPBar[3], playerArmorBar[3], PlayerWeapon.fist, PlayerWeapon.fistAnim);
 
 		//temppppp 
 		//player[0].weaponName = "axe";
@@ -360,6 +365,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		playerSetting[1] = new UI("playersetting.jpg", 355, 50, 300, 400);
 		playerSetting[2] = new UI("playersetting.jpg", 695, 50, 300, 400);
 		playerSetting[3] = new UI("playersetting.jpg", 1035, 50, 300, 400);
+		gray = new Texture(Gdx.files.internal("gray.png"));
 		
 		setting.addActor(settingBackground);
 		setting.addActor(playerSetting[0]);
@@ -778,6 +784,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			xPosition += 350;
 		}
 		//font12.draw(batch, Keys.toString(player[0].controlBack), 200, 370);
+		if(changeControl)
+		{
+			batch.draw(gray, 0, 0, 1350, 750);
+			font12.draw(batch, "press button", 650, 600);
+		}
 		batch.end();
 	}
 	
@@ -813,6 +824,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		{
 			keyDownInPauseStage(keycode);
 		}
+		else if (screen.equals("setting"))
+		{
+			keyDownInSettingStage(keycode);
+		}
 		return true;
 	}
 
@@ -827,6 +842,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			else if (cursorPosition == 2)
 			{
 				screen = "setting";
+				back = "menu";
 			}
 			else if (cursorPosition == 3)
 			{
@@ -860,6 +876,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				else if (cursorPosition == 2)
 				{
 					screen = "setting";
+					back = "menu";
 				}
 				else if (cursorPosition == 3)
 				{
@@ -1074,7 +1091,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			}
 			else if (pauseCursorPosition == 2)// setting
 			{
-				// change to setting screen
+				screen = "setting";
+				back = "pause";
 			}
 			else if (pauseCursorPosition == 3)// go back to menu
 			{
@@ -1147,7 +1165,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				}
 				else if (pauseCursorPosition == 2)// setting
 				{
-					// change to setting screen
+					screen = "setting";
+					back = "pause";
 				}
 				else if (pauseCursorPosition == 3)// go back to menu
 				{
@@ -1168,6 +1187,52 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		else if (pauseCursorPosition == 3)
 		{
 			pauseArrow.setY(160);
+		}
+	}
+	
+	public void keyDownInSettingStage(int keycode)
+	{
+		if (changeControl)
+		{
+			if (keycode == Keys.ESCAPE)
+			{
+				changeControl = false;
+			}
+			else
+			{
+				if (controlName.equals("up"))
+				{
+					player[playerNumber].controlUp = keycode;
+				}
+				else if (controlName.equals("down"))
+				{
+					player[playerNumber].controlDown = keycode;
+				}
+				else if (controlName.equals("left"))
+				{
+					player[playerNumber].controlLeft = keycode;
+				}
+				else if (controlName.equals("right"))
+				{
+					player[playerNumber].controlRight = keycode;
+				}
+				else if (controlName.equals("attack"))
+				{
+					player[playerNumber].controlAttack = keycode;
+				}
+				else if (controlName.equals("back"))
+				{
+					player[playerNumber].controlBack = keycode;
+				}
+				changeControl = false;
+			}
+		}
+		else
+		{
+			if (keycode == Keys.ESCAPE)
+			{
+				screen = back;
+			}
 		}
 	}
 	
@@ -1276,10 +1341,76 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		mousePositionScreen.x = screenX;
 		mousePositionScreen.y = screenY;
 		mousePositionStage = menu.screenToStageCoordinates(mousePositionScreen);
-		System.out.println(mousePositionStage.x + " " + mousePositionStage.y);
+//		System.out.println(mousePositionStage.x + " " + mousePositionStage.y);
+		if (screen.equals("menu"))
+		{
+			
+		}
+		else if (screen.equals("setting"))
+		{
+			touchDownInSettingStage(mousePositionStage, button);
+		}
 		return false;
 	}
 
+	public void touchDownInSettingStage(Vector2 mousePosition, int button)
+	{
+		System.out.println(mousePositionStage.x + " " + mousePositionStage.y + " " + button);
+		if (button == Buttons.LEFT)
+		{
+			float xPosition = 165;
+			for(int i = 0; i < 4; i++)
+			{
+				if (mousePosition.x >= xPosition && mousePosition.x <= xPosition + 150)
+				{
+					if (mousePosition.y >= 390 && mousePosition.y <= 450)
+					{
+//						System.out.println("up");
+						changeControl = true;
+						playerNumber = i;
+						controlName = "up";
+					}
+					else if (mousePosition.y >= 330 && mousePosition.y <= 389)
+					{
+//						System.out.println("down");
+						changeControl = true;
+						playerNumber = i;
+						controlName = "down";
+					}
+					else if (mousePosition.y >= 270 && mousePosition.y <= 329)
+					{
+//						System.out.println("left");
+						changeControl = true;
+						playerNumber = i;
+						controlName = "left";
+					}
+					else if (mousePosition.y >= 210 && mousePosition.y <= 269)
+					{
+//						System.out.println("right");
+						changeControl = true;
+						playerNumber = i;
+						controlName = "right";
+					}
+					else if (mousePosition.y >= 150 && mousePosition.y <= 209)
+					{
+//						System.out.println("attack");
+						changeControl = true;
+						playerNumber = i;
+						controlName = "attack";
+					}
+					else if (mousePosition.y >= 90 && mousePosition.y <= 149)
+					{
+//						System.out.println("back");
+						changeControl = true;
+						playerNumber = i;
+						controlName = "back";
+					}
+				}
+				xPosition += 350;
+			}
+		}
+	}
+	
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		mousePositionScreen.x = screenX;
@@ -1483,8 +1614,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			allPlayer.direction = "right";
 			//allPlayer.time // should i reset this?
 			allPlayer.attack = 0;
+			allPlayer.weapon.setVisible(true);
 			allPlayer.weaponLV = 0;
-			//allPlayer.weaponAtlas = PlayerWeapon.fist;
+			allPlayer.weaponAtlas = PlayerWeapon.fist;
+			allPlayer.weaponAnim = PlayerWeapon.fistAnim;
 			allPlayer.weapon.updateWeaponAnimation();
 			allPlayer.leftPressed = false;
 			allPlayer.rightPressed = false;
