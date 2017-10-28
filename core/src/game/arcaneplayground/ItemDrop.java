@@ -16,7 +16,10 @@ public class ItemDrop extends GameObject{
 	String weaponName;
 	
 	static int dropCount = 0;
-	static Texture swordDropTexture = new Texture(Gdx.files.internal("swordweapon.png"));// static and final ! all value and texture here
+	static Texture swordDropTexture = new Texture(Gdx.files.internal("sworddrop.png"));
+	static Texture spearDropTexture = new Texture(Gdx.files.internal("speardrop.png"));
+	static Texture axeDropTexture = new Texture(Gdx.files.internal("axedrop.png"));
+	static Texture bowDropTexture = new Texture(Gdx.files.internal("bowdrop.png"));
 	static final float SWORD_ATTACK_WIDTH = 40;
 	static final float SWORD_ATTACK_HEIGHT = 40;
 	static final float SWORD_CHARGE_TIME = 1;
@@ -135,7 +138,7 @@ public class ItemDrop extends GameObject{
 		else if (num >= 21 && num <= 40)//36 -> 70
 		{
 			System.out.println("spear drop");
-			this.img = swordDropTexture;
+			this.img = spearDropTexture;
 			this.weaponName = "spear";
 			//lv1
 			attackWidth[0] = SPEAR_ATTACK_WIDTH;
@@ -167,7 +170,7 @@ public class ItemDrop extends GameObject{
 		else if (num >= 41 && num <= 60)
 		{
 			System.out.println("axe drop");
-			this.img = swordDropTexture;
+			this.img = axeDropTexture;
 			this.weaponName = "axe";
 			//lv1
 			attackWidth[0] = AXE_ATTACK_WIDTH;
@@ -199,7 +202,7 @@ public class ItemDrop extends GameObject{
 		else if (num >= 61 && num <= 80)
 		{
 			System.out.println("bow drop");
-			this.img = swordDropTexture;
+			this.img = bowDropTexture;
 			this.weaponName = "bow";
 			//lv1
 			attackWidth[0] = BOW_ATTACK_WIDTH;

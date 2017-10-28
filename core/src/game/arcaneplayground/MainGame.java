@@ -803,7 +803,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 
 	@Override
 	public boolean keyDown(int keycode) {
-		System.out.println(keycode);
+		//System.out.println(keycode);
 		if (screen.equals("menu"))
 		{
 			keyDownInMenuStage(keycode);
