@@ -15,7 +15,7 @@ public class PlayerCharacter extends Actor{
 	String direction;
 	String weaponName = "fist";
 	int weaponLV;
-	int controlLeft, controlRight, controlUp, controlDown, controlAttack;
+	int controlLeft, controlRight, controlUp, controlDown, controlAttack, controlBack;
 	Rectangle hitbox, attackHitbox;
 	float attackWidth = 40, attackHeight = 40;
 	int hp = 3;//, hpMax = 100;// use hpmax if character have different hp
@@ -58,6 +58,10 @@ public class PlayerCharacter extends Actor{
 	static TextureAtlas character2 = new TextureAtlas(Gdx.files.internal("character2.atlas"));
 	static TextureAtlas character3 = new TextureAtlas(Gdx.files.internal("character3.atlas"));
 	static TextureAtlas character4 = new TextureAtlas(Gdx.files.internal("character4.atlas"));
+	static TextureAtlas character1Dead = new TextureAtlas(Gdx.files.internal("char1death.atlas"));
+	static TextureAtlas character2Dead = new TextureAtlas(Gdx.files.internal("char2death.atlas"));
+	static TextureAtlas character3Dead = new TextureAtlas(Gdx.files.internal("char3death.atlas"));
+	static TextureAtlas character4Dead = new TextureAtlas(Gdx.files.internal("char4death.atlas"));
 	// new textureatlas and animation for dead animation for each character here
 	
 	// temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp
@@ -68,7 +72,7 @@ public class PlayerCharacter extends Actor{
 	{
 		attackHitbox = new Rectangle(-1000, -1000, attackWidth, attackHeight);
 	}
-	public PlayerCharacter(float x, float y, float width, float height, int up, int down, int left, int right, int attack, UI hpBar, UI armorBar, TextureAtlas weaponAtlas, Animation<TextureRegion> weaponAnim)// have to add argument for setting player textureatlas animation weapon here later
+	public PlayerCharacter(float x, float y, float width, float height, int up, int down, int left, int right, int attack, int back, UI hpBar, UI armorBar, TextureAtlas weaponAtlas, Animation<TextureRegion> weaponAnim)// have to add argument for setting player textureatlas animation weapon here later
 	{
 		attackEffectAtlas = EffectRenderer.punchAtlas;
 		attackEffectAnim = EffectRenderer.punchAnimation;
@@ -76,7 +80,7 @@ public class PlayerCharacter extends Actor{
 		this.setY(y);
 		this.setWidth(width);
 		this.setHeight(height);
-		setControl(up, down, left, right, attack);
+		setControl(up, down, left, right, attack, back);
 		hitbox = new Rectangle(x, y , width, height);
 		attackHitbox = new Rectangle(x, y, attackWidth, attackHeight);
 		direction = "right";
@@ -95,16 +99,6 @@ public class PlayerCharacter extends Actor{
 	{
 		time += Gdx.graphics.getDeltaTime();
 		Animation<TextureRegion> currentAnim;
-//		if (currentChargeTime > 0)
-//		{
-//			currentChargeTime -= Gdx.graphics.getDeltaTime();
-//			if (charging && currentChargeTime <= 0)
-//			{
-//				currentAttackCooldown = attackCooldown;
-//				charging = false;
-//				attacking = true;
-//			}
-//		}
 		if (currentAttackCooldown > 0)
 		{
 			currentAttackCooldown -= Gdx.graphics.getDeltaTime();
@@ -121,7 +115,7 @@ public class PlayerCharacter extends Actor{
 		{
 			currentChargeTime -= Gdx.graphics.getDeltaTime();
 		}
-		if (armor < 100)// change max armor here
+		if (armor < 100 && !dead)// change max armor here
 		{
 			if (regenDelay > 0)
 			{
@@ -153,6 +147,10 @@ public class PlayerCharacter extends Actor{
 		else
 		{
 			currentAnim = walkingAnim;
+		}
+		if (dead)
+		{
+			currentAnim = deadAnim;
 		}
 		if (hurt)
 		{
@@ -308,21 +306,24 @@ public class PlayerCharacter extends Actor{
 		this.weapon = weapon;
 	}
 	
-	public void setControl(int up, int down, int left, int right, int attack)
+	public void setControl(int up, int down, int left, int right, int attack, int back)
 	{
 		controlLeft = left;
 		controlRight = right;
 		controlUp = up;
 		controlDown = down;
 		controlAttack = attack;
+		controlBack = back;
 	}
 	
-	public void setTexture(TextureAtlas textureatlas)
+	public void setTexture(TextureAtlas textureatlas, TextureAtlas deadatlas)
 	{
 		walkingAtlas = textureatlas;
 		walkingAnim = new Animation<TextureRegion>(0.2f, walkingAtlas.getRegions());
 		walkingAnim.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
 		standingAnim = new Animation<TextureRegion>(0.5f, walkingAtlas.findRegions("0001"));
+		deadAtlas = deadatlas;
+		deadAnim = new Animation<TextureRegion>(0.5f, deadAtlas.getRegions());
 	}
 	
 	public void updateHPBar()
