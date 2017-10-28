@@ -146,8 +146,8 @@ public class ItemDrop extends GameObject{
 			attackCooldown[0] = SPEAR_ATTACK_COOLDOWN;
 			attackChargeTime[0] = SPEAR_CHARGE_TIME;
 			attack[0] = SPEAR_ATTACK;
-			effectAtlas = EffectRenderer.swordEffectAtlas;
-			effectAnimation = EffectRenderer.swordAnimation;
+			effectAtlas = EffectRenderer.spearEffectAtlas;
+			effectAnimation = EffectRenderer.spearAnimation;
 			weaponAtlas[0] = PlayerWeapon.spear;
 			weaponAnimation = PlayerWeapon.spearAnim;
 			//lv2

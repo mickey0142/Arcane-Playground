@@ -15,7 +15,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 
@@ -50,6 +52,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	UI playerArmorBar[] = new UI[4];
 	Arrow playerArrow[];
 	boolean arrowCharged[] = {false, false};
+	UI playerSprite[];
 	Stage end;
 	Stage pause;
 	int pauseCursorPosition = 1;
@@ -89,6 +92,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		generator.dispose();
 		
 		itemDrop = new ItemDrop[126];
+		normalWalls = new NormalWall[126];
 		for (int i = 0; i < 126; i++)
 		{
 			itemDrop[i] = new ItemDrop();
@@ -189,10 +193,22 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		gameBackground = new UI("gamebackground.jpg", 0, 0, 1350, 750, false);
 		playGround = new GameObject("playground.png", 25, 0, 1300, 650, false);
 
+		playerSprite = new UI[4];
+		playerSprite[0] = new UI("whitebox.png", 30, 660, 60, 60);
+		playerSprite[0].animation = true;
+		playerSprite[0].setAnimation(PlayerCharacter.character1, "0001");
+		playerSprite[1] = new UI("whitebox.png", 330, 660, 60, 60);
+		playerSprite[1].animation = true;
+		playerSprite[1].setAnimation(PlayerCharacter.character1, "0001");
+		playerSprite[2] = new UI("whitebox.png", 630, 660, 60, 60);
+		playerSprite[2].animation = true;
+		playerSprite[2].setAnimation(PlayerCharacter.character1, "0001");
+		playerSprite[3] = new UI("whitebox.png", 930, 660, 60, 60);
+		playerSprite[3].animation = true;
+		playerSprite[3].setAnimation(PlayerCharacter.character1, "0001");
 		// add all actor for game stage in here. adding order should be background playground itemdrop wall player playerweapon playerattackeffect
 		game.addActor(gameBackground);
 		game.addActor(playGround);
-
 
 		game.addActor(playerHPBar[0]);
 		game.addActor(playerHPBar[1]);
@@ -202,6 +218,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		game.addActor(playerArmorBar[1]);
 		game.addActor(playerArmorBar[2]);
 		game.addActor(playerArmorBar[3]);
+		game.addActor(playerSprite[0]);
+		game.addActor(playerSprite[1]);
+		game.addActor(playerSprite[2]);
+		game.addActor(playerSprite[3]);
 
 		walls = new UnbreakableWall[136];
 		int posX = 0;
@@ -295,7 +315,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		NormalWall.hp1 = NormalWall.wall1.findRegion("0003");
 		NormalWall.hp0 = NormalWall.wall1.findRegion("0004");
 		int normalWallCount = 0;
-		normalWalls = new NormalWall[126];
 		float[] possibleY1 = {50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550};
 		float[] possibleY2 = {50, 150, 250, 350, 450, 550};
 		float x = 50;
@@ -307,6 +326,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				for (int j = 0; j < 4; j++)
 				{
 					normalWalls[normalWallCount] = new NormalWall("block2.png", x, possibleY2[y[j]], 50, 50, true);
+					normalWalls[normalWallCount].setName("wall");
 					game.addActor(normalWalls[normalWallCount]);
 					normalWallCount += 1;
 				}
@@ -406,7 +426,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					int numPlayerWin = 0;
 					for (PlayerCharacter allPlayer : player)
 					{
-						if (allPlayer.dead)
+						if (allPlayer.dead || !allPlayer.isVisible())
 						{
 							numPlayerWin += 1;
 							continue;
@@ -904,7 +924,19 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		{
 			createMap();
 			screen = "game";
-
+			for (int i = 0; i < 4; i++)
+			{
+				if (!player[i].isVisible())
+				{
+					playerSprite[i].setVisible(false);
+					continue;
+				}
+				else
+				{
+					playerSprite[i].setVisible(true);
+					playerSprite[i].setAnimation(player[i].walkingAtlas, "0001");
+				}
+			}
 		}
 		else if (keycode == Keys.ESCAPE)
 		{
@@ -1049,6 +1081,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		{
 			screen = "game";
 			// end all lingering input
+			pauseCursorPosition = 1;
 			for (PlayerCharacter allPlayer : player)
 			{
 				if (allPlayer.charging)
@@ -1071,6 +1104,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			if (pauseCursorPosition == 1)// continue
 			{
 				screen = "game";
+				pauseCursorPosition = 1;
 				// end all lingering input
 				for (PlayerCharacter allPlayer2 : player)
 				{
@@ -1097,6 +1131,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			else if (pauseCursorPosition == 3)// go back to menu
 			{
 				screen = "menu";
+				pauseCursorPosition = 1;
 				resetVariableInCharacterStage();
 				resetVariableInGameStage();
 			}
@@ -1106,6 +1141,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			if (keycode == allPlayer.controlBack)
 			{
 				screen = "game";
+				pauseCursorPosition = 1;
 				// end all lingering input
 				for (PlayerCharacter allPlayer2 : player)
 				{
@@ -1145,6 +1181,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				if (pauseCursorPosition == 1)// continue
 				{
 					screen = "game";
+					pauseCursorPosition = 1;
 					// end all lingering input
 					for (PlayerCharacter allPlayer2 : player)
 					{
@@ -1171,6 +1208,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				else if (pauseCursorPosition == 3)// go back to menu
 				{
 					screen = "menu";
+					pauseCursorPosition = 1;
 					resetVariableInCharacterStage();
 					resetVariableInGameStage();
 				}
@@ -1585,6 +1623,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public void resetVariableInGameStage()
 	{
 		delay = 3;
+		for (Actor wall : game.getActors())
+		{
+			if (wall instanceof NormalWall)
+			{
+				wall.addAction(Actions.removeActor());
+			}
+		}
+		game.act();
 		for (ItemDrop item : itemDrop) {
 			item.dropped = false;
 			item.setVisible(false);
