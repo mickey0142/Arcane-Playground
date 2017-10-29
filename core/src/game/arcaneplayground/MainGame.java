@@ -33,10 +33,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	int cursorPosition = 1;
 	UI menuBackground;
 	UI temparrow;
+	
 	Stage character;
 	int characterIndex[] = new int[4];// change 4 to number of character texture here
 	UI characterBackground;
 	UI playerCharacterSelect[];
+	
 	Stage game;
 	float delay = 3; // this is how much time before switch to end stage reset this in end stage
 	GameObject playGround;
@@ -53,11 +55,16 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	Arrow playerArrow[];
 	boolean arrowCharged[] = {false, false};
 	UI playerSprite[];
+	UI weaponSprite[];
+	BitmapFont font10;
+	
 	Stage end;
+	
 	Stage pause;
 	int pauseCursorPosition = 1;
 	UI pauseBackground;
 	UI pauseArrow;
+	
 	Stage setting;
 	UI settingBackground;
 	UI playerSetting[] = new UI[4];
@@ -66,6 +73,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	int playerNumber = -1;
 	String controlName = "";
 	BitmapFont font12;
+	
 	float gametime;//temp
 	// default control for each player in this order {up, down, left, right, attack} change this in setting later
 	int controlKeeper[][] = {{Keys.W, Keys.S, Keys.A, Keys.D, Keys.F}, {Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_LEFT}};
@@ -89,6 +97,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		parameter.size = 32;
 		parameter.color = Color.BLACK;
 		font12 = generator.generateFont(parameter); // font size 12 pixels
+		parameter.size = 24;
+		font10 = generator.generateFont(parameter);
 		generator.dispose();
 		
 		itemDrop = new ItemDrop[126];
@@ -119,6 +129,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 
 	public void createInCharacterStage()
 	{
+		weaponSprite = new UI[4];
 		checkBlock[0] = new GameObject("box3.png", 0, 0, 100, 100, false);// remove box3.png and add null and don't add this actor to stage i think that can avoid nullpointerexception because this.draw don't get call
 		checkBlock[1] = new GameObject("box3.png", 0, 0, 100, 100, false);
 		checkBlock[2] = new GameObject("box3.png", 0, 0, 100, 100, false);
@@ -135,6 +146,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		playerChargeBar[1] = new UI("whitebox.png", 0, 0, 60, 10, true);
 		playerChargeBar[2] = new UI("whitebox.png", 0, 0, 60, 10, true);
 		playerChargeBar[3] = new UI("whitebox.png", 0, 0, 60, 10, true);
+		weaponSprite[0] = new UI ("gray.png", 260, 680, 50, 50);
+		weaponSprite[1] = new UI ("gray.png", 560, 680, 50, 50);
+		weaponSprite[2] = new UI ("gray.png", 860, 680, 50, 50);
+		weaponSprite[3] = new UI ("gray.png", 1160, 680, 50, 50);
 		player[0] = new PlayerCharacter(50, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, Keys.Q, playerHPBar[0], playerArmorBar[0], PlayerWeapon.fist, PlayerWeapon.fistAnim);
 		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, Keys.ALT_RIGHT, playerHPBar[1], playerArmorBar[1], PlayerWeapon.fist, PlayerWeapon.fistAnim);
 		player[2] = new PlayerCharacter(50, 550, 60, 60, 0, 0, 0, 0, 0, 0, playerHPBar[2], playerArmorBar[2], PlayerWeapon.fist, PlayerWeapon.fistAnim);
@@ -222,6 +237,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		game.addActor(playerSprite[1]);
 		game.addActor(playerSprite[2]);
 		game.addActor(playerSprite[3]);
+		game.addActor(weaponSprite[0]);
+		game.addActor(weaponSprite[1]);
+		game.addActor(weaponSprite[2]);
+		game.addActor(weaponSprite[3]);
 
 		walls = new UnbreakableWall[136];
 		int posX = 0;
@@ -414,6 +433,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		else if (screen.equals("game"))
 		{
 			gameStageRender();
+			batch.begin();
+			if(player[0].isVisible())font10.draw(batch, "LV." + player[0].weaponLV, 263, 668);
+			if(player[1].isVisible())font10.draw(batch, "LV." + player[1].weaponLV, 563, 668);
+			if(player[2].isVisible())font10.draw(batch, "LV." + player[2].weaponLV, 863, 668);
+			if(player[3].isVisible())font10.draw(batch, "LV." + player[3].weaponLV, 1163, 668);
+			batch.end();
 			if (playerCount <= 1)
 			{
 				delay -= Gdx.graphics.getDeltaTime();
@@ -471,15 +496,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	public void gameStageRender()
 	{
 		game.draw();
-		//System.out.println("x " + player[0].getX() + " y " + player[0].getY() + " w " + player[0].getWidth() + "h" + player[0].getHeight());
 		int loopCount = 0;
-//		System.out.println("p1 " + playerArrow[0].getX() + " " + playerArrow[0].getY() + " " + playerArrow[0].getWidth() + " " + playerArrow[0].getHeight());
-//		System.out.println("p2 " + playerArrow[1].getX() + " " + playerArrow[1].getY() + " " + playerArrow[1].getWidth() + " " + playerArrow[1].getHeight());
-//		System.out.println();
+		int weaponCount = 0;
 		for (PlayerCharacter allPlayer : player) 
 		{
 			if (!allPlayer.moving || !allPlayer.isVisible())
 			{
+				weaponCount += 1;
 				continue;
 			}
 			if (allPlayer.hitbox.getX() == allPlayer.checkBlock.hitbox.getX() && allPlayer.hitbox.getY() == allPlayer.checkBlock.hitbox.getY())
@@ -505,6 +528,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 						allPlayer.updateNewWeapon(item);
 						item.hitbox.setX(-1000);
 						item.hitbox.setY(-1000);
+						weaponSprite[weaponCount].img = item.img;
 					}
 				}
 			}
@@ -512,6 +536,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			allPlayer.updateHitbox();
 			allPlayer.setY(allPlayer.getY() + allPlayer.speed_y);
 			allPlayer.updateHitbox();
+			weaponCount += 1;
 		}
 		int arrowCount = 0;
 		for (PlayerCharacter allPlayer : player) 
@@ -929,12 +954,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				if (!player[i].isVisible())
 				{
 					playerSprite[i].setVisible(false);
+					weaponSprite[i].setVisible(false);
 					continue;
 				}
 				else
 				{
 					playerSprite[i].setVisible(true);
 					playerSprite[i].setAnimation(player[i].walkingAtlas, "0001");
+					weaponSprite[i].setVisible(true);
 				}
 			}
 		}
