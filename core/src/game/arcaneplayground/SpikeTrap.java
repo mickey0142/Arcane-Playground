@@ -27,11 +27,11 @@ public class SpikeTrap extends GameObject{
 	public void draw(Batch batch, float color)
 	{
 		time += Gdx.graphics.getDeltaTime();
-		if (time >= 3)
+		if (time >= 1)
 		{
 			active = true;
 		}
-		if (time >= 4)
+		if (time >= 2)
 		{
 			active = false;
 			time = 0;

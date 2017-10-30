@@ -468,7 +468,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			skip = false;
 		}
 		moveNormalWallZIndex();
-		System.out.println(spikeTrap[0].hitbox.getX() + " " + spikeTrap[0].hitbox.getY());
 	}
 
 	public void createInEndStage()
@@ -629,6 +628,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		// checkcollision with trap
 		for (PlayerCharacter allPlayer : player)
 		{
+			if (allPlayer.dead || !allPlayer.isVisible())
+			{
+				continue;
+			}
 			for (GameObject trap : spikeTrap)
 			{
 				if (checkCollision(allPlayer, trap) && ((SpikeTrap)trap).active && allPlayer.trapDelay <= 0)
@@ -662,7 +665,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		int arrowCount = 0;
 		for (PlayerCharacter allPlayer : player) 
 		{
-			if (!allPlayer.isVisible())
+			if (!allPlayer.isVisible() || allPlayer.dead)
 			{
 				continue;
 			}
@@ -830,7 +833,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		}
 		for (PlayerCharacter allPlayer : player)
 		{
-			if (!allPlayer.isVisible())
+			if (!allPlayer.isVisible() || allPlayer.dead)
 			{
 				continue;
 			}
