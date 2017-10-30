@@ -105,7 +105,6 @@ public class ItemDrop extends GameObject{
 		int num = (int)(Math.random()*100+1);// random 1 to multiplier
 		if (num >= 1 && num <= 20)
 		{
-			System.out.println("sword drop");
 			this.img = swordDropTexture;
 			this.weaponName = "sword";
 			//lv1
@@ -137,7 +136,6 @@ public class ItemDrop extends GameObject{
 		}
 		else if (num >= 21 && num <= 40)//36 -> 70
 		{
-			System.out.println("spear drop");
 			this.img = spearDropTexture;
 			this.weaponName = "spear";
 			//lv1
@@ -169,7 +167,6 @@ public class ItemDrop extends GameObject{
 		}
 		else if (num >= 41 && num <= 60)
 		{
-			System.out.println("axe drop");
 			this.img = axeDropTexture;
 			this.weaponName = "axe";
 			//lv1
@@ -201,7 +198,6 @@ public class ItemDrop extends GameObject{
 		}
 		else if (num >= 61 && num <= 80)
 		{
-			System.out.println("bow drop");
 			this.img = bowDropTexture;
 			this.weaponName = "bow";
 			//lv1

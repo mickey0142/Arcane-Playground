@@ -31,6 +31,7 @@ public class PlayerCharacter extends Actor{
 	float blinkTime = 2f, currentBlinkTime;
 	float attack;
 	float regenDelay = 2;
+	float trapDelay = 0;
 	int blinkFrameCount;
 	boolean moving = false;
 	boolean blink = false;
@@ -48,6 +49,7 @@ public class PlayerCharacter extends Actor{
 	PlayerWeapon weapon;
 	GameObject checkBlock;
 	Arrow arrow;
+	Balloon balloon;
 	
 	static TextureAtlas heart = new TextureAtlas(Gdx.files.internal("heart.atlas"));
 	static Animation<TextureRegion> heart3 = new Animation<TextureRegion>(1f, heart.findRegions("0003"));
@@ -127,6 +129,10 @@ public class PlayerCharacter extends Actor{
 			}
 		}
 		if (armor > 100)armor = 100;
+		if (trapDelay > 0)
+		{
+			trapDelay -= Gdx.graphics.getDeltaTime();
+		}
 		updateHPBar();
 		updateChargeBar();
 		updateArmorBar();
@@ -299,7 +305,6 @@ public class PlayerCharacter extends Actor{
 			weaponAnim = item.weaponAnimation;
 			weapon.updateWeaponAnimation();
 		}
-		System.out.println(weaponName + " lv " + weaponLV);
 	}
 	
 	public void setPlayerWeaponRenderer(PlayerWeapon weapon)
@@ -399,6 +404,11 @@ public class PlayerCharacter extends Actor{
 	public void updateArmorBar()
 	{
 		armorBar.setWidth(armor*1.5f);
+	}
+	
+	public void setBalloon(Balloon balloon)
+	{
+		this.balloon = balloon;
 	}
 	
 	public void setArrowRenderer(Arrow arrow)

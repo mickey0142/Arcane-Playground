@@ -57,6 +57,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 	UI playerSprite[];
 	UI weaponSprite[];
 	BitmapFont font10;
+	SpikeTrap spikeTrap[];
+	Balloon balloon[];
 	
 	Stage end;
 	
@@ -103,6 +105,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		
 		itemDrop = new ItemDrop[126];
 		normalWalls = new NormalWall[126];
+		spikeTrap = new SpikeTrap[4];
 		for (int i = 0; i < 126; i++)
 		{
 			itemDrop[i] = new ItemDrop();
@@ -160,6 +163,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		//player[1].weaponName = "spear";
 
 		playerArrow = new Arrow[4];
+		balloon = new Balloon[4];
 		for (int i = 0; i < 4; i++)
 		{
 			attackEffectRenderer[i] = new EffectRenderer(player[i]);
@@ -174,6 +178,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			playerArrow[i] = new Arrow(-100, -100);
 			player[i].setArrowRenderer(playerArrow[i]);
 			player[i].setIngame(false);
+			balloon[i] = new Balloon(player[i]);
+			player[i].setBalloon(balloon[i]);
 		}	
 		
 		// ui in stage
@@ -221,6 +227,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		playerSprite[3] = new UI("whitebox.png", 930, 660, 60, 60);
 		playerSprite[3].animation = true;
 		playerSprite[3].setAnimation(PlayerCharacter.character1, "0001");
+		
+		for (int i = 0; i < 4; i++)
+		{
+			spikeTrap[i] = new SpikeTrap(100, 100);
+		}
 		// add all actor for game stage in here. adding order should be background playground itemdrop wall player playerweapon playerattackeffect
 		game.addActor(gameBackground);
 		game.addActor(playGround);
@@ -241,6 +252,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		game.addActor(weaponSprite[1]);
 		game.addActor(weaponSprite[2]);
 		game.addActor(weaponSprite[3]);
+		
+		game.addActor(spikeTrap[0]);
+		game.addActor(spikeTrap[1]);
+		game.addActor(spikeTrap[2]);
+		game.addActor(spikeTrap[3]);
 
 		walls = new UnbreakableWall[136];
 		int posX = 0;
@@ -309,6 +325,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		game.addActor(playerArrow[1]);
 		game.addActor(playerArrow[2]);
 		game.addActor(playerArrow[3]);
+		
+		game.addActor(balloon[0]);
+		game.addActor(balloon[1]);
+		game.addActor(balloon[2]);
+		game.addActor(balloon[3]);
 		
 		game.addActor(playerChargeBar[0]);
 		game.addActor(playerChargeBar[1]);
@@ -379,8 +400,75 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			}
 			x += 50;
 		}
-		
+		// set spiketrap position
+		int spikeTrapCount = 0;
+		float x2 = 100, y2 = 100;
+		float savePositionX[] = {-1, -1, -1, -1};
+		float savePositionY[] = {-1, -1, -1, -1};
+		GameObject mapChecker = new GameObject("whitebox.png", 100, 100, 40, 40, false);
+		boolean skip = false;
+		while (spikeTrapCount < 4)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				if (savePositionX[i] == -1)
+				{
+					break;
+				}
+				else
+				{
+					if (savePositionX[i] == x2 && savePositionY[i] == y2)
+					{
+						skip = true;
+						break;
+					}
+				}
+			}
+			for (GameObject wall : normalWalls)
+			{
+				if (checkCollision(mapChecker, wall))
+				{
+					skip = true;
+					break;
+				}
+			}
+			for (GameObject wall : walls)
+			{
+				if (checkCollision(mapChecker, wall))
+				{
+					skip = true;
+					break;
+				}
+			}
+			if (!skip)
+			{
+				// set spiketraphere
+				if ((int)(Math.random()*20) == 0)
+				{
+					savePositionX[spikeTrapCount] = x2;
+					savePositionY[spikeTrapCount] = y2;
+					spikeTrap[spikeTrapCount].setX(x2);
+					spikeTrap[spikeTrapCount].setY(y2);
+					spikeTrap[spikeTrapCount].updateHitbox();
+					spikeTrapCount += 1;
+				}
+			}
+			y2 += 50;
+			if (y2 > 500)
+			{
+				y2 = 100;
+				x2 += 50;
+			}
+			if (x2 > 1200)
+			{
+				x2 = 100;
+			}
+			mapChecker.hitbox.setX(x2);
+			mapChecker.hitbox.setY(y2);
+			skip = false;
+		}
 		moveNormalWallZIndex();
+		System.out.println(spikeTrap[0].hitbox.getX() + " " + spikeTrap[0].hitbox.getY());
 	}
 
 	public void createInEndStage()
@@ -500,7 +588,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		int weaponCount = 0;
 		for (PlayerCharacter allPlayer : player) 
 		{
-			if (!allPlayer.moving || !allPlayer.isVisible())
+			if (!allPlayer.moving || !allPlayer.isVisible() || allPlayer.dead)
 			{
 				weaponCount += 1;
 				continue;
@@ -537,6 +625,39 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			allPlayer.setY(allPlayer.getY() + allPlayer.speed_y);
 			allPlayer.updateHitbox();
 			weaponCount += 1;
+		}
+		// checkcollision with trap
+		for (PlayerCharacter allPlayer : player)
+		{
+			for (GameObject trap : spikeTrap)
+			{
+				if (checkCollision(allPlayer, trap) && ((SpikeTrap)trap).active && allPlayer.trapDelay <= 0)
+				{
+					allPlayer.trapDelay = 2;
+					allPlayer.balloon.runAnimation("1");
+					if (allPlayer.armor > 0)
+					{
+						allPlayer.armor -= 50;
+						allPlayer.regenDelay = 5f;
+						if (allPlayer.armor < 0)
+						{
+							allPlayer.armor = 0;
+						}
+					}
+					else
+					{
+						allPlayer.regenDelay = 5f;
+						allPlayer.hp -= 1;
+						allPlayer.hurt = true;
+						allPlayer.armor += 10;
+						if (allPlayer.hp <= 0)
+						{
+							allPlayer.dead = true;
+							playerCount -= 1;
+						}
+					}
+				}
+			}
 		}
 		int arrowCount = 0;
 		for (PlayerCharacter allPlayer : player) 
@@ -661,13 +782,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 				//checkcollision between arrow and player
 				for (PlayerCharacter otherPlayer : player)
 				{
-					if (allPlayer == otherPlayer || !allPlayer.isVisible())
+					if (allPlayer == otherPlayer || !allPlayer.isVisible() || allPlayer.dead)
 					{
 						continue;
 					}
 					if (checkCollision(otherPlayer, allPlayer.arrow) && !otherPlayer.hurt)
 					{
-						otherPlayer.regenDelay = 2f;
+						otherPlayer.regenDelay = 5f;
 						if (otherPlayer.armor <= 0)
 						{
 							otherPlayer.hp -= 1;
@@ -848,7 +969,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 
 	@Override
 	public boolean keyDown(int keycode) {
-		//System.out.println(keycode);
 		if (screen.equals("menu"))
 		{
 			keyDownInMenuStage(keycode);
@@ -1406,7 +1526,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		mousePositionScreen.x = screenX;
 		mousePositionScreen.y = screenY;
 		mousePositionStage = menu.screenToStageCoordinates(mousePositionScreen);
-//		System.out.println(mousePositionStage.x + " " + mousePositionStage.y);
+		System.out.println(mousePositionStage.x + " " + mousePositionStage.y);
 		if (screen.equals("menu"))
 		{
 			
@@ -1580,13 +1700,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 			}
 		}
 		for (PlayerCharacter allPlayer : player) {
-			if (allPlayer == playerAttack || !allPlayer.isVisible())
+			if (allPlayer == playerAttack || !allPlayer.isVisible() || allPlayer.dead)
 			{
 				continue;
 			}
 			if (checkCollision(playerAttack, allPlayer, "attack") && !allPlayer.hurt)
 			{
-				allPlayer.regenDelay = 2f;
+				allPlayer.regenDelay = 5f;
 				if (allPlayer.armor <= 0)
 				{
 					allPlayer.hp -= 1;
