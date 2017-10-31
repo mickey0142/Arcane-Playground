@@ -5,6 +5,10 @@ import java.util.Random;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerListener;
+import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -15,13 +19,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 
-public class MainGame extends ApplicationAdapter implements InputProcessor{
+public class MainGame extends ApplicationAdapter implements InputProcessor, ControllerListener{
 	SpriteBatch batch;
 	Texture img;
 	Vector2 mousePositionScreen = new Vector2();
@@ -120,6 +125,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		createInSettingStage();
 
 		Gdx.input.setInputProcessor(this);
+		Controllers.addListener(this);
 	}
 
 	public void createInMenuStage()
@@ -1095,7 +1101,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 		}
 		for (int i = 0; i<4; i++)// change this i<2 to i<numberofplayer later 
 		{
-			if (keycode == player[i].controlBack)
+			if (keycode == player[i].controlBack && playerCount == 0)
 			{
 				screen = "menu";
 				resetVariableInCharacterStage();
@@ -1108,7 +1114,16 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 					playerCount += 1;
 					player[i].setIngame(true);
 				}
-				else
+//				else
+//				{
+//					playerCharacterSelect[i].setVisible(false);
+//					playerCount -= 1;
+//					player[i].setIngame(false);
+//				}
+			}
+			else if (keycode == player[i].controlBack)
+			{
+				if (playerCharacterSelect[i].isVisible())
 				{
 					playerCharacterSelect[i].setVisible(false);
 					playerCount -= 1;
@@ -1848,6 +1863,70 @@ public class MainGame extends ApplicationAdapter implements InputProcessor{
 //			if (wall != null)
 			wall.setZIndex(3);
 		}
+	}
+
+	
+	@Override
+	public void connected(Controller controller) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	@Override
+	public void disconnected(Controller controller) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
+	@Override
+	public boolean buttonDown(Controller controller, int buttonCode) {
+		// TODO Auto-generated method stub
+		System.out.println("buttondown");
+		return true;
+	}
+
+	
+	@Override
+	public boolean buttonUp(Controller controller, int buttonCode) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
+	@Override
+	public boolean axisMoved(Controller controller, int axisCode, float value) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
+	@Override
+	public boolean povMoved(Controller controller, int povCode, PovDirection value) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
+	@Override
+	public boolean xSliderMoved(Controller controller, int sliderCode, boolean value) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
+	@Override
+	public boolean ySliderMoved(Controller controller, int sliderCode, boolean value) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
+	@Override
+	public boolean accelerometerMoved(Controller controller, int accelerometerCode, Vector3 value) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

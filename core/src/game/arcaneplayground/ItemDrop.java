@@ -123,6 +123,8 @@ public class ItemDrop extends GameObject{
 			attackCooldown[1] = SWORDLV2_ATTACK_COOLDOWN;
 			attackChargeTime[1] = SWORDLV2_CHARGE_TIME;
 			attack[1] = SWORDLV2_ATTACK;
+			effectAtlas = EffectRenderer.swordEffectAtlas;
+			effectAnimation = EffectRenderer.swordAnimation;
 			weaponAtlas[1] = PlayerWeapon.swordLV2;
 			weaponLV2Animation = PlayerWeapon.swordLV2Anim;
 			//lv3
@@ -131,6 +133,8 @@ public class ItemDrop extends GameObject{
 			attackCooldown[2] = SWORDLV3_ATTACK_COOLDOWN;
 			attackChargeTime[2] = SWORDLV3_CHARGE_TIME;
 			attack[2] = SWORDLV3_ATTACK;
+			effectAtlas = EffectRenderer.swordEffectAtlas;
+			effectAnimation = EffectRenderer.swordAnimation;
 			weaponAtlas[2] = PlayerWeapon.swordLV3;
 			weaponLV3Animation = PlayerWeapon.swordLV3Anim;
 		}
@@ -154,6 +158,8 @@ public class ItemDrop extends GameObject{
 			attackCooldown[1] = SPEARLV2_ATTACK_COOLDOWN;
 			attackChargeTime[1] = SPEARLV2_CHARGE_TIME;
 			attack[1] = SPEARLV2_ATTACK;
+			effectAtlas = EffectRenderer.spearEffectAtlas;
+			effectAnimation = EffectRenderer.spearAnimation;
 			weaponAtlas[1] = PlayerWeapon.spearLV2;
 			weaponLV2Animation = PlayerWeapon.spearLV2Anim;
 			//lv3
@@ -162,6 +168,8 @@ public class ItemDrop extends GameObject{
 			attackCooldown[2] = SPEARLV3_ATTACK_COOLDOWN;
 			attackChargeTime[2] = SPEARLV3_CHARGE_TIME;
 			attack[2] = SPEARLV3_ATTACK;
+			effectAtlas = EffectRenderer.spearEffectAtlas;
+			effectAnimation = EffectRenderer.spearAnimation;
 			weaponAtlas[2] = PlayerWeapon.spearLV3;
 			weaponLV3Animation = PlayerWeapon.spearLV3Anim;
 		}
@@ -185,6 +193,8 @@ public class ItemDrop extends GameObject{
 			attackCooldown[1] = AXELV2_ATTACK_COOLDOWN;
 			attackChargeTime[1] = AXELV2_CHARGE_TIME;
 			attack[1] = AXELV2_ATTACK;
+			effectAtlas = EffectRenderer.swordEffectAtlas;
+			effectAnimation = EffectRenderer.swordAnimation;
 			weaponAtlas[1] = PlayerWeapon.axeLV2;
 			weaponLV2Animation = PlayerWeapon.axeLV2Anim;
 			//lv3
@@ -193,6 +203,8 @@ public class ItemDrop extends GameObject{
 			attackCooldown[2] = AXELV3_ATTACK_COOLDOWN;
 			attackChargeTime[2] = AXELV3_CHARGE_TIME;
 			attack[2] = AXELV3_ATTACK;
+			effectAtlas = EffectRenderer.swordEffectAtlas;
+			effectAnimation = EffectRenderer.swordAnimation;
 			weaponAtlas[2] = PlayerWeapon.axeLV3;
 			weaponLV3Animation = PlayerWeapon.axeLV3Anim;
 		}

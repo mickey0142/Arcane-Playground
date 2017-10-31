@@ -271,6 +271,7 @@ public class PlayerCharacter extends Actor{
 				attackCooldown = item.attackCooldown[1];
 				attackChargeTime = item.attackChargeTime[1];
 				attack = item.attack[1];
+				updateAttackEffect(item.effectAtlas, item.effectAnimation);
 				weaponAtlas = item.weaponAtlas[1];
 				weaponAnim = item.weaponLV2Animation;
 				weaponLV = 2;
@@ -284,6 +285,7 @@ public class PlayerCharacter extends Actor{
 				attackCooldown = item.attackCooldown[2];
 				attackChargeTime = item.attackChargeTime[2];
 				attack = item.attack[2];
+				updateAttackEffect(item.effectAtlas, item.effectAnimation);
 				weaponAtlas = item.weaponAtlas[2];
 				weaponAnim = item.weaponLV3Animation;
 				weaponLV = 3;
