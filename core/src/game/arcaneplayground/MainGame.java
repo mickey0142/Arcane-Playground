@@ -14,8 +14,11 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Vector2;
@@ -80,6 +83,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	int playerNumber = -1;
 	String controlName = "";
 	BitmapFont font12;
+	TextureAtlas controlType;
+	Animation<TextureRegion> controlTypeKeyboard;
+	Animation<TextureRegion> controlTypeController1;
+	Animation<TextureRegion> controlTypeController2;
+	Animation<TextureRegion> controlTypeAnim;
+	UI playerControlType[];
 	
 	float gametime;//temp
 	// default control for each player in this order {up, down, left, right, attack} change this in setting later
@@ -161,8 +170,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		weaponSprite[3] = new UI ("gray.png", 1160, 680, 50, 50);
 		player[0] = new PlayerCharacter(50, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, Keys.Q, playerHPBar[0], playerArmorBar[0], PlayerWeapon.fist, PlayerWeapon.fistAnim);
 		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, Keys.ALT_RIGHT, playerHPBar[1], playerArmorBar[1], PlayerWeapon.fist, PlayerWeapon.fistAnim);
-		player[2] = new PlayerCharacter(50, 550, 60, 60, 0, 0, 0, 0, 0, 0, playerHPBar[2], playerArmorBar[2], PlayerWeapon.fist, PlayerWeapon.fistAnim);
-		player[3] = new PlayerCharacter(1250, 50, 60, 60, 0, 0, 0, 0, 0, 0, playerHPBar[3], playerArmorBar[3], PlayerWeapon.fist, PlayerWeapon.fistAnim);
+		player[2] = new PlayerCharacter(50, 550, 60, 60, 26, 26, 26, 26, 26, 26, playerHPBar[2], playerArmorBar[2], PlayerWeapon.fist, PlayerWeapon.fistAnim);
+		player[3] = new PlayerCharacter(1250, 50, 60, 60, 26, 26, 26, 26, 26, 26, playerHPBar[3], playerArmorBar[3], PlayerWeapon.fist, PlayerWeapon.fistAnim);
 
 		//temppppp 
 		//player[0].weaponName = "axe";
@@ -498,12 +507,33 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		playerSetting[2] = new UI("playersetting.jpg", 695, 50, 300, 400);
 		playerSetting[3] = new UI("playersetting.jpg", 1035, 50, 300, 400);
 		gray = new Texture(Gdx.files.internal("gray.png"));
+		controlType = new TextureAtlas(Gdx.files.internal("controltype.atlas"));
+		controlTypeKeyboard = new Animation<TextureRegion>(1f, controlType.findRegions("0001"));
+		controlTypeController1 = new Animation<TextureRegion>(1f, controlType.findRegions("0002"));
+		controlTypeController1 = new Animation<TextureRegion>(1f, controlType.findRegions("0003"));
+		playerControlType = new UI[4];
+		playerControlType[0] = new UI("whitebox.png", 65, 500, 200, 200);
+		playerControlType[0].animation = true;
+		playerControlType[0].setAnimation(controlType, "0001");
+		playerControlType[1] = new UI("whitebox.png", 405, 500, 200, 200);
+		playerControlType[1].animation = true;
+		playerControlType[1].setAnimation(controlType, "0001");
+		playerControlType[2] = new UI("whitebox.png", 745, 500, 200, 200);
+		playerControlType[2].animation = true;
+		playerControlType[2].setAnimation(controlType, "0001");
+		playerControlType[3] = new UI("whitebox.png", 1085, 500, 200, 200);
+		playerControlType[3].animation = true;
+		playerControlType[3].setAnimation(controlType, "0001");
 		
 		setting.addActor(settingBackground);
 		setting.addActor(playerSetting[0]);
 		setting.addActor(playerSetting[1]);
 		setting.addActor(playerSetting[2]);
 		setting.addActor(playerSetting[3]);
+		setting.addActor(playerControlType[0]);
+		setting.addActor(playerControlType[1]);
+		setting.addActor(playerControlType[2]);
+		setting.addActor(playerControlType[3]);
 	}
 	
 	@Override
@@ -514,6 +544,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		menu.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 		character.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 		end.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+		setting.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+		pause.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 		gametime += Gdx.graphics.getDeltaTime();
 		if (screen.equals("menu"))
 		{
@@ -949,12 +981,36 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		for (int i = 0; i < 4; i++)
 		{
 			//if player[i] use keyboard
-			font12.draw(batch, Keys.toString(player[i].controlUp), xPosition, 430);
-			font12.draw(batch, Keys.toString(player[i].controlDown), xPosition, 370);
-			font12.draw(batch, Keys.toString(player[i].controlLeft), xPosition, 310);
-			font12.draw(batch, Keys.toString(player[i].controlRight), xPosition, 250);
-			font12.draw(batch, Keys.toString(player[i].controlAttack), xPosition, 190);
-			font12.draw(batch, Keys.toString(player[i].controlBack), xPosition, 130);
+			if (player[i].controlType.equals("keyboard"))
+			{
+				font12.draw(batch, Keys.toString(player[i].controlUp), xPosition, 430);
+				font12.draw(batch, Keys.toString(player[i].controlDown), xPosition, 370);
+				font12.draw(batch, Keys.toString(player[i].controlLeft), xPosition, 310);
+				font12.draw(batch, Keys.toString(player[i].controlRight), xPosition, 250);
+				font12.draw(batch, Keys.toString(player[i].controlAttack), xPosition, 190);
+				font12.draw(batch, Keys.toString(player[i].controlBack), xPosition, 130);
+			}
+			else
+			{
+				//if (!player[i].usePov)
+				{
+					font12.draw(batch, Keys.toString(player[i].controlUp), xPosition, 430);
+					font12.draw(batch, Keys.toString(player[i].controlDown), xPosition, 370);
+					font12.draw(batch, Keys.toString(player[i].controlLeft), xPosition, 310);
+					font12.draw(batch, Keys.toString(player[i].controlRight), xPosition, 250);
+					font12.draw(batch, Keys.toString(player[i].controlAttack), xPosition, 190);
+					font12.draw(batch, Keys.toString(player[i].controlBack), xPosition, 130);
+				}
+//				else
+//				{
+//					font12.draw(batch, player[i].controllerUp.toString(), xPosition, 430);
+//					font12.draw(batch, player[i].controllerDown.toString(), xPosition, 370);
+//					font12.draw(batch, player[i].controllerLeft.toString(), xPosition, 310);
+//					font12.draw(batch, player[i].controllerRight.toString(), xPosition, 250);
+//					font12.draw(batch, Keys.toString(player[i].controlAttack), xPosition, 190);
+//					font12.draw(batch, Keys.toString(player[i].controlBack), xPosition, 130);
+//				}
+			}
 			//else if player[i] use controller
 			xPosition += 350;
 		}
@@ -962,7 +1018,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		if(changeControl)
 		{
 			batch.draw(gray, 0, 0, 1350, 750);
-			font12.draw(batch, "press button", 650, 600);
+			font12.draw(batch, "press button to change or press esc to cancel", 350, 600);
 		}
 		batch.end();
 	}
@@ -974,6 +1030,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		character.dispose();
 		game.dispose();
 		end.dispose();
+		setting.dispose();
+		pause.dispose();
 	}
 
 	@Override
@@ -1101,6 +1159,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		}
 		for (int i = 0; i<4; i++)// change this i<2 to i<numberofplayer later 
 		{
+			if (!player[i].controlType.equals("keyboard"))
+			{
+				continue;
+			}
 			if (keycode == player[i].controlBack && playerCount == 0)
 			{
 				screen = "menu";
@@ -1114,12 +1176,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 					playerCount += 1;
 					player[i].setIngame(true);
 				}
-//				else
-//				{
-//					playerCharacterSelect[i].setVisible(false);
-//					playerCount -= 1;
-//					player[i].setIngame(false);
-//				}
 			}
 			else if (keycode == player[i].controlBack)
 			{
@@ -1401,7 +1457,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			{
 				changeControl = false;
 			}
-			else
+			else if (player[playerNumber].controlType.equals("keyboard"))
 			{
 				if (controlName.equals("up"))
 				{
@@ -1559,7 +1615,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	public void touchDownInSettingStage(Vector2 mousePosition, int button)
 	{
 		System.out.println(mousePositionStage.x + " " + mousePositionStage.y + " " + button);
-		if (button == Buttons.LEFT)
+		if (button == Buttons.LEFT && !changeControl)
 		{
 			float xPosition = 165;
 			for(int i = 0; i < 4; i++)
@@ -1611,7 +1667,39 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				}
 				xPosition += 350;
 			}
-		}
+			// check click control type
+			for (int i = 0; i < 4; i++)
+			{
+				float controlTypeX = playerControlType[i].getX();
+				float controlTypeY = playerControlType[i].getY();
+				float controlTypeWidth = playerControlType[i].getWidth();
+				float controlTypeHeight = playerControlType[i].getHeight();
+				if (mousePosition.x >= controlTypeX && mousePosition.x <= controlTypeX+controlTypeWidth)
+				{
+					if (mousePosition.y >= controlTypeY && mousePosition.y <= controlTypeY+controlTypeHeight)
+					{
+						if (player[i].controlType.equals("keyboard"))
+						{
+							player[i].controlType = "controller1";
+							playerControlType[i].setAnimation(controlType, "0002");
+							player[i].controllerCount = 0;
+						}
+						else if (player[i].controlType.equals("controller1"))
+						{
+							player[i].controlType = "controller2";
+							playerControlType[i].setAnimation(controlType, "0003");
+							player[i].controllerCount = 1;
+						}
+						else if (player[i].controlType.equals("controller2"))
+						{
+							player[i].controlType = "keyboard";
+							playerControlType[i].setAnimation(controlType, "0001");
+							player[i].controllerCount = -1;
+						}
+					}
+				}
+			}
+		}// if button left
 	}
 	
 	@Override
@@ -1865,28 +1953,340 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		}
 	}
 
-	
+	// controller
 	@Override
 	public void connected(Controller controller) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	
 	@Override
 	public void disconnected(Controller controller) {
 		// TODO Auto-generated method stub
 		
 	}
-	
 
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
 		// TODO Auto-generated method stub
-		System.out.println("buttondown");
+		System.out.println("buttondown" + buttonCode);
+		if (screen.equals("setting"))
+		{
+			buttonDownInSettingStage(buttonCode);
+		}
+		else if (screen.equals("menu"))
+		{
+			buttonDownInMenuStage(buttonCode);
+		}
+		else if (screen.equals("character"))
+		{
+			buttonDownInCharacterStage(buttonCode);
+		}
+		else if (screen.equals("game"))
+		{
+			buttonDownInGameStage(buttonCode);
+		}
+		else if (screen.equals("end"))
+		{
+			buttonDownInEndStage(buttonCode);
+		}
+		else if (screen.equals("pause"))
+		{
+			buttonDownInPauseStage(buttonCode);
+		}
 		return true;
 	}
 
+	public void buttonDownInSettingStage(int buttonCode)
+	{
+		if (changeControl && (player[playerNumber].controlType.equals("controller1") || player[playerNumber].controlType.equals("controller2")))
+		{
+			if (controlName.equals("up"))
+			{
+				player[playerNumber].controlUp = buttonCode;
+			}
+			else if (controlName.equals("down"))
+			{
+				player[playerNumber].controlDown = buttonCode;
+			}
+			else if (controlName.equals("left"))
+			{
+				player[playerNumber].controlLeft = buttonCode;
+			}
+			else if (controlName.equals("right"))
+			{
+				player[playerNumber].controlRight = buttonCode;
+			}
+			else if (controlName.equals("attack"))
+			{
+				player[playerNumber].controlAttack = buttonCode;
+			}
+			else if (controlName.equals("back"))
+			{
+				player[playerNumber].controlBack = buttonCode;
+			}
+			changeControl = false;
+		}
+	}
+
+	public void buttonDownInMenuStage(int buttonCode)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (player[i].controlType.equals("keyboard"))
+			{
+				continue;
+			}
+			for (int j = 0; j < Controllers.getControllers().size; j++)
+			{
+				if (player[i].controllerCount != j)
+				{
+					System.out.println("skip");
+					continue;
+				}
+				// start if control here
+				if (buttonCode == player[i].controlDown)
+				{
+					cursorPosition += 1;
+					if (cursorPosition > 3)
+					{
+						cursorPosition = 1;
+					}
+				}
+				else if (buttonCode == player[i].controlUp)
+				{
+					cursorPosition -= 1;
+					if (cursorPosition <= 0)// change this if there is more than 2 button
+					{
+						cursorPosition = 3;
+					}
+				}
+				if (buttonCode == player[i].controlAttack)
+				{
+					if (cursorPosition == 1)
+					{
+						screen = "character";
+					}
+					else if (cursorPosition == 2)
+					{
+						screen = "setting";
+						back = "menu";
+					}
+					else if (cursorPosition == 3)
+					{
+						Gdx.app.exit();
+					}
+				}
+				if (cursorPosition == 1)
+				{
+					temparrow.setY(350);
+				}
+				else if (cursorPosition == 2)
+				{
+					temparrow.setY(180);
+				}
+				else if (cursorPosition == 3)
+				{
+					temparrow.setY(80);
+				}
+			}
+		}
+	}
+	
+	public void buttonDownInCharacterStage(int buttonCode)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (player[i].controlType.equals("keyboard"))
+			{
+				continue;
+			}
+			for (int j = 0; j < Controllers.getControllers().size; j++)
+			{
+				if (player[i].controllerCount != j)
+				{
+					continue;
+				}
+				// start if control here
+				if (buttonCode == player[i].controlBack && playerCount == 0)
+				{
+					screen = "menu";
+					resetVariableInCharacterStage();
+				}
+				if (buttonCode == player[i].controlAttack)
+				{
+					if (!playerCharacterSelect[i].isVisible())
+					{
+						playerCharacterSelect[i].setVisible(true);
+						playerCount += 1;
+						player[i].setIngame(true);
+					}
+				}
+				else if (buttonCode == player[i].controlBack)
+				{
+					if (playerCharacterSelect[i].isVisible())
+					{
+						playerCharacterSelect[i].setVisible(false);
+						playerCount -= 1;
+						player[i].setIngame(false);
+					}
+				}
+				if (playerCharacterSelect[i].isVisible())
+				{
+					if (buttonCode == player[i].controlLeft)
+					{
+						if (characterIndex[i]-1 >= 0)
+						{
+							characterIndex[i] -= 1;
+						}
+					}
+					else if (buttonCode == player[i].controlRight)
+					{
+						if (characterIndex[i]+1 <= 4)// change 4 to number of character texture here
+						{
+							characterIndex[i] += 1;
+						}
+					}
+					if (characterIndex[i] == 0)
+					{
+						playerCharacterSelect[i].setAnimation(PlayerCharacter.character1, "0001");
+						player[i].setTexture(PlayerCharacter.character1, PlayerCharacter.character1Dead);
+					}
+					else if(characterIndex[i] == 1)
+					{
+						playerCharacterSelect[i].setAnimation(PlayerCharacter.character2, "0001");
+						player[i].setTexture(PlayerCharacter.character2, PlayerCharacter.character2Dead);
+					}
+					else if(characterIndex[i] == 2)
+					{
+						playerCharacterSelect[i].setAnimation(PlayerCharacter.character3, "0001");
+						player[i].setTexture(PlayerCharacter.character3, PlayerCharacter.character3Dead);
+					}
+					else if(characterIndex[i] == 3)
+					{
+						playerCharacterSelect[i].setAnimation(PlayerCharacter.character4, "0001");
+						player[i].setTexture(PlayerCharacter.character4, PlayerCharacter.character4Dead);
+					}
+				}
+			}
+		}
+	}
+	
+	public void buttonDownInGameStage(int buttonCode)
+	{
+		
+	}
+	
+	public void buttonDownInEndStage(int buttonCode)
+	{
+		
+	}
+	
+	public void buttonDownInPauseStage(int buttonCode)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (player[i].controlType.equals("keyboard"))
+			{
+				continue;
+			}
+			for (int j = 0; j < Controllers.getControllers().size; j++)
+			{
+				if (player[i].controllerCount != j)
+				{
+					continue;
+				}
+				//start if control here
+				if (buttonCode == player[i].controlBack)
+				{
+					screen = "game";
+					// end all lingering input
+					pauseCursorPosition = 1;
+					for (PlayerCharacter allPlayer : player)
+					{
+						if (allPlayer.charging)
+						{
+							allPlayer.attacking = true;
+							allPlayer.charging = false;
+							if (allPlayer.currentChargeTime < 0.5f)
+							{
+								allPlayer.currentChargeTime = 0.5f;
+							}
+						}
+						allPlayer.upPressed = false;
+						allPlayer.downPressed = false;
+						allPlayer.leftPressed = false;
+						allPlayer.rightPressed = false;
+					}
+				}
+				if (buttonCode == player[i].controlDown)
+				{
+					pauseCursorPosition += 1;
+					if (pauseCursorPosition > 3)
+					{
+						pauseCursorPosition -= 1;
+					}
+				}
+				else if (buttonCode == player[i].controlUp)
+				{
+					pauseCursorPosition -= 1;
+					if (pauseCursorPosition < 1)
+					{
+						pauseCursorPosition += 1;
+					}
+				}
+				else if (buttonCode == player[i].controlAttack)
+				{
+					if (pauseCursorPosition == 1)// continue
+					{
+						screen = "game";
+						pauseCursorPosition = 1;
+						// end all lingering input
+						for (PlayerCharacter allPlayer2 : player)
+						{
+							if (allPlayer2.charging)
+							{
+								allPlayer2.attacking = true;
+								allPlayer2.charging = false;
+								if (allPlayer2.currentChargeTime < 0.5f)
+								{
+									allPlayer2.currentChargeTime = 0.5f;
+								}
+							}
+							allPlayer2.upPressed = false;
+							allPlayer2.downPressed = false;
+							allPlayer2.leftPressed = false;
+							allPlayer2.rightPressed = false;
+						}
+					}
+					else if (pauseCursorPosition == 2)// setting
+					{
+						screen = "setting";
+						back = "pause";
+					}
+					else if (pauseCursorPosition == 3)// go back to menu
+					{
+						screen = "menu";
+						pauseCursorPosition = 1;
+						resetVariableInCharacterStage();
+						resetVariableInGameStage();
+					}
+				}
+				if (pauseCursorPosition == 1)
+				{
+					pauseArrow.setY(482);
+				}
+				else if (pauseCursorPosition == 2)
+				{
+					pauseArrow.setY(296);
+				}
+				else if (pauseCursorPosition == 3)
+				{
+					pauseArrow.setY(160);
+				}
+			}// controller loop
+		}
+	}
 	
 	@Override
 	public boolean buttonUp(Controller controller, int buttonCode) {
@@ -1894,20 +2294,245 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		return false;
 	}
 
-	
 	@Override
 	public boolean axisMoved(Controller controller, int axisCode, float value) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	
 	@Override
 	public boolean povMoved(Controller controller, int povCode, PovDirection value) {
 		// TODO Auto-generated method stub
-		return false;
+		if(value == PovDirection.center)System.out.println(value);
+		if (screen.equals("menu"))
+		{
+			povInMenuStage(value);
+		}
+		else if (screen.equals("character"))
+		{
+			povInCharacterStage(value);
+		}
+		else if (screen.equals("game"))
+		{
+			povInGameStage(value);
+		}
+		else if (screen.equals("end"))
+		{
+			
+		}
+		else if (screen.equals("pause"))
+		{
+			povInPauseStage(value);
+		}
+		return true;
 	}
 
+	public void povInMenuStage(PovDirection value)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (player[i].controlType.equals("keyboard"))
+			{
+				continue;
+			}
+			int controllerNumber = 0;
+			for (int j = 0; j < Controllers.getControllers().size; j++)
+			{
+				if (player[i].controllerCount != controllerNumber)
+				{
+					controllerNumber += 1 ;
+					continue;
+				}
+				if (value == PovDirection.south)
+				{
+					cursorPosition += 1;
+					if (cursorPosition > 3)
+					{
+						cursorPosition = 1;
+					}
+				}
+				else if (value == PovDirection.north)
+				{
+					cursorPosition -= 1;
+					if (cursorPosition <= 0)// change this if there is more than 2 button
+					{
+						cursorPosition = 3;
+					}
+				}
+				if (cursorPosition == 1)
+				{
+					temparrow.setY(350);
+				}
+				else if (cursorPosition == 2)
+				{
+					temparrow.setY(180);
+				}
+				else if (cursorPosition == 3)
+				{
+					temparrow.setY(80);
+				}
+			}
+		}
+	}
+	
+	public void povInCharacterStage(PovDirection value)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (player[i].controlType.equals("keyboard"))
+			{
+				continue;
+			}
+			int controllerNumber = 0;
+			for (int j = 0; j < Controllers.getControllers().size; j++)
+			{
+				if (player[i].controllerCount != controllerNumber)
+				{
+					controllerNumber += 1 ;
+					continue;
+				}
+				if (playerCharacterSelect[i].isVisible())
+				{
+					if (value == PovDirection.west)
+					{
+						if (characterIndex[i]-1 >= 0)
+						{
+							characterIndex[i] -= 1;
+						}
+					}
+					else if (value == PovDirection.east)
+					{
+						if (characterIndex[i]+1 <= 4)// change 4 to number of character texture here
+						{
+							characterIndex[i] += 1;
+						}
+					}
+					if (characterIndex[i] == 0)
+					{
+						playerCharacterSelect[i].setAnimation(PlayerCharacter.character1, "0001");
+						player[i].setTexture(PlayerCharacter.character1, PlayerCharacter.character1Dead);
+					}
+					else if(characterIndex[i] == 1)
+					{
+						playerCharacterSelect[i].setAnimation(PlayerCharacter.character2, "0001");
+						player[i].setTexture(PlayerCharacter.character2, PlayerCharacter.character2Dead);
+					}
+					else if(characterIndex[i] == 2)
+					{
+						playerCharacterSelect[i].setAnimation(PlayerCharacter.character3, "0001");
+						player[i].setTexture(PlayerCharacter.character3, PlayerCharacter.character3Dead);
+					}
+					else if(characterIndex[i] == 3)
+					{
+						playerCharacterSelect[i].setAnimation(PlayerCharacter.character4, "0001");
+						player[i].setTexture(PlayerCharacter.character4, PlayerCharacter.character4Dead);
+					}
+				}
+				controllerNumber += 1;
+			}
+		}
+	}
+	
+	public void povInPauseStage(PovDirection value)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (player[i].controlType.equals("keyboard"))
+			{
+				continue;
+			}
+			for (int j = 0; j < Controllers.getControllers().size; j++)
+			{
+				if (player[i].controllerCount != j)
+				{
+					continue;
+				}
+				//start check for input here
+				if (value == PovDirection.south)
+				{
+					pauseCursorPosition += 1;
+					if (pauseCursorPosition > 3)
+					{
+						pauseCursorPosition -= 1;
+					}
+				}
+				else if (value == PovDirection.north)
+				{
+					pauseCursorPosition -= 1;
+					if (pauseCursorPosition < 1)
+					{
+						pauseCursorPosition += 1;
+					}
+				}
+				if (pauseCursorPosition == 1)
+				{
+					pauseArrow.setY(482);
+				}
+				else if (pauseCursorPosition == 2)
+				{
+					pauseArrow.setY(296);
+				}
+				else if (pauseCursorPosition == 3)
+				{
+					pauseArrow.setY(160);
+				}
+			}// controller loop
+		}
+	}
+
+	public void povInGameStage(PovDirection value)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (player[i].controlType.equals("keyboard"))
+			{
+				continue;
+			}
+			for (int j = 0; j < Controllers.getControllers().size; j++)
+			{
+				if (player[i].controllerCount != j)
+				{
+					continue;
+				}
+				//start check for input here
+				if (value == PovDirection.north)
+				{
+					player[i].upPressed = true;
+					player[i].leftPressed = false;
+					player[i].rightPressed = false;
+					player[i].downPressed = false;
+				}
+				else if (value == PovDirection.south)
+				{
+					player[i].downPressed = true;
+					player[i].leftPressed = false;
+					player[i].rightPressed = false;
+					player[i].upPressed = false;
+				}
+				else if (value  == PovDirection.east)
+				{
+					player[i].rightPressed = true;
+					player[i].upPressed = false;
+					player[i].downPressed = false;
+					player[i].leftPressed = false;
+				}
+				else if (value == PovDirection.west)
+				{
+					player[i].leftPressed = true;
+					player[i].upPressed = false;
+					player[i].downPressed = false;
+					player[i].rightPressed = false;
+				}
+				else if (value == PovDirection.center)
+				{
+					player[i].leftPressed = false;
+					player[i].upPressed = false;
+					player[i].downPressed = false;
+					player[i].rightPressed = false;
+				}
+			}// controller loop here
+		}
+	}
 	
 	@Override
 	public boolean xSliderMoved(Controller controller, int sliderCode, boolean value) {
@@ -1915,14 +2540,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		return false;
 	}
 
-	
 	@Override
 	public boolean ySliderMoved(Controller controller, int sliderCode, boolean value) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	
 	@Override
 	public boolean accelerometerMoved(Controller controller, int accelerometerCode, Vector3 value) {
 		// TODO Auto-generated method stub
