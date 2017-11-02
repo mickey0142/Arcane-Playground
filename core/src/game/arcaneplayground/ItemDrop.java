@@ -138,7 +138,7 @@ public class ItemDrop extends GameObject{
 			weaponAtlas[2] = PlayerWeapon.swordLV3;
 			weaponLV3Animation = PlayerWeapon.swordLV3Anim;
 		}
-		else if (num >= 21 && num <= 40)//36 -> 70
+		else if (num >= 21 && num <= 40)
 		{
 			this.img = spearDropTexture;
 			this.weaponName = "spear";
@@ -228,20 +228,16 @@ public class ItemDrop extends GameObject{
 			attackCooldown[1] = BOWLV2_ATTACK_COOLDOWN;
 			attackChargeTime[1] = BOWLV2_CHARGE_TIME;
 			attack[1] = BOWLV2_ATTACK;
-//			weaponAtlas[1] = PlayerWeapon.bowLV2;
-//			weaponLV2Animation = PlayerWeapon.bowLV2Anim;
-			weaponAtlas[1] = PlayerWeapon.bow;
-			weaponLV2Animation = PlayerWeapon.bowAnim;
+			weaponAtlas[1] = PlayerWeapon.bowLV2;
+			weaponLV2Animation = PlayerWeapon.bowLV2Anim;
 			//lv3
 			attackWidth[2] = BOWLV3_ATTACK_WIDTH;
 			attackHeight[2] = BOWLV3_ATTACK_HEIGHT;
 			attackCooldown[2] = BOWLV3_ATTACK_COOLDOWN;
 			attackChargeTime[2] = BOWLV3_CHARGE_TIME;
 			attack[2] = BOWLV3_ATTACK;
-//			weaponAtlas[2] = PlayerWeapon.bowLV3;
-//			weaponLV3Animation = PlayerWeapon.bowLV3Anim;
-			weaponAtlas[2] = PlayerWeapon.bow;
-			weaponLV3Animation = PlayerWeapon.bowAnim;
+			weaponAtlas[2] = PlayerWeapon.bowLV3;
+			weaponLV3Animation = PlayerWeapon.bowLV3Anim;
 		}
 		if (num <= 80)
 		{

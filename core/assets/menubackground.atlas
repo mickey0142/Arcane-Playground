@@ -1,0 +1,48 @@
+
+menubackground.png
+size: 8192,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+0001
+  rotate: false
+  xy: 2, 2
+  size: 1350, 750
+  orig: 1350, 750
+  offset: 0, 0
+  index: -1
+0002
+  rotate: false
+  xy: 1354, 2
+  size: 1350, 750
+  orig: 1350, 750
+  offset: 0, 0
+  index: -1
+0003
+  rotate: false
+  xy: 2706, 2
+  size: 1350, 750
+  orig: 1350, 750
+  offset: 0, 0
+  index: -1
+0004
+  rotate: false
+  xy: 4058, 2
+  size: 1350, 750
+  orig: 1350, 750
+  offset: 0, 0
+  index: -1
+0005
+  rotate: false
+  xy: 5410, 2
+  size: 1350, 750
+  orig: 1350, 750
+  offset: 0, 0
+  index: -1
+0006
+  rotate: false
+  xy: 6762, 2
+  size: 1350, 750
+  orig: 1350, 750
+  offset: 0, 0
+  index: -1
