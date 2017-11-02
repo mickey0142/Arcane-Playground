@@ -15,6 +15,7 @@ public class UI extends Actor{
 	Animation<TextureRegion> currentAnim;
 	boolean animation = false;
 	boolean setColor = false;
+	boolean animationLoop = false;
 	float red;
 	float green;
 	float blue;
@@ -50,7 +51,14 @@ public class UI extends Actor{
 		time += Gdx.graphics.getDeltaTime();
 		if (animation)
 		{
-			batch.draw(currentAnim.getKeyFrame(time), this.getX(), this.getY(), this.getWidth(), this.getHeight());
+			if (animationLoop)
+			{
+				batch.draw(currentAnim.getKeyFrame(time, true), this.getX(), this.getY(), this.getWidth(), this.getHeight());
+			}
+			else
+			{
+				batch.draw(currentAnim.getKeyFrame(time), this.getX(), this.getY(), this.getWidth(), this.getHeight());
+			}
 		}
 		else
 		{

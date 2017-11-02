@@ -41,6 +41,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	int cursorPosition = 1;
 	UI menuBackground;
 	UI temparrow;
+	UI menuButtonStart;
 	
 	Stage character;
 	int characterIndex[] = new int[4];// change 4 to number of character texture here
@@ -139,8 +140,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 
 	public void createInMenuStage()
 	{
-		menuBackground = new UI("menubackground.jpg", 0, 0, 1350, 750);
+		menuBackground = new UI("whitebox.png", 0, 0, 1350, 750);
+		TextureAtlas temp = new TextureAtlas(Gdx.files.internal("menubackground.atlas"));
+		menuBackground.animation = true;
+		menuBackground.animationLoop = true;
+		menuBackground.setAnimation(temp);
+		menuBackground.currentAnim.setFrameDuration(0.2f);
 		temparrow = new UI("arrow.png", 250, 350, 32, 32);
+		menuButtonStart = new UI("whitebox.png", 200, 200, 50, 50);
 		menu.addActor(menuBackground);
 		menu.addActor(temparrow);
 	}
@@ -1603,7 +1610,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		System.out.println(mousePositionStage.x + " " + mousePositionStage.y);
 		if (screen.equals("menu"))
 		{
-			
+			touchDownInMenuStage(mousePositionStage, button);
 		}
 		else if (screen.equals("setting"))
 		{
@@ -1612,6 +1619,17 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		return false;
 	}
 
+	public void touchDownInMenuStage(Vector2 mousePosition, int button)
+	{
+		if (mousePositionStage.x >= menuButtonStart.getX() && mousePositionStage.x <= menuButtonStart.getX()+menuButtonStart.getWidth())
+		{
+			if (mousePositionStage.y >= menuButtonStart.getY() && mousePositionStage.y <= menuButtonStart.getY()+menuButtonStart.getHeight())
+			{
+				// do something hereeee
+			}
+		}
+	}
+	
 	public void touchDownInSettingStage(Vector2 mousePosition, int button)
 	{
 		System.out.println(mousePositionStage.x + " " + mousePositionStage.y + " " + button);
