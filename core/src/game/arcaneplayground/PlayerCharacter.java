@@ -44,7 +44,6 @@ public class PlayerCharacter extends Actor{
 	boolean chargeMax = false;
 	boolean upPressed = false, downPressed = false, leftPressed = false, rightPressed = false;
 	String controlType = "keyboard";
-	boolean usePov = true;
 	int controllerCount = -1;
 	PovDirection controllerUp = PovDirection.north;
 	PovDirection controllerDown = PovDirection.south;

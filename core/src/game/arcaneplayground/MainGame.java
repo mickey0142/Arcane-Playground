@@ -40,7 +40,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	Stage menu;
 	int cursorPosition = 1;
 	UI menuBackground;
-	UI temparrow;
+	UI menuArrow;
 	UI menuButtonStart;
 	
 	Stage character;
@@ -146,10 +146,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		menuBackground.animationLoop = true;
 		menuBackground.setAnimation(temp);
 		menuBackground.currentAnim.setFrameDuration(0.2f);
-		temparrow = new UI("arrow.png", 250, 350, 32, 32);
+		menuArrow = new UI("pointer.png", 250, 350, 32, 32);
 		menuButtonStart = new UI("whitebox.png", 200, 200, 50, 50);
 		menu.addActor(menuBackground);
-		menu.addActor(temparrow);
+		menu.addActor(menuArrow);
 	}
 
 	public void createInCharacterStage()
@@ -500,7 +500,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	public void createInPauseStage()
 	{
 		pauseBackground = new UI("pausebackground.jpg", 0, 0, 1350, 750);
-		pauseArrow = new UI("arrow.png", 335, 482, 32, 32);
+		pauseArrow = new UI("pointer.png", 335, 482, 32, 32);
 		
 		pause.addActor(pauseBackground);
 		pause.addActor(pauseArrow);
@@ -999,29 +999,15 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			}
 			else
 			{
-				//if (!player[i].usePov)
-				{
-					font12.draw(batch, Keys.toString(player[i].controlUp), xPosition, 430);
-					font12.draw(batch, Keys.toString(player[i].controlDown), xPosition, 370);
-					font12.draw(batch, Keys.toString(player[i].controlLeft), xPosition, 310);
-					font12.draw(batch, Keys.toString(player[i].controlRight), xPosition, 250);
-					font12.draw(batch, Keys.toString(player[i].controlAttack), xPosition, 190);
-					font12.draw(batch, Keys.toString(player[i].controlBack), xPosition, 130);
-				}
-//				else
-//				{
-//					font12.draw(batch, player[i].controllerUp.toString(), xPosition, 430);
-//					font12.draw(batch, player[i].controllerDown.toString(), xPosition, 370);
-//					font12.draw(batch, player[i].controllerLeft.toString(), xPosition, 310);
-//					font12.draw(batch, player[i].controllerRight.toString(), xPosition, 250);
-//					font12.draw(batch, Keys.toString(player[i].controlAttack), xPosition, 190);
-//					font12.draw(batch, Keys.toString(player[i].controlBack), xPosition, 130);
-//				}
+					font12.draw(batch, Integer.toString(player[i].controlUp), xPosition, 430);
+					font12.draw(batch, Integer.toString(player[i].controlDown), xPosition, 370);
+					font12.draw(batch, Integer.toString(player[i].controlLeft), xPosition, 310);
+					font12.draw(batch, Integer.toString(player[i].controlRight), xPosition, 250);
+					font12.draw(batch, Integer.toString(player[i].controlAttack), xPosition, 190);
+					font12.draw(batch, Integer.toString(player[i].controlBack), xPosition, 130);
 			}
-			//else if player[i] use controller
 			xPosition += 350;
 		}
-		//font12.draw(batch, Keys.toString(player[0].controlBack), 200, 370);
 		if(changeControl)
 		{
 			batch.draw(gray, 0, 0, 1350, 750);
@@ -1125,15 +1111,15 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		}
 		if (cursorPosition == 1)
 		{
-			temparrow.setY(350);
+			menuArrow.setY(350);
 		}
 		else if (cursorPosition == 2)
 		{
-			temparrow.setY(180);
+			menuArrow.setY(180);
 		}
 		else if (cursorPosition == 3)
 		{
-			temparrow.setY(80);
+			menuArrow.setY(80);
 		}
 	}
 
@@ -2097,15 +2083,15 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				}
 				if (cursorPosition == 1)
 				{
-					temparrow.setY(350);
+					menuArrow.setY(350);
 				}
 				else if (cursorPosition == 2)
 				{
-					temparrow.setY(180);
+					menuArrow.setY(180);
 				}
 				else if (cursorPosition == 3)
 				{
-					temparrow.setY(80);
+					menuArrow.setY(80);
 				}
 			}
 		}
@@ -2192,7 +2178,67 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	
 	public void buttonDownInGameStage(int buttonCode)
 	{
-		
+		for (int i = 0; i < 4; i++)
+		{
+			if (player[i].controlType.equals("keyboard"))
+			{
+				continue;
+			}
+			for (int j = 0; j < Controllers.getControllers().size; j++)
+			{
+				if (player[i].controllerCount != j)
+				{
+					continue;
+				}
+				// start if control here
+				if (player[i].dead  || playerCount <= 1 || !player[i].isVisible())
+				{
+					continue;
+				}
+				if (buttonCode == player[i].controlBack)
+				{
+					screen = "pause";
+				}
+				if (buttonCode == player[i].controlLeft)
+				{
+					player[i].leftPressed = true;
+					player[i].upPressed = false;
+					player[i].downPressed = false;
+					player[i].rightPressed = false;
+				}// use if or else if here?? use normal if will make character to walk diagonal and bug... i guess?
+				else if (buttonCode == player[i].controlRight)
+				{
+					player[i].rightPressed = true;
+					player[i].upPressed = false;
+					player[i].downPressed = false;
+					player[i].leftPressed = false;
+				}
+				else if (buttonCode == player[i].controlUp)
+				{
+					player[i].upPressed = true;
+					player[i].leftPressed = false;
+					player[i].rightPressed = false;
+					player[i].downPressed = false;
+				}
+				else if (buttonCode == player[i].controlDown)
+				{
+					player[i].downPressed = true;
+					player[i].leftPressed = false;
+					player[i].rightPressed = false;
+					player[i].upPressed = false;
+				}
+				
+				if (buttonCode == player[i].controlAttack && player[i].currentChargeTime <= 0 && player[i].currentAttackCooldown <= 0)
+				{
+					//				if (player[i].currentAttackCooldown <= 0 && !player[i].charging)// change hereeeeeeeeeeeeeeee
+					//				{
+					//					player[i].currentChargeTime = player[i].attackChargeTime;
+					//					player[i].charging = true;
+					//				}
+					player[i].charging = true;
+				}
+			}
+		}
 	}
 	
 	public void buttonDownInEndStage(int buttonCode)
@@ -2309,7 +2355,107 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	@Override
 	public boolean buttonUp(Controller controller, int buttonCode) {
 		// TODO Auto-generated method stub
-		return false;
+		if (screen.equals("game"))
+		{
+			buttonUpInGameStage(buttonCode);
+		}
+		return true;
+	}
+	
+	public void buttonUpInGameStage(int buttonCode)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (player[i].controlType.equals("keyboard"))
+			{
+				continue;
+			}
+			for (int j = 0; j < Controllers.getControllers().size; j++)
+			{
+				if (player[i].controllerCount != j)
+				{
+					continue;
+				}
+				// start if control here
+				if (buttonCode == player[i].controlLeft)
+				{
+					//				player[i].speedLeft = 0;
+					player[i].leftPressed = false;
+					if (player[i].speedRight > 0)
+					{
+						player[i].direction = "right";
+					}
+					if (player[i].speedUp > 0)
+					{
+						player[i].direction = "up";
+					}
+					if (player[i].speedDown > 0)
+					{
+						player[i].direction = "down";
+					}
+				}
+				if (buttonCode == player[i].controlRight)
+				{
+					//				player[i].speedRight = 0;
+					player[i].rightPressed = false;
+					if (player[i].speedLeft > 0)
+					{
+						player[i].direction = "left";
+					}
+					if (player[i].speedUp > 0)
+					{
+						player[i].direction = "up";
+					}
+					if (player[i].speedDown > 0)
+					{
+						player[i].direction = "down";
+					}
+				}
+				if (buttonCode ==  player[i].controlUp)
+				{
+					//				player[i].speedUp = 0;
+					player[i].upPressed = false;
+					if (player[i].speedDown > 0)
+					{
+						player[i].direction = "down";
+					}
+					if (player[i].speedLeft > 0)
+					{
+						player[i].direction = "left";
+					}
+					if (player[i].speedRight > 0)
+					{
+						player[i].direction = "right";
+					}
+				}
+				if (buttonCode == player[i].controlDown)
+				{
+					//				player[i].speedDown = 0;
+					player[i].downPressed = false;
+					if (player[i].speedUp > 0)
+					{
+						player[i].direction = "up";
+					}
+					if (player[i].speedLeft > 0)
+					{
+						player[i].direction = "left";
+					}
+					if (player[i].speedRight > 0)
+					{
+						player[i].direction = "right";
+					}
+				}
+				if (buttonCode == player[i].controlAttack && player[i].charging)
+				{
+					player[i].attacking = true;
+					player[i].charging = false;
+					if (player[i].currentChargeTime < 0.5f)
+					{
+						player[i].currentChargeTime = 0.5f;
+					}
+				}
+			}// controller loop
+		}
 	}
 
 	@Override
@@ -2379,15 +2525,15 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				}
 				if (cursorPosition == 1)
 				{
-					temparrow.setY(350);
+					menuArrow.setY(350);
 				}
 				else if (cursorPosition == 2)
 				{
-					temparrow.setY(180);
+					menuArrow.setY(180);
 				}
 				else if (cursorPosition == 3)
 				{
-					temparrow.setY(80);
+					menuArrow.setY(80);
 				}
 			}
 		}
