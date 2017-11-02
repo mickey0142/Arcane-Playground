@@ -39,12 +39,12 @@ public class PlayerWeapon extends Actor{
 	static TextureAtlas axeLV3 = new TextureAtlas(Gdx.files.internal("axelv3.atlas"));
 	static Animation<TextureRegion> axeLV3Anim = new Animation<TextureRegion>(0.1f, axeLV3.getRegions());
 	
-	static TextureAtlas bow = new TextureAtlas(Gdx.files.internal("axe.atlas"));
+	static TextureAtlas bow = new TextureAtlas(Gdx.files.internal("bow.atlas"));
 	static Animation<TextureRegion> bowAnim = new Animation<TextureRegion>(0.1f, bow.getRegions());
-//	static TextureAtlas bowLV2 = new TextureAtlas(Gdx.files.internal("bowlv2.atlas"));
-//	static Animation<TextureRegion> bowLV2Anim = new Animation<TextureRegion>(0.1f, bowLV2.getRegions());
-//	static TextureAtlas bowLV3 = new TextureAtlas(Gdx.files.internal("bowlv3.atlas"));
-//	static Animation<TextureRegion> bowLV3Anim = new Animation<TextureRegion>(0.1f, bowLV3.getRegions());
+	static TextureAtlas bowLV2 = new TextureAtlas(Gdx.files.internal("bowlv2.atlas"));
+	static Animation<TextureRegion> bowLV2Anim = new Animation<TextureRegion>(0.1f, bowLV2.getRegions());
+	static TextureAtlas bowLV3 = new TextureAtlas(Gdx.files.internal("bowlv3.atlas"));
+	static Animation<TextureRegion> bowLV3Anim = new Animation<TextureRegion>(0.1f, bowLV3.getRegions());
 	// all weapon here
 	
 	public PlayerWeapon()
@@ -146,7 +146,12 @@ public class PlayerWeapon extends Actor{
 		}
 		else if (player.weaponName.equals("bow"))
 		{
-			//set width height origin for bow here
+			originX = 16;
+			originY = 46;
+			moveX = 15;
+			moveY = -5;
+			this.setWidth(50);
+			this.setHeight(70);
 		}
 		float shiftX = 0;
 		float shiftY = 0;
@@ -165,6 +170,7 @@ public class PlayerWeapon extends Actor{
 				else if (player.weaponName.equals("sword") && player.weaponLV == 3)this.setX(this.getX()-35);
 				else if(player.weaponName.equals("sword"))this.setX(this.getX()-25);
 				else if (player.weaponName.equals("fist"))this.setX(this.getX()-35);
+				else if (player.weaponName.equals("bow"))this.setX(this.getX()-100);
 			}
 			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX+shiftX, this.getY()+moveY+shiftY, originX, originY, this.getWidth(), this.getHeight(), 1, 1, 90);
 			
@@ -184,6 +190,7 @@ public class PlayerWeapon extends Actor{
 				else if (player.weaponName.equals("sword") && player.weaponLV == 3)this.setX(this.getX()-35);
 				else if(player.weaponName.equals("sword"))this.setX(this.getX()-25);
 				else if (player.weaponName.equals("fist"))this.setX(this.getX()-35);
+				else if (player.weaponName.equals("bow"))this.setX(this.getX()-100);
 			}
 			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX+shiftX, this.getY()+moveY+shiftY, originX, originY, -this.getWidth(), this.getHeight(), 1, 1, 90);
 			

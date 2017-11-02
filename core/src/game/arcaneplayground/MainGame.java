@@ -559,10 +559,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			gameStageRender();
 			batch.begin();
-			if(player[0].isVisible())font10.draw(batch, "LV." + player[0].weaponLV, 263, 668);
-			if(player[1].isVisible())font10.draw(batch, "LV." + player[1].weaponLV, 563, 668);
-			if(player[2].isVisible())font10.draw(batch, "LV." + player[2].weaponLV, 863, 668);
-			if(player[3].isVisible())font10.draw(batch, "LV." + player[3].weaponLV, 1163, 668);
+			if(player[0].isVisible())font10.draw(batch, "LV." + player[0].weaponLV, weaponSprite[0].getX(), weaponSprite[0].getY()-12);
+			if(player[1].isVisible())font10.draw(batch, "LV." + player[1].weaponLV, weaponSprite[1].getX(), weaponSprite[1].getY()-12);
+			if(player[2].isVisible())font10.draw(batch, "LV." + player[2].weaponLV, weaponSprite[2].getX(), weaponSprite[2].getY()-12);
+			if(player[3].isVisible())font10.draw(batch, "LV." + player[3].weaponLV, weaponSprite[3].getX(), weaponSprite[3].getY()-12);
 			batch.end();
 			if (playerCount <= 1)
 			{
