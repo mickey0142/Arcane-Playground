@@ -42,6 +42,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	UI menuBackground;
 	UI menuArrow;
 	UI menuButtonStart;
+	UI menuButtonSetting;
+	UI menuButtonHowto;
+	UI menuButtonExit;
 	
 	Stage character;
 	int characterIndex[] = new int[4];// change 4 to number of character texture here
@@ -147,9 +150,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		menuBackground.setAnimation(temp);
 		menuBackground.currentAnim.setFrameDuration(0.2f);
 		menuArrow = new UI("pointer.png", 250, 350, 32, 32);
-		menuButtonStart = new UI("whitebox.png", 200, 200, 50, 50);
+		menuButtonStart = new UI("whitebox.png", 800, 280, 285, 70);
+		menuButtonSetting = new UI("whitebox.png", 200, 200, 50, 50);
+		menuButtonHowto = new UI("whitebox.png", 200, 200, 50, 50);
+		menuButtonExit = new UI("whitebox.png", 166, 70, 445, 100);
 		menu.addActor(menuBackground);
 		menu.addActor(menuArrow);
+		menu.addActor(menuButtonStart);
+		menu.addActor(menuButtonExit);
 	}
 
 	public void createInCharacterStage()
@@ -1611,7 +1619,28 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (mousePositionStage.y >= menuButtonStart.getY() && mousePositionStage.y <= menuButtonStart.getY()+menuButtonStart.getHeight())
 			{
-				// do something hereeee
+				System.out.println("start");
+			}
+		}
+		else if (mousePositionStage.x >= menuButtonSetting.getX() && mousePositionStage.x <= menuButtonSetting.getX()+menuButtonSetting.getWidth())
+		{
+			if (mousePositionStage.y >= menuButtonSetting.getY() && mousePositionStage.y <= menuButtonSetting.getY()+menuButtonSetting.getHeight())
+			{
+				System.out.println("setting");
+			}
+		}
+		else if (mousePositionStage.x >= menuButtonHowto.getX() && mousePositionStage.x <= menuButtonHowto.getX()+menuButtonHowto.getWidth())
+		{
+			if (mousePositionStage.y >= menuButtonHowto.getY() && mousePositionStage.y <= menuButtonHowto.getY()+menuButtonHowto.getHeight())
+			{
+				System.out.println("howto");
+			}
+		}
+		else if (mousePositionStage.x >= menuButtonExit.getX() && mousePositionStage.x <= menuButtonExit.getX()+menuButtonExit.getWidth())
+		{
+			if (mousePositionStage.y >= menuButtonExit.getY() && mousePositionStage.y <= menuButtonExit.getY()+menuButtonExit.getHeight())
+			{
+				System.out.println("exit");
 			}
 		}
 	}
