@@ -1,6 +1,7 @@
 package game.arcaneplayground;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -17,6 +18,7 @@ public class NormalWall extends GameObject{
 	static TextureRegion hp3, hp2, hp1, hp0;
 
 	static TextureAtlas wall1 = new TextureAtlas("normalwall.atlas");
+	static Sound wallBreakSound = Gdx.audio.newSound(Gdx.files.internal("audio/wallbreak.ogg"));
 
 	public NormalWall()
 	{
@@ -41,7 +43,7 @@ public class NormalWall extends GameObject{
 			{
 				spawnItem(itemdrop);
 				dropItem = true;
-				// add wall destroy sound here
+				wallBreakSound.play(0.5f);
 			}
 			this.hitbox.setX(-1000);
 			this.hitbox.setY(-1000);

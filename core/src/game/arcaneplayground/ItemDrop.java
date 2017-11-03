@@ -1,6 +1,7 @@
 package game.arcaneplayground;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -14,6 +15,7 @@ public class ItemDrop extends GameObject{
 	TextureAtlas effectAtlas, weaponAtlas[] = new TextureAtlas[3];
 	Animation<TextureRegion> effectAnimation, weaponAnimation, weaponLV2Animation, weaponLV3Animation;
 	String weaponName;
+	Sound weaponSound;
 	
 	static int dropCount = 0;
 	static Texture swordDropTexture = new Texture(Gdx.files.internal("sworddrop.png"));
@@ -125,6 +127,7 @@ public class ItemDrop extends GameObject{
 				effectAnimation = EffectRenderer.swordAnimation;
 				weaponAtlas[2] = PlayerWeapon.swordLV3;
 				weaponLV3Animation = PlayerWeapon.swordLV3Anim;
+				weaponSound = PlayerWeapon.swordSound;
 			}
 			else if (num >= 26 && num <= 50)
 			{
@@ -157,6 +160,7 @@ public class ItemDrop extends GameObject{
 				effectAnimation = EffectRenderer.spearAnimation;
 				weaponAtlas[2] = PlayerWeapon.spearLV3;
 				weaponLV3Animation = PlayerWeapon.spearLV3Anim;
+				weaponSound = PlayerWeapon.spearSound;
 			}
 			else if (num >= 51 && num <= 75)
 			{
@@ -189,6 +193,7 @@ public class ItemDrop extends GameObject{
 				effectAnimation = EffectRenderer.swordAnimation;
 				weaponAtlas[2] = PlayerWeapon.axeLV3;
 				weaponLV3Animation = PlayerWeapon.axeLV3Anim;
+				weaponSound = PlayerWeapon.axeSound;
 			}
 			else if (num >= 76 && num <= 100)
 			{
@@ -217,6 +222,7 @@ public class ItemDrop extends GameObject{
 				attack[2] = BOWLV3_ATTACK;
 				weaponAtlas[2] = PlayerWeapon.bowLV3;
 				weaponLV3Animation = PlayerWeapon.bowLV3Anim;
+				weaponSound = PlayerWeapon.bowSound;
 			}
 			dropCount += 1;
 			dropped = true;

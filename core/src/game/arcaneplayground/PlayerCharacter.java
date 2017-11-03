@@ -1,6 +1,7 @@
 package game.arcaneplayground;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -57,6 +58,7 @@ public class PlayerCharacter extends Actor{
 	GameObject checkBlock;
 	Arrow arrow;
 	Balloon balloon;
+	Sound attackSound;
 	
 	static TextureAtlas heart = new TextureAtlas(Gdx.files.internal("heart.atlas"));
 	static Animation<TextureRegion> heart3 = new Animation<TextureRegion>(1f, heart.findRegions("0003"));
@@ -100,6 +102,7 @@ public class PlayerCharacter extends Actor{
 		updateHPBar();
 		this.weaponAtlas = weaponAtlas;
 		this.weaponAnim = weaponAnim;
+		attackSound = PlayerWeapon.fistSound;
 		
 		// temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp
 		temp = new Texture(Gdx.files.internal("box.png"));
@@ -285,6 +288,7 @@ public class PlayerCharacter extends Actor{
 				weaponAnim = item.weaponLV2Animation;
 				weaponLV = 2;
 				weapon.updateWeaponAnimation();
+				attackSound = item.weaponSound;
 			}
 			else if (weaponLV == 2)
 			{
@@ -298,6 +302,7 @@ public class PlayerCharacter extends Actor{
 				weaponAnim = item.weaponLV3Animation;
 				weaponLV = 3;
 				weapon.updateWeaponAnimation();
+				attackSound = item.weaponSound;
 			}
 		}
 		else
@@ -313,6 +318,7 @@ public class PlayerCharacter extends Actor{
 			weaponAtlas = item.weaponAtlas[0];
 			weaponAnim = item.weaponAnimation;
 			weapon.updateWeaponAnimation();
+			attackSound = item.weaponSound;
 		}
 	}
 	
@@ -435,5 +441,14 @@ public class PlayerCharacter extends Actor{
 		checkBlock.setVisible(ingame);
 		//arrow.setVisible(ingame);
 		this.setVisible(ingame);
+		if (ingame)
+		{
+			this.updateHitbox();
+		}
+		else
+		{
+			hitbox.setX(-1000);
+			hitbox.setY(-1000);
+		}
 	}
 }

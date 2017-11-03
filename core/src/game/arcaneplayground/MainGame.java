@@ -6,6 +6,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
@@ -99,7 +100,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	UI playerControlType[];
 	int playerCount;
 	
-	Music menuMusic;
+	Music menuMusic, gameMusic, endMusic;
+	Sound damagedSound, hpDownSound, deadSound, trapHitSound, parryArrowSound, healSound, collectSound, cursorSound, cancelSound, confirmSound, victorySound;
 
 	@Override
 	public void create () {
@@ -114,6 +116,18 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		howTo = new Stage(new FitViewport(1350, 750));
 
 		screen = "menu";
+		
+		damagedSound = Gdx.audio.newSound(Gdx.files.internal("audio/damaged.ogg"));
+		hpDownSound = Gdx.audio.newSound(Gdx.files.internal("audio/hpdown.ogg"));
+		deadSound = Gdx.audio.newSound(Gdx.files.internal("audio/dead.ogg"));
+		trapHitSound = Gdx.audio.newSound(Gdx.files.internal("audio/trap.ogg"));
+		parryArrowSound = Gdx.audio.newSound(Gdx.files.internal("audio/parryarrow.ogg"));
+		healSound = Gdx.audio.newSound(Gdx.files.internal("audio/heal.ogg"));
+		collectSound = Gdx.audio.newSound(Gdx.files.internal("audio/collect.ogg"));
+		cursorSound = Gdx.audio.newSound(Gdx.files.internal("audio/cursor.ogg"));
+		cancelSound = Gdx.audio.newSound(Gdx.files.internal("audio/cancel.ogg"));
+		confirmSound = Gdx.audio.newSound(Gdx.files.internal("audio/confirm.ogg"));
+		victorySound = Gdx.audio.newSound(Gdx.files.internal("audio/victory.ogg"));
 
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/font.ttf"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
@@ -165,7 +179,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		menu.addActor(menuArrow);
 		menu.addActor(menuButtonStart);
 		menu.addActor(menuButtonExit);
-		menuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/airship.ogg"));
+		menuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/menumusic.ogg"));
 		menuMusic.setLooping(true);
 	}
 
@@ -252,7 +266,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	{
 		gameBackground = new UI("gamebackground.jpg", 0, 0, 1350, 750, false);
 		playGround = new GameObject("playground.png", 25, 0, 1300, 650, false);
-
+		gameMusic  = Gdx.audio.newMusic(Gdx.files.internal("audio/gamemusic.ogg"));
+		gameMusic.setLooping(true);
+		
 		playerSprite = new UI[4];
 		playerSprite[0] = new UI("whitebox.png", 30, 660, 60, 60);
 		playerSprite[0].animation = true;
@@ -511,7 +527,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 
 	public void createInEndStage()
 	{
-
+		endMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/endmusic.ogg"));
+		endMusic.setLooping(true);
 	}
 
 	public void createInPauseStage()
@@ -576,7 +593,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			if (!menuMusic.isPlaying())
 			{
 				menuMusic.play();
+				menuMusic.setVolume(0.2f);
 			}
+			gameMusic.stop();
+			endMusic.stop();
 			menuStageRender();
 		}
 		else if (screen.equals("character"))
@@ -585,6 +605,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		}
 		else if (screen.equals("game"))
 		{
+			if (!gameMusic.isPlaying())
+			{
+				gameMusic.play();
+				gameMusic.setVolume(0.3f);
+			}
+			menuMusic.stop();
+			endMusic.stop();
 			gameStageRender();
 			batch.begin();
 			if(player[0].isVisible())font10.draw(batch, "LV." + player[0].weaponLV, weaponSprite[0].getX(), weaponSprite[0].getY()-12);
@@ -599,6 +626,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			if (delay <= 0)
 			{
 				screen = "end";
+				victorySound.play();
 				if (playerCount == 1)
 				{
 					int numPlayerWin = 0;
@@ -624,6 +652,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		}
 		else if (screen.equals("end"))
 		{
+			if (!endMusic.isPlaying())
+			{
+				endMusic.play();
+				endMusic.setVolume(0.2f);
+			}
+			menuMusic.stop();
+			gameMusic.stop();
 			endStageRender();
 		}
 		else if (screen.equals("pause"))
@@ -678,7 +713,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				{
 					if (checkCollision(allPlayer, item))
 					{
-						// add item collect sound here
+						collectSound.play();
 						item.dropped = false;
 						item.setVisible(item.dropped);
 						ItemDrop.dropCount -= 1;
@@ -707,7 +742,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			{
 				if (checkCollision(allPlayer, trap) && ((SpikeTrap)trap).active && allPlayer.trapDelay <= 0)
 				{
-					// add trap sound here
+					trapHitSound.play();
 					allPlayer.trapDelay = 2;
 					allPlayer.balloon.runAnimation("1");
 					if (allPlayer.armor > 0)
@@ -729,6 +764,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 						{
 							allPlayer.dead = true;
 							playerCount -= 1;
+							deadSound.play();
 						}
 					}
 				}
@@ -747,7 +783,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				{
 					if (!allPlayer.arrow.isVisible())
 					{
-						// add bow attack sound here
+						allPlayer.attackSound.play();
 						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
 						allPlayer.arrow.setVisible(true);
 						if (allPlayer.chargeMax)
@@ -780,7 +816,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 					}
 					if (checkCollision(allPlayer.arrow, arrow))// attack effect bug may happen here because of arrowcount arrowcount2 loopcount three of these is confusing 
 					{
-						// add arrow hit sound here
+						PlayerWeapon.fistSound.play();
 						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
 						allPlayer.arrow.setVisible(false);
 						((Arrow)arrow).setArrow(player[arrowCount2].getX()+25, player[arrowCount2].getY()+20, player[arrowCount2].direction, player[arrowCount2].weaponLV);
@@ -803,7 +839,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				{
 					if (checkCollision(allPlayer.arrow, wall))
 					{
-						// add arrow hit sound here
+						PlayerWeapon.fistSound.play();
 						if (allPlayer.arrow.speedX != 0)attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
 						else attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
 						attackEffectRenderer[loopCount].check = true;
@@ -820,7 +856,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 					{
 						if (wall instanceof NormalWall)
 						{
-							// add arrow hit sound here
+							PlayerWeapon.fistSound.play();
 							if (arrowCharged[arrowCount])
 							{
 								((NormalWall) wall).hp -= 3;
@@ -844,7 +880,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				{
 					if (checkCollision(allPlayer.arrow, item))
 					{
-						// add arrow hit sound here
+						PlayerWeapon.fistSound.play();
 						item.dropped = false;
 						item.setVisible(item.dropped);
 						ItemDrop.dropCount -= 1;
@@ -868,7 +904,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 					}
 					if (checkCollision(otherPlayer, allPlayer.arrow) && !otherPlayer.hurt)
 					{
-						// add arrow hit sound here
+						PlayerWeapon.fistSound.play();
 						otherPlayer.regenDelay = 5f;
 						if (otherPlayer.armor <= 0)
 						{
@@ -879,6 +915,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 							{
 								otherPlayer.dead = true;
 								playerCount -= 1;
+								deadSound.play();
 							}
 						}
 						else
@@ -1102,6 +1139,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	{
 		if (keycode == Keys.ENTER)
 		{
+			confirmSound.play();
 			if (cursorPosition == 1)
 			{
 				screen = "character";
@@ -1125,10 +1163,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			if (keycode == allPlayer.controlRight)
 			{
 				cursorPosition = 1;
+				cursorSound.play();
 			}
 			if (keycode == allPlayer.controlLeft)
 			{
 				cursorPosition = 2;
+				cursorSound.play();
 			}
 			if (cursorPosition == 1)
 			{
@@ -1137,6 +1177,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			if (keycode == allPlayer.controlDown)
 			{
 				cursorPosition += 1;
+				cursorSound.play();
 				if (cursorPosition > 4)
 				{
 					cursorPosition = 2;
@@ -1145,6 +1186,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			else if (keycode == allPlayer.controlUp)
 			{
 				cursorPosition -= 1;
+				cursorSound.play();
 				if (cursorPosition <= 1)// change this if there is more than 2 button
 				{
 					cursorPosition = 4;
@@ -1152,6 +1194,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			}
 			if (keycode == allPlayer.controlAttack)
 			{
+				confirmSound.play();
 				if (cursorPosition == 1)
 				{
 					screen = "character";
@@ -1199,6 +1242,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			createMap();
 			screen = "game";
+			confirmSound.play();
 			for (int i = 0; i < 4; i++)
 			{
 				if (!player[i].isVisible())
@@ -1218,9 +1262,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		else if (keycode == Keys.ESCAPE)
 		{
 			screen = "menu";
+			cancelSound.play();
 			resetVariableInCharacterStage();
 		}
-		for (int i = 0; i<4; i++)// change this i<2 to i<numberofplayer later 
+		for (int i = 0; i<4; i++)
 		{
 			if (!player[i].controlType.equals("keyboard"))
 			{
@@ -1229,12 +1274,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			if (keycode == player[i].controlBack && playerCount == 0)
 			{
 				screen = "menu";
+				cancelSound.play();
 				resetVariableInCharacterStage();
 			}
 			if (keycode == player[i].controlAttack)
 			{
 				if (!playerCharacterSelect[i].isVisible())
 				{
+					confirmSound.play();
 					playerCharacterSelect[i].setVisible(true);
 					playerCount += 1;
 					player[i].setIngame(true);
@@ -1244,6 +1291,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			{
 				if (playerCharacterSelect[i].isVisible())
 				{
+					cancelSound.play();
 					playerCharacterSelect[i].setVisible(false);
 					playerCount -= 1;
 					player[i].setIngame(false);
@@ -1253,6 +1301,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			{
 				if (keycode == player[i].controlLeft)
 				{
+					cursorSound.play();
 					if (characterIndex[i]-1 >= 0)
 					{
 						characterIndex[i] -= 1;
@@ -1260,6 +1309,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				}
 				else if (keycode == player[i].controlRight)
 				{
+					cursorSound.play();
 					if (characterIndex[i]+1 <= 4)// change 4 to number of character texture here
 					{
 						characterIndex[i] += 1;
@@ -1294,6 +1344,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		if (keycode == Keys.ESCAPE)
 		{
 			screen = "pause";
+			cancelSound.play();
 		}
 		for (PlayerCharacter allPlayer : player) {
 			//			if (allPlayer.charging)
@@ -1307,6 +1358,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			if (keycode == allPlayer.controlBack)
 			{
 				screen = "pause";
+				cancelSound.play();
 			}
 			if (keycode == allPlayer.controlLeft)
 			{
@@ -1363,6 +1415,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	{
 		if (keycode == Keys.ESCAPE)
 		{
+			cancelSound.play();
 			screen = "game";
 			// end all lingering input
 			pauseCursorPosition = 1;
@@ -1385,6 +1438,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		}
 		else if (keycode == Keys.ENTER)
 		{
+			confirmSound.play();
 			if (pauseCursorPosition == 1)// continue
 			{
 				screen = "game";
@@ -1424,6 +1478,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (keycode == allPlayer.controlBack)
 			{
+				cancelSound.play();
 				screen = "game";
 				pauseCursorPosition = 1;
 				// end all lingering input
@@ -1446,6 +1501,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			}
 			if (keycode == allPlayer.controlDown)
 			{
+				cursorSound.play();
 				pauseCursorPosition += 1;
 				if (pauseCursorPosition > 3)
 				{
@@ -1454,6 +1510,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			}
 			else if (keycode == allPlayer.controlUp)
 			{
+				cursorSound.play();
 				pauseCursorPosition -= 1;
 				if (pauseCursorPosition < 1)
 				{
@@ -1462,6 +1519,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			}
 			else if (keycode == allPlayer.controlAttack)
 			{
+				confirmSound.play();
 				if (pauseCursorPosition == 1)// continue
 				{
 					screen = "game";
@@ -1518,10 +1576,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (keycode == Keys.ESCAPE)
 			{
+				cancelSound.play();
 				changeControl = false;
 			}
 			else if (player[playerNumber].controlType.equals("keyboard"))
 			{
+				confirmSound.play();
 				if (controlName.equals("up"))
 				{
 					player[playerNumber].controlUp = keycode;
@@ -1553,6 +1613,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (keycode == Keys.ESCAPE)
 			{
+				cancelSound.play();
 				screen = back;
 			}
 		}
@@ -1562,12 +1623,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	{
 		if (keycode == Keys.ESCAPE)
 		{
+			cancelSound.play();
 			screen = "menu";
 		}
 		for (PlayerCharacter allPlayer : player)
 		{
 			if (keycode == allPlayer.controlBack)
 			{
+				cancelSound.play();
 				screen = "menu";
 			}
 		}
@@ -1697,6 +1760,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			if (mousePosition.y >= menuButtonStart.getY() && mousePosition.y <= menuButtonStart.getY()+menuButtonStart.getHeight())
 			{
 				screen = "character";
+				confirmSound.play();
 			}
 		}
 		else if (mousePosition.x >= menuButtonSetting.getX() && mousePosition.x <= menuButtonSetting.getX()+menuButtonSetting.getWidth())
@@ -1705,6 +1769,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			{
 				screen = "setting";
 				back = "menu";
+				confirmSound.play();
 			}
 		}
 		else if (mousePosition.x >= menuButtonHowto.getX() && mousePosition.x <= menuButtonHowto.getX()+menuButtonHowto.getWidth())
@@ -1712,6 +1777,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			if (mousePosition.y >= menuButtonHowto.getY() && mousePosition.y <= menuButtonHowto.getY()+menuButtonHowto.getHeight())
 			{
 				screen = "howto";
+				confirmSound.play();
 			}
 		}
 		else if (mousePosition.x >= menuButtonExit.getX() && mousePosition.x <= menuButtonExit.getX()+menuButtonExit.getWidth())
@@ -1737,36 +1803,42 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 						changeControl = true;
 						playerNumber = i;
 						controlName = "up";
+						confirmSound.play();
 					}
 					else if (mousePosition.y >= 330 && mousePosition.y <= 389)
 					{
 						changeControl = true;
 						playerNumber = i;
 						controlName = "down";
+						confirmSound.play();
 					}
 					else if (mousePosition.y >= 270 && mousePosition.y <= 329)
 					{
 						changeControl = true;
 						playerNumber = i;
 						controlName = "left";
+						confirmSound.play();
 					}
 					else if (mousePosition.y >= 210 && mousePosition.y <= 269)
 					{
 						changeControl = true;
 						playerNumber = i;
 						controlName = "right";
+						confirmSound.play();
 					}
 					else if (mousePosition.y >= 150 && mousePosition.y <= 209)
 					{
 						changeControl = true;
 						playerNumber = i;
 						controlName = "attack";
+						confirmSound.play();
 					}
 					else if (mousePosition.y >= 90 && mousePosition.y <= 149)
 					{
 						changeControl = true;
 						playerNumber = i;
 						controlName = "back";
+						confirmSound.play();
 					}
 				}
 				xPosition += 350;
@@ -1787,18 +1859,21 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 							player[i].controlType = "controller1";
 							playerControlType[i].setAnimation(controlType, "0002");
 							player[i].controllerCount = 0;
+							confirmSound.play();
 						}
 						else if (player[i].controlType.equals("controller1"))
 						{
 							player[i].controlType = "controller2";
 							playerControlType[i].setAnimation(controlType, "0003");
 							player[i].controllerCount = 1;
+							confirmSound.play();
 						}
 						else if (player[i].controlType.equals("controller2"))
 						{
 							player[i].controlType = "keyboard";
 							playerControlType[i].setAnimation(controlType, "0001");
 							player[i].controllerCount = -1;
+							confirmSound.play();
 						}
 					}
 				}
@@ -1946,12 +2021,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 
 	public void checkPlayerAttack(PlayerCharacter playerAttack)
 	{
+		playerAttack.attackSound.play();
 		for (GameObject wall : normalWalls) {
 			if (checkCollision(playerAttack, wall, "attack"))
 			{
 				if (wall instanceof NormalWall)
 				{
-					// add wall attacked sound here
 					if (playerAttack.weaponName.equals("fist"))
 					{
 						((NormalWall) wall).hp -= 1;
@@ -1992,7 +2067,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				allPlayer.regenDelay = 5f;
 				if (allPlayer.armor <= 0)
 				{
-					// add player hurt sound here
+					hpDownSound.play();
 					allPlayer.hp -= 1;
 					allPlayer.hurt = true;
 					allPlayer.armor += 10;
@@ -2000,11 +2075,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 					{
 						allPlayer.dead = true;
 						playerCount -= 1;
+						deadSound.play();
 					}
 				}
 				else
 				{
-					// add player attacked sound here
+					damagedSound.play();
 					if (playerAttack.chargeMax)
 					{
 						allPlayer.armor -= playerAttack.attack*2;						
@@ -2025,7 +2101,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (checkCollision(playerAttack, arrow, "attack"))
 			{
-				// add arrow attacked sound here
+				parryArrowSound.play();
 				if (((Arrow)arrow).speedX != 0)attackEffectRenderer[arrowCount].setValue(((Arrow)arrow).hitbox.getX(), ((Arrow)arrow).hitbox.getY()-15, player[arrowCount].attackHitbox.getWidth(), player[arrowCount].attackHitbox.getHeight(), player[arrowCount].direction);
 				else attackEffectRenderer[arrowCount].setValue(((Arrow)arrow).hitbox.getX(), ((Arrow)arrow).hitbox.getY(), player[arrowCount].attackHitbox.getWidth(), player[arrowCount].attackHitbox.getHeight(), player[arrowCount].direction);
 				attackEffectRenderer[arrowCount].check = true;
@@ -2110,6 +2186,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			allPlayer.speedRight = 0;
 			allPlayer.arrow.setX(-100);
 			allPlayer.arrow.setY(-100);
+			allPlayer.attackSound = PlayerWeapon.fistSound;
 			if (allPlayer == player[0])
 			{
 				allPlayer.setX(50);
@@ -2185,6 +2262,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (controller == Controllers.getControllers().get(player[playerNumber].controllerCount))
 			{
+				confirmSound.play();
 				if (controlName.equals("up"))
 				{
 					player[playerNumber].controlUp = buttonCode;
@@ -2228,14 +2306,17 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				if (buttonCode == player[i].controlRight)
 				{
 					cursorPosition = 1;
+					cursorSound.play();
 				}
 				if (buttonCode == player[i].controlLeft)
 				{
 					cursorPosition = 2;
+					cursorSound.play();
 				}
 				if (buttonCode == player[i].controlDown && cursorPosition != 1)
 				{
 					cursorPosition += 1;
+					cursorSound.play();
 					if (cursorPosition > 4)
 					{
 						cursorPosition = 2;
@@ -2244,6 +2325,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				else if (buttonCode == player[i].controlUp && cursorPosition != 1)
 				{
 					cursorPosition -= 1;
+					cursorSound.play();
 					if (cursorPosition <= 1)// change this if there is more than 2 button
 					{
 						cursorPosition = 4;
@@ -2251,6 +2333,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				}
 				if (buttonCode == player[i].controlAttack)
 				{
+					confirmSound.play();
 					if (cursorPosition == 1)
 					{
 						screen = "character";
@@ -2308,6 +2391,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				{
 					screen = "menu";
 					resetVariableInCharacterStage();
+					cancelSound.play();
 				}
 				if (buttonCode == player[i].controlAttack)
 				{
@@ -2316,6 +2400,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 						playerCharacterSelect[i].setVisible(true);
 						playerCount += 1;
 						player[i].setIngame(true);
+						confirmSound.play();
 					}
 				}
 				else if (buttonCode == player[i].controlBack)
@@ -2325,12 +2410,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 						playerCharacterSelect[i].setVisible(false);
 						playerCount -= 1;
 						player[i].setIngame(false);
+						cancelSound.play();
 					}
 				}
 				if (playerCharacterSelect[i].isVisible())
 				{
 					if (buttonCode == player[i].controlLeft)
 					{
+						cursorSound.play();
 						if (characterIndex[i]-1 >= 0)
 						{
 							characterIndex[i] -= 1;
@@ -2338,6 +2425,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 					}
 					else if (buttonCode == player[i].controlRight)
 					{
+						cursorSound.play();
 						if (characterIndex[i]+1 <= 4)// change 4 to number of character texture here
 						{
 							characterIndex[i] += 1;
@@ -2448,6 +2536,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				if (buttonCode == player[i].controlBack)
 				{
 					screen = "game";
+					cancelSound.play();
 					// end all lingering input
 					pauseCursorPosition = 1;
 					for (PlayerCharacter allPlayer : player)
@@ -2470,6 +2559,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				if (buttonCode == player[i].controlDown)
 				{
 					pauseCursorPosition += 1;
+					cursorSound.play();
 					if (pauseCursorPosition > 3)
 					{
 						pauseCursorPosition -= 1;
@@ -2478,6 +2568,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				else if (buttonCode == player[i].controlUp)
 				{
 					pauseCursorPosition -= 1;
+					cursorSound.play();
 					if (pauseCursorPosition < 1)
 					{
 						pauseCursorPosition += 1;
@@ -2485,6 +2576,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				}
 				else if (buttonCode == player[i].controlAttack)
 				{
+					confirmSound.play();
 					if (pauseCursorPosition == 1)// continue
 					{
 						screen = "game";
@@ -2549,6 +2641,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				if (buttonCode == player[i].controlBack)
 				{
 					screen = "menu";
+					cancelSound.play();
 				}
 			}
 		}
@@ -2696,6 +2789,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			}
 			if (Controllers.getControllers().get(player[i].controllerCount) == controller)
 			{
+				cursorSound.play();
 				if (value == PovDirection.east)
 				{
 					cursorPosition = 1;
@@ -2758,6 +2852,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				{
 					if (value == PovDirection.west)
 					{
+						cursorSound.play();
 						if (characterIndex[i]-1 >= 0)
 						{
 							characterIndex[i] -= 1;
@@ -2765,6 +2860,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 					}
 					else if (value == PovDirection.east)
 					{
+						cursorSound.play();
 						if (characterIndex[i]+1 <= 4)// change 4 to number of character texture here
 						{
 							characterIndex[i] += 1;
@@ -2809,6 +2905,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				if (value == PovDirection.south)
 				{
 					pauseCursorPosition += 1;
+					cursorSound.play();
 					if (pauseCursorPosition > 3)
 					{
 						pauseCursorPosition -= 1;
@@ -2817,6 +2914,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				else if (value == PovDirection.north)
 				{
 					pauseCursorPosition -= 1;
+					cursorSound.play();
 					if (pauseCursorPosition < 1)
 					{
 						pauseCursorPosition += 1;
