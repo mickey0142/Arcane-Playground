@@ -1696,7 +1696,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (mousePosition.y >= menuButtonStart.getY() && mousePosition.y <= menuButtonStart.getY()+menuButtonStart.getHeight())
 			{
-				System.out.println("start");
 				screen = "character";
 			}
 		}
@@ -1704,7 +1703,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (mousePosition.y >= menuButtonSetting.getY() && mousePosition.y <= menuButtonSetting.getY()+menuButtonSetting.getHeight())
 			{
-				System.out.println("setting");
 				screen = "setting";
 				back = "menu";
 			}
@@ -1713,7 +1711,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (mousePosition.y >= menuButtonHowto.getY() && mousePosition.y <= menuButtonHowto.getY()+menuButtonHowto.getHeight())
 			{
-				System.out.println("howto");
 				screen = "howto";
 			}
 		}
@@ -1721,7 +1718,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (mousePosition.y >= menuButtonExit.getY() && mousePosition.y <= menuButtonExit.getY()+menuButtonExit.getHeight())
 			{
-				System.out.println("exit");
 				Gdx.app.exit();
 			}
 		}
@@ -1738,42 +1734,36 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				{
 					if (mousePosition.y >= 390 && mousePosition.y <= 450)
 					{
-//						System.out.println("up");
 						changeControl = true;
 						playerNumber = i;
 						controlName = "up";
 					}
 					else if (mousePosition.y >= 330 && mousePosition.y <= 389)
 					{
-//						System.out.println("down");
 						changeControl = true;
 						playerNumber = i;
 						controlName = "down";
 					}
 					else if (mousePosition.y >= 270 && mousePosition.y <= 329)
 					{
-//						System.out.println("left");
 						changeControl = true;
 						playerNumber = i;
 						controlName = "left";
 					}
 					else if (mousePosition.y >= 210 && mousePosition.y <= 269)
 					{
-//						System.out.println("right");
 						changeControl = true;
 						playerNumber = i;
 						controlName = "right";
 					}
 					else if (mousePosition.y >= 150 && mousePosition.y <= 209)
 					{
-//						System.out.println("attack");
 						changeControl = true;
 						playerNumber = i;
 						controlName = "attack";
 					}
 					else if (mousePosition.y >= 90 && mousePosition.y <= 149)
 					{
-//						System.out.println("back");
 						changeControl = true;
 						playerNumber = i;
 						controlName = "back";
@@ -2160,68 +2150,71 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	public boolean buttonDown(Controller controller, int buttonCode) {
 		if (screen.equals("setting"))
 		{
-			buttonDownInSettingStage(buttonCode);
+			buttonDownInSettingStage(controller, buttonCode);
 		}
 		else if (screen.equals("menu"))
 		{
-			buttonDownInMenuStage(buttonCode);
+			buttonDownInMenuStage(controller, buttonCode);
 		}
 		else if (screen.equals("character"))
 		{
-			buttonDownInCharacterStage(buttonCode);
+			buttonDownInCharacterStage(controller, buttonCode);
 		}
 		else if (screen.equals("game"))
 		{
-			buttonDownInGameStage(buttonCode);
+			buttonDownInGameStage(controller, buttonCode);
 		}
 		else if (screen.equals("end"))
 		{
-			buttonDownInEndStage(buttonCode);
+			buttonDownInEndStage(controller, buttonCode);
 		}
 		else if (screen.equals("pause"))
 		{
-			buttonDownInPauseStage(buttonCode);
+			buttonDownInPauseStage(controller, buttonCode);
 		}
 		else if (screen.equals("howto"))
 		{
-			buttonDownInHowToStage(buttonCode);
+			buttonDownInHowToStage(controller, buttonCode);
 		}
 		return true;
 	}
 
-	public void buttonDownInSettingStage(int buttonCode)
+	public void buttonDownInSettingStage(Controller controller, int buttonCode)
 	{
 		if (changeControl && (player[playerNumber].controlType.equals("controller1") || player[playerNumber].controlType.equals("controller2")))
 		{
-			if (controlName.equals("up"))
+			if (controller == Controllers.getControllers().get(player[playerNumber].controllerCount))
 			{
-				player[playerNumber].controlUp = buttonCode;
+				if (controlName.equals("up"))
+				{
+					player[playerNumber].controlUp = buttonCode;
+				}
+				else if (controlName.equals("down"))
+				{
+					player[playerNumber].controlDown = buttonCode;
+				}
+				else if (controlName.equals("left"))
+				{
+					player[playerNumber].controlLeft = buttonCode;
+				}
+				else if (controlName.equals("right"))
+				{
+					player[playerNumber].controlRight = buttonCode;
+				}
+				else if (controlName.equals("attack"))
+				{
+					player[playerNumber].controlAttack = buttonCode;
+				}
+				else if (controlName.equals("back"))
+				{
+					player[playerNumber].controlBack = buttonCode;
+				}
+				changeControl = false;
 			}
-			else if (controlName.equals("down"))
-			{
-				player[playerNumber].controlDown = buttonCode;
-			}
-			else if (controlName.equals("left"))
-			{
-				player[playerNumber].controlLeft = buttonCode;
-			}
-			else if (controlName.equals("right"))
-			{
-				player[playerNumber].controlRight = buttonCode;
-			}
-			else if (controlName.equals("attack"))
-			{
-				player[playerNumber].controlAttack = buttonCode;
-			}
-			else if (controlName.equals("back"))
-			{
-				player[playerNumber].controlBack = buttonCode;
-			}
-			changeControl = false;
 		}
 	}
 
-	public void buttonDownInMenuStage(int buttonCode)
+	public void buttonDownInMenuStage(Controller controller, int buttonCode)
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -2229,13 +2222,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			{
 				continue;
 			}
-			for (int j = 0; j < Controllers.getControllers().size; j++)
+			if (Controllers.getControllers().get(player[i].controllerCount) == controller)
 			{
-				if (player[i].controllerCount != j)
-				{
-					System.out.println("skip");
-					continue;
-				}
 				// start if control here
 				if (buttonCode == player[i].controlRight)
 				{
@@ -2305,7 +2293,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		}
 	}
 	
-	public void buttonDownInCharacterStage(int buttonCode)
+	public void buttonDownInCharacterStage(Controller controller, int buttonCode)
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -2313,12 +2301,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			{
 				continue;
 			}
-			for (int j = 0; j < Controllers.getControllers().size; j++)
+			if (Controllers.getControllers().get(player[i].controllerCount) == controller)
 			{
-				if (player[i].controllerCount != j)
-				{
-					continue;
-				}
 				// start if control here
 				if (buttonCode == player[i].controlBack && playerCount == 0)
 				{
@@ -2380,11 +2364,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 						player[i].setTexture(PlayerCharacter.character4, PlayerCharacter.character4Dead);
 					}
 				}
-			}
+			}//}
 		}
 	}
 	
-	public void buttonDownInGameStage(int buttonCode)
+	public void buttonDownInGameStage(Controller controller, int buttonCode)
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -2392,12 +2376,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			{
 				continue;
 			}
-			for (int j = 0; j < Controllers.getControllers().size; j++)
+			if (Controllers.getControllers().get(player[i].controllerCount) == controller)
 			{
-				if (player[i].controllerCount != j)
-				{
-					continue;
-				}
 				// start if control here
 				if (player[i].dead  || playerCount <= 1 || !player[i].isVisible())
 				{
@@ -2449,12 +2429,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		}
 	}
 	
-	public void buttonDownInEndStage(int buttonCode)
+	public void buttonDownInEndStage(Controller controller, int buttonCode)
 	{
 		
 	}
 	
-	public void buttonDownInPauseStage(int buttonCode)
+	public void buttonDownInPauseStage(Controller controller, int buttonCode)
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -2462,12 +2442,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			{
 				continue;
 			}
-			for (int j = 0; j < Controllers.getControllers().size; j++)
+			if (Controllers.getControllers().get(player[i].controllerCount) == controller)
 			{
-				if (player[i].controllerCount != j)
-				{
-					continue;
-				}
 				//start if control here
 				if (buttonCode == player[i].controlBack)
 				{
@@ -2560,7 +2536,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		}
 	}
 	
-	public void buttonDownInHowToStage(int buttonCode)
+	public void buttonDownInHowToStage(Controller controller, int buttonCode)
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -2568,12 +2544,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			{
 				continue;
 			}
-			for (int j = 0; j < Controllers.getControllers().size; j++)
-			{
-				if (player[i].controllerCount != j)
-				{
-					continue;
-				}
+			if (Controllers.getControllers().get(player[i].controllerCount) == controller) {
 				//start if control here
 				if (buttonCode == player[i].controlBack)
 				{
@@ -2587,12 +2558,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	public boolean buttonUp(Controller controller, int buttonCode) {
 		if (screen.equals("game"))
 		{
-			buttonUpInGameStage(buttonCode);
+			buttonUpInGameStage(controller, buttonCode);
 		}
 		return true;
 	}
 	
-	public void buttonUpInGameStage(int buttonCode)
+	public void buttonUpInGameStage(Controller controller, int buttonCode)
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -2600,12 +2571,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			{
 				continue;
 			}
-			for (int j = 0; j < Controllers.getControllers().size; j++)
+			if (Controllers.getControllers().get(player[i].controllerCount) == controller)
 			{
-				if (player[i].controllerCount != j)
-				{
-					continue;
-				}
 				// start if control here
 				if (buttonCode == player[i].controlLeft)
 				{
@@ -2698,15 +2665,15 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	public boolean povMoved(Controller controller, int povCode, PovDirection value) {
 		if (screen.equals("menu"))
 		{
-			povInMenuStage(value);
+			povInMenuStage(controller, value);
 		}
 		else if (screen.equals("character"))
 		{
-			povInCharacterStage(value);
+			povInCharacterStage(controller, value);
 		}
 		else if (screen.equals("game"))
 		{
-			povInGameStage(value);
+			povInGameStage(controller, value);
 		}
 		else if (screen.equals("end"))
 		{
@@ -2714,12 +2681,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		}
 		else if (screen.equals("pause"))
 		{
-			povInPauseStage(value);
+			povInPauseStage(controller, value);
 		}
 		return true;
 	}
 
-	public void povInMenuStage(PovDirection value)
+	public void povInMenuStage(Controller controller, PovDirection value)
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -2727,14 +2694,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			{
 				continue;
 			}
-			int controllerNumber = 0;
-			for (int j = 0; j < Controllers.getControllers().size; j++)
+			if (Controllers.getControllers().get(player[i].controllerCount) == controller)
 			{
-				if (player[i].controllerCount != controllerNumber)
-				{
-					controllerNumber += 1 ;
-					continue;
-				}
 				if (value == PovDirection.east)
 				{
 					cursorPosition = 1;
@@ -2783,7 +2744,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		}
 	}
 	
-	public void povInCharacterStage(PovDirection value)
+	public void povInCharacterStage(Controller controller, PovDirection value)
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -2791,14 +2752,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			{
 				continue;
 			}
-			int controllerNumber = 0;
-			for (int j = 0; j < Controllers.getControllers().size; j++)
+			if (Controllers.getControllers().get(player[i].controllerCount) == controller)
 			{
-				if (player[i].controllerCount != controllerNumber)
-				{
-					controllerNumber += 1 ;
-					continue;
-				}
 				if (playerCharacterSelect[i].isVisible())
 				{
 					if (value == PovDirection.west)
@@ -2836,12 +2791,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 						player[i].setTexture(PlayerCharacter.character4, PlayerCharacter.character4Dead);
 					}
 				}
-				controllerNumber += 1;
 			}
 		}
 	}
 	
-	public void povInPauseStage(PovDirection value)
+	public void povInPauseStage(Controller controller, PovDirection value)
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -2849,12 +2803,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			{
 				continue;
 			}
-			for (int j = 0; j < Controllers.getControllers().size; j++)
+			if (Controllers.getControllers().get(player[i].controllerCount) == controller)
 			{
-				if (player[i].controllerCount != j)
-				{
-					continue;
-				}
 				//start check for input here
 				if (value == PovDirection.south)
 				{
@@ -2888,7 +2838,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		}
 	}
 
-	public void povInGameStage(PovDirection value)
+	public void povInGameStage(Controller controller, PovDirection value)
 	{
 		for (int i = 0; i < 4; i++)
 		{
@@ -2896,12 +2846,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			{
 				continue;
 			}
-			for (int j = 0; j < Controllers.getControllers().size; j++)
+			if (Controllers.getControllers().get(player[i].controllerCount) == controller)
 			{
-				if (player[i].controllerCount != j)
-				{
-					continue;
-				}
 				//start check for input here
 				if (value == PovDirection.north)
 				{

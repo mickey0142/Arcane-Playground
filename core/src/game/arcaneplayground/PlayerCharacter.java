@@ -278,7 +278,6 @@ public class PlayerCharacter extends Actor{
 				//set value for lv2
 				attackWidth = item.attackWidth[1];
 				attackHeight = item.attackHeight[1];
-				attackCooldown = item.attackCooldown[1];
 				attackChargeTime = item.attackChargeTime[1];
 				attack = item.attack[1];
 				updateAttackEffect(item.effectAtlas, item.effectAnimation);
@@ -292,7 +291,6 @@ public class PlayerCharacter extends Actor{
 				//set value for lv3
 				attackWidth = item.attackWidth[2];
 				attackHeight = item.attackHeight[2];
-				attackCooldown = item.attackCooldown[2];
 				attackChargeTime = item.attackChargeTime[2];
 				attack = item.attack[2];
 				updateAttackEffect(item.effectAtlas, item.effectAnimation);
@@ -307,7 +305,6 @@ public class PlayerCharacter extends Actor{
 			//set value for lv1
 			attackWidth = item.attackWidth[0];
 			attackHeight = item.attackHeight[0];
-			attackCooldown = item.attackCooldown[0];
 			attackChargeTime = item.attackChargeTime[0];
 			attack = item.attack[0];
 			updateAttackEffect(item.effectAtlas, item.effectAnimation);
