@@ -166,7 +166,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		menuBackground.animationLoop = true;
 		menuBackground.setAnimation(temp);
 		menuBackground.currentAnim.setFrameDuration(0.2f);
-		menuArrow = new UI("pointer.png", 1150, 305, 32, 32);
+		menuArrow = new UI("pointer.png", 1155, 305, 32, 32);
 		menuButtonStart = new UI("whitebox.png", 800, 280, 285, 70);
 		menuButtonSetting = new UI("whitebox.png", 200, 200, 50, 50);
 		menuButtonHowto = new UI("whitebox.png", 200, 200, 50, 50);
@@ -208,8 +208,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		weaponSprite[3] = new UI ("gray.png", 1160, 680, 50, 50);
 		player[0] = new PlayerCharacter(50, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, Keys.Q, playerHPBar[0], playerArmorBar[0], PlayerWeapon.fist, PlayerWeapon.fistAnim);
 		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, Keys.ALT_RIGHT, playerHPBar[1], playerArmorBar[1], PlayerWeapon.fist, PlayerWeapon.fistAnim);
-		player[2] = new PlayerCharacter(50, 550, 60, 60, 26, 26, 26, 26, 26, 26, playerHPBar[2], playerArmorBar[2], PlayerWeapon.fist, PlayerWeapon.fistAnim);
-		player[3] = new PlayerCharacter(1250, 50, 60, 60, 26, 26, 26, 26, 26, 26, playerHPBar[3], playerArmorBar[3], PlayerWeapon.fist, PlayerWeapon.fistAnim);
+		player[2] = new PlayerCharacter(50, 550, 60, 60, Keys.Y, Keys.H, Keys.G, Keys.J, Keys.U, Keys.T, playerHPBar[2], playerArmorBar[2], PlayerWeapon.fist, PlayerWeapon.fistAnim);
+		player[3] = new PlayerCharacter(1250, 50, 60, 60, Keys.O, Keys.L, Keys.K, Keys.SEMICOLON, Keys.P, Keys.I, playerHPBar[3], playerArmorBar[3], PlayerWeapon.fist, PlayerWeapon.fistAnim);
 
 		//temppppp 
 		//player[0].weaponName = "axe";
@@ -1170,7 +1170,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				cursorPosition = 2;
 				cursorSound.play();
 			}
-			if (cursorPosition == 1)
+			if (cursorPosition == 1 && keycode != allPlayer.controlAttack)
 			{
 				continue;
 			}
@@ -2474,6 +2474,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				if (buttonCode == player[i].controlBack)
 				{
 					screen = "pause";
+					cancelSound.play();
 				}
 				if (buttonCode == player[i].controlLeft)
 				{
@@ -2789,18 +2790,20 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			}
 			if (Controllers.getControllers().get(player[i].controllerCount) == controller)
 			{
-				cursorSound.play();
 				if (value == PovDirection.east)
 				{
 					cursorPosition = 1;
+					cursorSound.play();
 				}
 				if (value == PovDirection.west)
 				{
 					cursorPosition = 2;
+					cursorSound.play();
 				}
 				if (value == PovDirection.south && cursorPosition != 1)
 				{
 					cursorPosition += 1;
+					cursorSound.play();
 					if (cursorPosition > 4)
 					{
 						cursorPosition = 2;
@@ -2809,6 +2812,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				else if (value == PovDirection.north && cursorPosition != 1)
 				{
 					cursorPosition -= 1;
+					cursorSound.play();
 					if (cursorPosition <= 1)// change this if there is more than 2 button
 					{
 						cursorPosition = 4;
