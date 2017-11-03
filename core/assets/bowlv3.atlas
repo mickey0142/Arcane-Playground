@@ -1,0 +1,20 @@
+
+bowlv3.png
+size: 64,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+0001
+  rotate: false
+  xy: 2, 97
+  size: 45, 93
+  orig: 45, 93
+  offset: 0, 0
+  index: -1
+attack
+  rotate: false
+  xy: 2, 2
+  size: 45, 93
+  orig: 45, 93
+  offset: 0, 0
+  index: 1

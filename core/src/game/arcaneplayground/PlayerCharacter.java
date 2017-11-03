@@ -1,6 +1,7 @@
 package game.arcaneplayground;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -42,6 +43,12 @@ public class PlayerCharacter extends Actor{
 	boolean dead = false;
 	boolean chargeMax = false;
 	boolean upPressed = false, downPressed = false, leftPressed = false, rightPressed = false;
+	String controlType = "keyboard";
+	int controllerCount = -1;
+	PovDirection controllerUp = PovDirection.north;
+	PovDirection controllerDown = PovDirection.south;
+	PovDirection controllerLeft = PovDirection.west;
+	PovDirection controllerRight = PovDirection.east;
 	UI hpBar;
 	UI chargeBar;
 	UI armorBar;
@@ -74,6 +81,7 @@ public class PlayerCharacter extends Actor{
 	{
 		attackHitbox = new Rectangle(-1000, -1000, attackWidth, attackHeight);
 	}
+	
 	public PlayerCharacter(float x, float y, float width, float height, int up, int down, int left, int right, int attack, int back, UI hpBar, UI armorBar, TextureAtlas weaponAtlas, Animation<TextureRegion> weaponAnim)// have to add argument for setting player textureatlas animation weapon here later
 	{
 		attackEffectAtlas = EffectRenderer.punchAtlas;
@@ -97,6 +105,7 @@ public class PlayerCharacter extends Actor{
 		temp = new Texture(Gdx.files.internal("box.png"));
 		temp2 = new Texture(Gdx.files.internal("box2.png"));
 	}
+	
 	public void draw(Batch batch, float alpha)
 	{
 		time += Gdx.graphics.getDeltaTime();
@@ -194,6 +203,7 @@ public class PlayerCharacter extends Actor{
 		
 		//updateCheckBlockPosition(hitbox.getX(), hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
 	}
+	
 	public void setNewRect()
 	{
 		hitbox = new Rectangle(this.getX(), this.getY(), this.getWidth(), this.getHeight());
@@ -271,6 +281,7 @@ public class PlayerCharacter extends Actor{
 				attackCooldown = item.attackCooldown[1];
 				attackChargeTime = item.attackChargeTime[1];
 				attack = item.attack[1];
+				updateAttackEffect(item.effectAtlas, item.effectAnimation);
 				weaponAtlas = item.weaponAtlas[1];
 				weaponAnim = item.weaponLV2Animation;
 				weaponLV = 2;
@@ -284,6 +295,7 @@ public class PlayerCharacter extends Actor{
 				attackCooldown = item.attackCooldown[2];
 				attackChargeTime = item.attackChargeTime[2];
 				attack = item.attack[2];
+				updateAttackEffect(item.effectAtlas, item.effectAnimation);
 				weaponAtlas = item.weaponAtlas[2];
 				weaponAnim = item.weaponLV3Animation;
 				weaponLV = 3;
