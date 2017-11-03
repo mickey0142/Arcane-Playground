@@ -67,7 +67,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	UI playerHPBar[] = new UI[4];
 	UI playerArmorBar[] = new UI[4];
 	Arrow playerArrow[];
-	boolean arrowCharged[] = {false, false,false,false};
+	boolean arrowCharged[] = {false, false, false, false};
 	UI playerSprite[];
 	UI weaponSprite[];
 	BitmapFont font10;
