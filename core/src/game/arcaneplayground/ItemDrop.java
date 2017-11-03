@@ -102,156 +102,153 @@ public class ItemDrop extends GameObject{
 	public void setValue(float locationX, float locationY)
 	{
 		// set x y width height attackhitbox value here and set dropped and visible to true +1 dropcount here -1 dropcount when pick item
-		int num = (int)(Math.random()*100+1);// random 1 to multiplier
-		if (num >= 1 && num <= 20)
+		int drop = (int)(Math.random()*100+1);
+		if (drop <= 40)
 		{
-			this.img = swordDropTexture;
-			this.weaponName = "sword";
-			//lv1
-			attackWidth[0] = SWORD_ATTACK_WIDTH;
-			attackHeight[0] = SWORD_ATTACK_HEIGHT;
-			attackCooldown[0] = SWORD_ATTACK_COOLDOWN;
-			attackChargeTime[0] = SWORD_CHARGE_TIME;
-			attack[0] = SWORD_ATTACK;
-			effectAtlas = EffectRenderer.swordEffectAtlas;
-			effectAnimation = EffectRenderer.swordAnimation;
-			weaponAtlas[0] = PlayerWeapon.sword;
-			weaponAnimation = PlayerWeapon.swordAnim;
-			//lv2
-			attackWidth[1] = SWORDLV2_ATTACK_WIDTH;
-			attackHeight[1] = SWORDLV2_ATTACK_HEIGHT;
-			attackCooldown[1] = SWORDLV2_ATTACK_COOLDOWN;
-			attackChargeTime[1] = SWORDLV2_CHARGE_TIME;
-			attack[1] = SWORDLV2_ATTACK;
-			effectAtlas = EffectRenderer.swordEffectAtlas;
-			effectAnimation = EffectRenderer.swordAnimation;
-			weaponAtlas[1] = PlayerWeapon.swordLV2;
-			weaponLV2Animation = PlayerWeapon.swordLV2Anim;
-			//lv3
-			attackWidth[2] = SWORDLV3_ATTACK_WIDTH;
-			attackHeight[2] = SWORDLV3_ATTACK_HEIGHT;
-			attackCooldown[2] = SWORDLV3_ATTACK_COOLDOWN;
-			attackChargeTime[2] = SWORDLV3_CHARGE_TIME;
-			attack[2] = SWORDLV3_ATTACK;
-			effectAtlas = EffectRenderer.swordEffectAtlas;
-			effectAnimation = EffectRenderer.swordAnimation;
-			weaponAtlas[2] = PlayerWeapon.swordLV3;
-			weaponLV3Animation = PlayerWeapon.swordLV3Anim;
-		}
-		else if (num >= 21 && num <= 40)
-		{
-			this.img = spearDropTexture;
-			this.weaponName = "spear";
-			//lv1
-			attackWidth[0] = SPEAR_ATTACK_WIDTH;
-			attackHeight[0] = SPEAR_ATTACK_HEIGHT;
-			attackCooldown[0] = SPEAR_ATTACK_COOLDOWN;
-			attackChargeTime[0] = SPEAR_CHARGE_TIME;
-			attack[0] = SPEAR_ATTACK;
-			effectAtlas = EffectRenderer.spearEffectAtlas;
-			effectAnimation = EffectRenderer.spearAnimation;
-			weaponAtlas[0] = PlayerWeapon.spear;
-			weaponAnimation = PlayerWeapon.spearAnim;
-			//lv2
-			attackWidth[1] = SPEARLV2_ATTACK_WIDTH;
-			attackHeight[1] = SPEARLV2_ATTACK_HEIGHT;
-			attackCooldown[1] = SPEARLV2_ATTACK_COOLDOWN;
-			attackChargeTime[1] = SPEARLV2_CHARGE_TIME;
-			attack[1] = SPEARLV2_ATTACK;
-			effectAtlas = EffectRenderer.spearEffectAtlas;
-			effectAnimation = EffectRenderer.spearAnimation;
-			weaponAtlas[1] = PlayerWeapon.spearLV2;
-			weaponLV2Animation = PlayerWeapon.spearLV2Anim;
-			//lv3
-			attackWidth[2] = SPEARLV3_ATTACK_WIDTH;
-			attackHeight[2] = SPEARLV3_ATTACK_HEIGHT;
-			attackCooldown[2] = SPEARLV3_ATTACK_COOLDOWN;
-			attackChargeTime[2] = SPEARLV3_CHARGE_TIME;
-			attack[2] = SPEARLV3_ATTACK;
-			effectAtlas = EffectRenderer.spearEffectAtlas;
-			effectAnimation = EffectRenderer.spearAnimation;
-			weaponAtlas[2] = PlayerWeapon.spearLV3;
-			weaponLV3Animation = PlayerWeapon.spearLV3Anim;
-		}
-		else if (num >= 41 && num <= 60)
-		{
-			this.img = axeDropTexture;
-			this.weaponName = "axe";
-			//lv1
-			attackWidth[0] = AXE_ATTACK_WIDTH;
-			attackHeight[0] = AXE_ATTACK_HEIGHT;
-			attackCooldown[0] = AXE_ATTACK_COOLDOWN;
-			attackChargeTime[0] = AXE_CHARGE_TIME;
-			attack[0] = AXE_ATTACK;
-			effectAtlas = EffectRenderer.swordEffectAtlas;
-			effectAnimation = EffectRenderer.swordAnimation;
-			weaponAtlas[0] = PlayerWeapon.axe;
-			weaponAnimation = PlayerWeapon.axeAnim;
-			//lv2
-			attackWidth[1] = AXELV2_ATTACK_WIDTH;
-			attackHeight[1] = AXELV2_ATTACK_HEIGHT;
-			attackCooldown[1] = AXELV2_ATTACK_COOLDOWN;
-			attackChargeTime[1] = AXELV2_CHARGE_TIME;
-			attack[1] = AXELV2_ATTACK;
-			effectAtlas = EffectRenderer.swordEffectAtlas;
-			effectAnimation = EffectRenderer.swordAnimation;
-			weaponAtlas[1] = PlayerWeapon.axeLV2;
-			weaponLV2Animation = PlayerWeapon.axeLV2Anim;
-			//lv3
-			attackWidth[2] = AXELV3_ATTACK_WIDTH;
-			attackHeight[2] = AXELV3_ATTACK_HEIGHT;
-			attackCooldown[2] = AXELV3_ATTACK_COOLDOWN;
-			attackChargeTime[2] = AXELV3_CHARGE_TIME;
-			attack[2] = AXELV3_ATTACK;
-			effectAtlas = EffectRenderer.swordEffectAtlas;
-			effectAnimation = EffectRenderer.swordAnimation;
-			weaponAtlas[2] = PlayerWeapon.axeLV3;
-			weaponLV3Animation = PlayerWeapon.axeLV3Anim;
-		}
-		else if (num >= 61 && num <= 80)
-		{
-			this.img = bowDropTexture;
-			this.weaponName = "bow";
-			//lv1
-			attackWidth[0] = BOW_ATTACK_WIDTH;
-			attackHeight[0] = BOW_ATTACK_HEIGHT;
-			attackCooldown[0] = BOW_ATTACK_COOLDOWN;
-			attackChargeTime[0] = BOW_CHARGE_TIME;
-			attack[0] = BOW_ATTACK;
-			effectAtlas = EffectRenderer.punchAtlas;
-			effectAnimation = EffectRenderer.punchAnimation;
-			weaponAtlas[0] = PlayerWeapon.bow;
-			weaponAnimation = PlayerWeapon.bowAnim;
-			//lv2
-			attackWidth[1] = BOWLV2_ATTACK_WIDTH;
-			attackHeight[1] = BOWLV2_ATTACK_HEIGHT;
-			attackCooldown[1] = BOWLV2_ATTACK_COOLDOWN;
-			attackChargeTime[1] = BOWLV2_CHARGE_TIME;
-			attack[1] = BOWLV2_ATTACK;
-			weaponAtlas[1] = PlayerWeapon.bowLV2;
-			weaponLV2Animation = PlayerWeapon.bowLV2Anim;
-			//lv3
-			attackWidth[2] = BOWLV3_ATTACK_WIDTH;
-			attackHeight[2] = BOWLV3_ATTACK_HEIGHT;
-			attackCooldown[2] = BOWLV3_ATTACK_COOLDOWN;
-			attackChargeTime[2] = BOWLV3_CHARGE_TIME;
-			attack[2] = BOWLV3_ATTACK;
-			weaponAtlas[2] = PlayerWeapon.bowLV3;
-			weaponLV3Animation = PlayerWeapon.bowLV3Anim;
-		}
-		if (num <= 80)
-		{
+			int num = (int)(Math.random()*100+1);// random 1 to multiplier
+			if (num >= 1 && num <= 25)
+			{
+				this.img = swordDropTexture;
+				this.weaponName = "sword";
+				//lv1
+				attackWidth[0] = SWORD_ATTACK_WIDTH;
+				attackHeight[0] = SWORD_ATTACK_HEIGHT;
+				attackCooldown[0] = SWORD_ATTACK_COOLDOWN;
+				attackChargeTime[0] = SWORD_CHARGE_TIME;
+				attack[0] = SWORD_ATTACK;
+				effectAtlas = EffectRenderer.swordEffectAtlas;
+				effectAnimation = EffectRenderer.swordAnimation;
+				weaponAtlas[0] = PlayerWeapon.sword;
+				weaponAnimation = PlayerWeapon.swordAnim;
+				//lv2
+				attackWidth[1] = SWORDLV2_ATTACK_WIDTH;
+				attackHeight[1] = SWORDLV2_ATTACK_HEIGHT;
+				attackCooldown[1] = SWORDLV2_ATTACK_COOLDOWN;
+				attackChargeTime[1] = SWORDLV2_CHARGE_TIME;
+				attack[1] = SWORDLV2_ATTACK;
+				effectAtlas = EffectRenderer.swordEffectAtlas;
+				effectAnimation = EffectRenderer.swordAnimation;
+				weaponAtlas[1] = PlayerWeapon.swordLV2;
+				weaponLV2Animation = PlayerWeapon.swordLV2Anim;
+				//lv3
+				attackWidth[2] = SWORDLV3_ATTACK_WIDTH;
+				attackHeight[2] = SWORDLV3_ATTACK_HEIGHT;
+				attackCooldown[2] = SWORDLV3_ATTACK_COOLDOWN;
+				attackChargeTime[2] = SWORDLV3_CHARGE_TIME;
+				attack[2] = SWORDLV3_ATTACK;
+				effectAtlas = EffectRenderer.swordEffectAtlas;
+				effectAnimation = EffectRenderer.swordAnimation;
+				weaponAtlas[2] = PlayerWeapon.swordLV3;
+				weaponLV3Animation = PlayerWeapon.swordLV3Anim;
+			}
+			else if (num >= 26 && num <= 50)
+			{
+				this.img = spearDropTexture;
+				this.weaponName = "spear";
+				//lv1
+				attackWidth[0] = SPEAR_ATTACK_WIDTH;
+				attackHeight[0] = SPEAR_ATTACK_HEIGHT;
+				attackCooldown[0] = SPEAR_ATTACK_COOLDOWN;
+				attackChargeTime[0] = SPEAR_CHARGE_TIME;
+				attack[0] = SPEAR_ATTACK;
+				effectAtlas = EffectRenderer.spearEffectAtlas;
+				effectAnimation = EffectRenderer.spearAnimation;
+				weaponAtlas[0] = PlayerWeapon.spear;
+				weaponAnimation = PlayerWeapon.spearAnim;
+				//lv2
+				attackWidth[1] = SPEARLV2_ATTACK_WIDTH;
+				attackHeight[1] = SPEARLV2_ATTACK_HEIGHT;
+				attackCooldown[1] = SPEARLV2_ATTACK_COOLDOWN;
+				attackChargeTime[1] = SPEARLV2_CHARGE_TIME;
+				attack[1] = SPEARLV2_ATTACK;
+				effectAtlas = EffectRenderer.spearEffectAtlas;
+				effectAnimation = EffectRenderer.spearAnimation;
+				weaponAtlas[1] = PlayerWeapon.spearLV2;
+				weaponLV2Animation = PlayerWeapon.spearLV2Anim;
+				//lv3
+				attackWidth[2] = SPEARLV3_ATTACK_WIDTH;
+				attackHeight[2] = SPEARLV3_ATTACK_HEIGHT;
+				attackCooldown[2] = SPEARLV3_ATTACK_COOLDOWN;
+				attackChargeTime[2] = SPEARLV3_CHARGE_TIME;
+				attack[2] = SPEARLV3_ATTACK;
+				effectAtlas = EffectRenderer.spearEffectAtlas;
+				effectAnimation = EffectRenderer.spearAnimation;
+				weaponAtlas[2] = PlayerWeapon.spearLV3;
+				weaponLV3Animation = PlayerWeapon.spearLV3Anim;
+			}
+			else if (num >= 51 && num <= 75)
+			{
+				this.img = axeDropTexture;
+				this.weaponName = "axe";
+				//lv1
+				attackWidth[0] = AXE_ATTACK_WIDTH;
+				attackHeight[0] = AXE_ATTACK_HEIGHT;
+				attackCooldown[0] = AXE_ATTACK_COOLDOWN;
+				attackChargeTime[0] = AXE_CHARGE_TIME;
+				attack[0] = AXE_ATTACK;
+				effectAtlas = EffectRenderer.swordEffectAtlas;
+				effectAnimation = EffectRenderer.swordAnimation;
+				weaponAtlas[0] = PlayerWeapon.axe;
+				weaponAnimation = PlayerWeapon.axeAnim;
+				//lv2
+				attackWidth[1] = AXELV2_ATTACK_WIDTH;
+				attackHeight[1] = AXELV2_ATTACK_HEIGHT;
+				attackCooldown[1] = AXELV2_ATTACK_COOLDOWN;
+				attackChargeTime[1] = AXELV2_CHARGE_TIME;
+				attack[1] = AXELV2_ATTACK;
+				effectAtlas = EffectRenderer.swordEffectAtlas;
+				effectAnimation = EffectRenderer.swordAnimation;
+				weaponAtlas[1] = PlayerWeapon.axeLV2;
+				weaponLV2Animation = PlayerWeapon.axeLV2Anim;
+				//lv3
+				attackWidth[2] = AXELV3_ATTACK_WIDTH;
+				attackHeight[2] = AXELV3_ATTACK_HEIGHT;
+				attackCooldown[2] = AXELV3_ATTACK_COOLDOWN;
+				attackChargeTime[2] = AXELV3_CHARGE_TIME;
+				attack[2] = AXELV3_ATTACK;
+				effectAtlas = EffectRenderer.swordEffectAtlas;
+				effectAnimation = EffectRenderer.swordAnimation;
+				weaponAtlas[2] = PlayerWeapon.axeLV3;
+				weaponLV3Animation = PlayerWeapon.axeLV3Anim;
+			}
+			else if (num >= 76 && num <= 100)
+			{
+				this.img = bowDropTexture;
+				this.weaponName = "bow";
+				//lv1
+				attackWidth[0] = BOW_ATTACK_WIDTH;
+				attackHeight[0] = BOW_ATTACK_HEIGHT;
+				attackCooldown[0] = BOW_ATTACK_COOLDOWN;
+				attackChargeTime[0] = BOW_CHARGE_TIME;
+				attack[0] = BOW_ATTACK;
+				effectAtlas = EffectRenderer.punchAtlas;
+				effectAnimation = EffectRenderer.punchAnimation;
+				weaponAtlas[0] = PlayerWeapon.bow;
+				weaponAnimation = PlayerWeapon.bowAnim;
+				//lv2
+				attackWidth[1] = BOWLV2_ATTACK_WIDTH;
+				attackHeight[1] = BOWLV2_ATTACK_HEIGHT;
+				attackCooldown[1] = BOWLV2_ATTACK_COOLDOWN;
+				attackChargeTime[1] = BOWLV2_CHARGE_TIME;
+				attack[1] = BOWLV2_ATTACK;
+				weaponAtlas[1] = PlayerWeapon.bowLV2;
+				weaponLV2Animation = PlayerWeapon.bowLV2Anim;
+				//lv3
+				attackWidth[2] = BOWLV3_ATTACK_WIDTH;
+				attackHeight[2] = BOWLV3_ATTACK_HEIGHT;
+				attackCooldown[2] = BOWLV3_ATTACK_COOLDOWN;
+				attackChargeTime[2] = BOWLV3_CHARGE_TIME;
+				attack[2] = BOWLV3_ATTACK;
+				weaponAtlas[2] = PlayerWeapon.bowLV3;
+				weaponLV3Animation = PlayerWeapon.bowLV3Anim;
+			}
 			dropCount += 1;
 			dropped = true;
-			this.setX(locationX);
-			this.setY(locationY);
+			this.setX(locationX+10);
+			this.setY(locationY+10);
 			this.setVisible(dropped);
 			hitbox.setX(this.getX());
 			hitbox.setY(this.getY());
-		}
-		else
-		{
-			System.out.println("nothing");
 		}
 	}
 }

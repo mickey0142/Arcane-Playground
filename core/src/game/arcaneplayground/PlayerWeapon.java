@@ -1,6 +1,7 @@
 package game.arcaneplayground;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -17,6 +18,7 @@ public class PlayerWeapon extends Actor{
 	// all weapon here
 	static TextureAtlas fist = new TextureAtlas(Gdx.files.internal("fist.atlas"));
 	static Animation<TextureRegion> fistAnim = new Animation<TextureRegion>(0.1f, fist.getRegions());
+	static Sound fistSound = Gdx.audio.newSound(Gdx.files.internal("audio/Blow3.ogg"));
 	
 	static TextureAtlas sword = new TextureAtlas(Gdx.files.internal("sword.atlas"));
 	static Animation<TextureRegion> swordAnim = new Animation<TextureRegion>(0.1f, sword.getRegions());
@@ -24,6 +26,7 @@ public class PlayerWeapon extends Actor{
 	static Animation<TextureRegion> swordLV2Anim = new Animation<TextureRegion>(0.1f, swordLV2.getRegions());
 	static TextureAtlas swordLV3 = new TextureAtlas(Gdx.files.internal("swordlv3.atlas"));
 	static Animation<TextureRegion> swordLV3Anim = new Animation<TextureRegion>(0.1f, swordLV3.getRegions());
+	static Sound slashSound = Gdx.audio.newSound(Gdx.files.internal("audio/Blow3.ogg"));
 	
 	static TextureAtlas spear = new TextureAtlas(Gdx.files.internal("spear.atlas"));
 	static Animation<TextureRegion> spearAnim = new Animation<TextureRegion>(0.1f, spear.getRegions());

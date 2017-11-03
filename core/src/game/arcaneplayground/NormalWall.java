@@ -41,6 +41,7 @@ public class NormalWall extends GameObject{
 			{
 				spawnItem(itemdrop);
 				dropItem = true;
+				// add wall destroy sound here
 			}
 			this.hitbox.setX(-1000);
 			this.hitbox.setY(-1000);

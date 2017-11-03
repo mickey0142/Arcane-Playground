@@ -5,6 +5,7 @@ import java.util.Random;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
@@ -45,6 +46,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	UI menuButtonSetting;
 	UI menuButtonHowto;
 	UI menuButtonExit;
+	UI menuPointerStart, menuPointerSetting, menuPointerHowTo, menuPointerExit;
 	
 	Stage character;
 	int characterIndex[] = new int[4];// change 4 to number of character texture here
@@ -72,6 +74,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	SpikeTrap spikeTrap[];
 	Balloon balloon[];
 	
+	Stage howTo;
+	
 	Stage end;
 	
 	Stage pause;
@@ -93,11 +97,9 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	Animation<TextureRegion> controlTypeController2;
 	Animation<TextureRegion> controlTypeAnim;
 	UI playerControlType[];
-	
-	float gametime;//temp
-	// default control for each player in this order {up, down, left, right, attack} change this in setting later
-	int controlKeeper[][] = {{Keys.W, Keys.S, Keys.A, Keys.D, Keys.F}, {Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_LEFT}};
 	int playerCount;
+	
+	Music menuMusic;
 
 	@Override
 	public void create () {
@@ -109,6 +111,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		end = new Stage(new FitViewport(1350, 750));
 		pause = new Stage(new FitViewport(1350, 750));
 		setting = new Stage(new FitViewport(1350, 750));
+		howTo = new Stage(new FitViewport(1350, 750));
 
 		screen = "menu";
 
@@ -149,15 +152,21 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		menuBackground.animationLoop = true;
 		menuBackground.setAnimation(temp);
 		menuBackground.currentAnim.setFrameDuration(0.2f);
-		menuArrow = new UI("pointer.png", 250, 350, 32, 32);
+		menuArrow = new UI("pointer.png", 1150, 305, 32, 32);
 		menuButtonStart = new UI("whitebox.png", 800, 280, 285, 70);
 		menuButtonSetting = new UI("whitebox.png", 200, 200, 50, 50);
 		menuButtonHowto = new UI("whitebox.png", 200, 200, 50, 50);
 		menuButtonExit = new UI("whitebox.png", 166, 70, 445, 100);
+		menuPointerStart = new UI("whitebox.png", 1155, 305, 50, 50);
+		menuPointerSetting = new UI("whitebox.png", 635, 435, 50, 50);
+		menuPointerHowTo = new UI("whitebox.png", 635, 235, 50, 50);
+		menuPointerExit = new UI("whitebox.png", 635, 95, 50, 50);
 		menu.addActor(menuBackground);
 		menu.addActor(menuArrow);
 		menu.addActor(menuButtonStart);
 		menu.addActor(menuButtonExit);
+		menuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/airship.ogg"));
+		menuMusic.setLooping(true);
 	}
 
 	public void createInCharacterStage()
@@ -552,7 +561,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	}
 	
 	@Override
-	public void render () {
+	public void render() {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		game.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
@@ -561,9 +570,13 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		end.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 		setting.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 		pause.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
-		gametime += Gdx.graphics.getDeltaTime();
+		howTo.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 		if (screen.equals("menu"))
 		{
+			if (!menuMusic.isPlaying())
+			{
+				menuMusic.play();
+			}
 			menuStageRender();
 		}
 		else if (screen.equals("character"))
@@ -621,6 +634,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			settingStageRender();
 		}
+		else if (screen.equals("howto"))
+		{
+			howToStageRender();
+		}
 	}
 
 	public void menuStageRender()
@@ -661,6 +678,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				{
 					if (checkCollision(allPlayer, item))
 					{
+						// add item collect sound here
 						item.dropped = false;
 						item.setVisible(item.dropped);
 						ItemDrop.dropCount -= 1;
@@ -689,6 +707,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			{
 				if (checkCollision(allPlayer, trap) && ((SpikeTrap)trap).active && allPlayer.trapDelay <= 0)
 				{
+					// add trap sound here
 					allPlayer.trapDelay = 2;
 					allPlayer.balloon.runAnimation("1");
 					if (allPlayer.armor > 0)
@@ -728,6 +747,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				{
 					if (!allPlayer.arrow.isVisible())
 					{
+						// add bow attack sound here
 						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
 						allPlayer.arrow.setVisible(true);
 						if (allPlayer.chargeMax)
@@ -760,6 +780,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 					}
 					if (checkCollision(allPlayer.arrow, arrow))// attack effect bug may happen here because of arrowcount arrowcount2 loopcount three of these is confusing 
 					{
+						// add arrow hit sound here
 						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
 						allPlayer.arrow.setVisible(false);
 						((Arrow)arrow).setArrow(player[arrowCount2].getX()+25, player[arrowCount2].getY()+20, player[arrowCount2].direction, player[arrowCount2].weaponLV);
@@ -782,6 +803,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				{
 					if (checkCollision(allPlayer.arrow, wall))
 					{
+						// add arrow hit sound here
 						if (allPlayer.arrow.speedX != 0)attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
 						else attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
 						attackEffectRenderer[loopCount].check = true;
@@ -798,6 +820,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 					{
 						if (wall instanceof NormalWall)
 						{
+							// add arrow hit sound here
 							if (arrowCharged[arrowCount])
 							{
 								((NormalWall) wall).hp -= 3;
@@ -821,6 +844,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				{
 					if (checkCollision(allPlayer.arrow, item))
 					{
+						// add arrow hit sound here
 						item.dropped = false;
 						item.setVisible(item.dropped);
 						ItemDrop.dropCount -= 1;
@@ -844,6 +868,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 					}
 					if (checkCollision(otherPlayer, allPlayer.arrow) && !otherPlayer.hurt)
 					{
+						// add arrow hit sound here
 						otherPlayer.regenDelay = 5f;
 						if (otherPlayer.armor <= 0)
 						{
@@ -1024,6 +1049,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		batch.end();
 	}
 	
+	public void howToStageRender()
+	{
+		
+	}
+	
 	@Override
 	public void dispose () {
 		batch.dispose();
@@ -1061,6 +1091,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			keyDownInSettingStage(keycode);
 		}
+		else if (screen.equals("howto"))
+		{
+			keyDownInHowToStage(keycode);
+		}
 		return true;
 	}
 
@@ -1079,25 +1113,41 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			}
 			else if (cursorPosition == 3)
 			{
+				screen = "howto";
+			}
+			else if (cursorPosition == 4)
+			{
 				Gdx.app.exit();
 			}
 		}
 		for (PlayerCharacter allPlayer : player)
 		{
+			if (keycode == allPlayer.controlRight)
+			{
+				cursorPosition = 1;
+			}
+			if (keycode == allPlayer.controlLeft)
+			{
+				cursorPosition = 2;
+			}
+			if (cursorPosition == 1)
+			{
+				continue;
+			}
 			if (keycode == allPlayer.controlDown)
 			{
 				cursorPosition += 1;
-				if (cursorPosition > 3)
+				if (cursorPosition > 4)
 				{
-					cursorPosition = 1;
+					cursorPosition = 2;
 				}
 			}
 			else if (keycode == allPlayer.controlUp)
 			{
 				cursorPosition -= 1;
-				if (cursorPosition <= 0)// change this if there is more than 2 button
+				if (cursorPosition <= 1)// change this if there is more than 2 button
 				{
-					cursorPosition = 3;
+					cursorPosition = 4;
 				}
 			}
 			if (keycode == allPlayer.controlAttack)
@@ -1113,21 +1163,33 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				}
 				else if (cursorPosition == 3)
 				{
+					screen = "howto";
+				}
+				else if (cursorPosition == 4)
+				{
 					Gdx.app.exit();
 				}
 			}
 		}
 		if (cursorPosition == 1)
 		{
-			menuArrow.setY(350);
+			menuArrow.setX(menuPointerStart.getX());
+			menuArrow.setY(menuPointerStart.getY());
 		}
 		else if (cursorPosition == 2)
 		{
-			menuArrow.setY(180);
+			menuArrow.setX(menuPointerSetting.getX());
+			menuArrow.setY(menuPointerSetting.getY());
 		}
 		else if (cursorPosition == 3)
 		{
-			menuArrow.setY(80);
+			menuArrow.setX(menuPointerHowTo.getX());
+			menuArrow.setY(menuPointerHowTo.getY());
+		}
+		else if (cursorPosition == 4)
+		{
+			menuArrow.setX(menuPointerExit.getX());
+			menuArrow.setY(menuPointerExit.getY());
 		}
 	}
 
@@ -1496,6 +1558,21 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		}
 	}
 	
+	public void keyDownInHowToStage(int keycode)
+	{
+		if (keycode == Keys.ESCAPE)
+		{
+			screen = "menu";
+		}
+		for (PlayerCharacter allPlayer : player)
+		{
+			if (keycode == allPlayer.controlBack)
+			{
+				screen = "menu";
+			}
+		}
+	}
+	
 	@Override
 	public boolean keyUp(int keycode) {
 		if (screen.equals("game"))
@@ -1615,39 +1692,43 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 
 	public void touchDownInMenuStage(Vector2 mousePosition, int button)
 	{
-		if (mousePositionStage.x >= menuButtonStart.getX() && mousePositionStage.x <= menuButtonStart.getX()+menuButtonStart.getWidth())
+		if (mousePosition.x >= menuButtonStart.getX() && mousePosition.x <= menuButtonStart.getX()+menuButtonStart.getWidth())
 		{
-			if (mousePositionStage.y >= menuButtonStart.getY() && mousePositionStage.y <= menuButtonStart.getY()+menuButtonStart.getHeight())
+			if (mousePosition.y >= menuButtonStart.getY() && mousePosition.y <= menuButtonStart.getY()+menuButtonStart.getHeight())
 			{
 				System.out.println("start");
+				screen = "character";
 			}
 		}
-		else if (mousePositionStage.x >= menuButtonSetting.getX() && mousePositionStage.x <= menuButtonSetting.getX()+menuButtonSetting.getWidth())
+		else if (mousePosition.x >= menuButtonSetting.getX() && mousePosition.x <= menuButtonSetting.getX()+menuButtonSetting.getWidth())
 		{
-			if (mousePositionStage.y >= menuButtonSetting.getY() && mousePositionStage.y <= menuButtonSetting.getY()+menuButtonSetting.getHeight())
+			if (mousePosition.y >= menuButtonSetting.getY() && mousePosition.y <= menuButtonSetting.getY()+menuButtonSetting.getHeight())
 			{
 				System.out.println("setting");
+				screen = "setting";
+				back = "menu";
 			}
 		}
-		else if (mousePositionStage.x >= menuButtonHowto.getX() && mousePositionStage.x <= menuButtonHowto.getX()+menuButtonHowto.getWidth())
+		else if (mousePosition.x >= menuButtonHowto.getX() && mousePosition.x <= menuButtonHowto.getX()+menuButtonHowto.getWidth())
 		{
-			if (mousePositionStage.y >= menuButtonHowto.getY() && mousePositionStage.y <= menuButtonHowto.getY()+menuButtonHowto.getHeight())
+			if (mousePosition.y >= menuButtonHowto.getY() && mousePosition.y <= menuButtonHowto.getY()+menuButtonHowto.getHeight())
 			{
 				System.out.println("howto");
+				screen = "howto";
 			}
 		}
-		else if (mousePositionStage.x >= menuButtonExit.getX() && mousePositionStage.x <= menuButtonExit.getX()+menuButtonExit.getWidth())
+		else if (mousePosition.x >= menuButtonExit.getX() && mousePosition.x <= menuButtonExit.getX()+menuButtonExit.getWidth())
 		{
-			if (mousePositionStage.y >= menuButtonExit.getY() && mousePositionStage.y <= menuButtonExit.getY()+menuButtonExit.getHeight())
+			if (mousePosition.y >= menuButtonExit.getY() && mousePosition.y <= menuButtonExit.getY()+menuButtonExit.getHeight())
 			{
 				System.out.println("exit");
+				Gdx.app.exit();
 			}
 		}
 	}
 	
 	public void touchDownInSettingStage(Vector2 mousePosition, int button)
 	{
-		System.out.println(mousePositionStage.x + " " + mousePositionStage.y + " " + button);
 		if (button == Buttons.LEFT && !changeControl)
 		{
 			float xPosition = 165;
@@ -1754,9 +1835,80 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		mousePositionScreen.y = screenY;
 		mousePositionStage = menu.screenToStageCoordinates(mousePositionScreen);
 		//System.out.println(mousePositionStage.x + " " + mousePositionStage.y);
+		if (screen.equals("menu"))
+		{
+			mouseMovedInMenuStage(mousePositionStage);
+		}
+		else if (screen.equals("character"))
+		{
+			mouseMovedInCharacterStage(mousePositionStage);
+		}
+		else if (screen.equals("setting"))
+		{
+			mouseMovedInSettingStage(mousePositionStage);
+		}
+		else if (screen.equals("pause"))
+		{
+			mouseMovedInPauseStage(mousePositionStage);
+		}
 		return false;
 	}
 
+	public void mouseMovedInMenuStage(Vector2 mousePosition)
+	{
+		if (mousePositionStage.x >= menuButtonStart.getX() && mousePositionStage.x <= menuButtonStart.getX()+menuButtonStart.getWidth())
+		{
+			if (mousePositionStage.y >= menuButtonStart.getY() && mousePositionStage.y <= menuButtonStart.getY()+menuButtonStart.getHeight())
+			{
+				cursorPosition = 1;
+				menuArrow.setX(menuPointerStart.getX());
+				menuArrow.setY(menuPointerStart.getY());
+			}
+		}
+		else if (mousePositionStage.x >= menuButtonSetting.getX() && mousePositionStage.x <= menuButtonSetting.getX()+menuButtonSetting.getWidth())
+		{
+			if (mousePositionStage.y >= menuButtonSetting.getY() && mousePositionStage.y <= menuButtonSetting.getY()+menuButtonSetting.getHeight())
+			{
+				cursorPosition = 2;
+				menuArrow.setX(menuPointerSetting.getX());
+				menuArrow.setY(menuPointerSetting.getY());
+			}
+		}
+		else if (mousePositionStage.x >= menuButtonHowto.getX() && mousePositionStage.x <= menuButtonHowto.getX()+menuButtonHowto.getWidth())
+		{
+			if (mousePositionStage.y >= menuButtonHowto.getY() && mousePositionStage.y <= menuButtonHowto.getY()+menuButtonHowto.getHeight())
+			{
+				cursorPosition = 3;
+				menuArrow.setX(menuPointerHowTo.getX());
+				menuArrow.setY(menuPointerHowTo.getY());
+			}
+		}
+		else if (mousePositionStage.x >= menuButtonExit.getX() && mousePositionStage.x <= menuButtonExit.getX()+menuButtonExit.getWidth())
+		{
+			if (mousePositionStage.y >= menuButtonExit.getY() && mousePositionStage.y <= menuButtonExit.getY()+menuButtonExit.getHeight())
+			{
+				cursorPosition = 4;
+				menuArrow.setX(menuPointerExit.getX());
+				menuArrow.setY(menuPointerExit.getY());
+			}
+		}
+	}
+
+	public void mouseMovedInCharacterStage(Vector2 mousePosition)
+	{
+		
+	}
+	
+	public void mouseMovedInSettingStage(Vector2 mousePosition)
+	{
+		
+	}
+	
+	public void mouseMovedInPauseStage(Vector2 mousePosition)
+	{
+		
+	}
+	
 	@Override
 	public boolean scrolled(int amount) {
 		return false;
@@ -1809,6 +1961,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			{
 				if (wall instanceof NormalWall)
 				{
+					// add wall attacked sound here
 					if (playerAttack.weaponName.equals("fist"))
 					{
 						((NormalWall) wall).hp -= 1;
@@ -1831,6 +1984,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (checkCollision(playerAttack, item, "attack"))
 			{
+				// add item destroy sound here
 				item.dropped = false;
 				item.setVisible(item.dropped);
 				ItemDrop.dropCount -= 1;
@@ -1848,6 +2002,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				allPlayer.regenDelay = 5f;
 				if (allPlayer.armor <= 0)
 				{
+					// add player hurt sound here
 					allPlayer.hp -= 1;
 					allPlayer.hurt = true;
 					allPlayer.armor += 10;
@@ -1859,6 +2014,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				}
 				else
 				{
+					// add player attacked sound here
 					if (playerAttack.chargeMax)
 					{
 						allPlayer.armor -= playerAttack.attack*2;						
@@ -1879,6 +2035,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (checkCollision(playerAttack, arrow, "attack"))
 			{
+				// add arrow attacked sound here
 				if (((Arrow)arrow).speedX != 0)attackEffectRenderer[arrowCount].setValue(((Arrow)arrow).hitbox.getX(), ((Arrow)arrow).hitbox.getY()-15, player[arrowCount].attackHitbox.getWidth(), player[arrowCount].attackHitbox.getHeight(), player[arrowCount].direction);
 				else attackEffectRenderer[arrowCount].setValue(((Arrow)arrow).hitbox.getX(), ((Arrow)arrow).hitbox.getY(), player[arrowCount].attackHitbox.getWidth(), player[arrowCount].attackHitbox.getHeight(), player[arrowCount].direction);
 				attackEffectRenderer[arrowCount].check = true;
@@ -2001,8 +2158,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
-		// TODO Auto-generated method stub
-		System.out.println("buttondown" + buttonCode);
 		if (screen.equals("setting"))
 		{
 			buttonDownInSettingStage(buttonCode);
@@ -2026,6 +2181,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		else if (screen.equals("pause"))
 		{
 			buttonDownInPauseStage(buttonCode);
+		}
+		else if (screen.equals("howto"))
+		{
+			buttonDownInHowToStage(buttonCode);
 		}
 		return true;
 	}
@@ -2078,20 +2237,28 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 					continue;
 				}
 				// start if control here
-				if (buttonCode == player[i].controlDown)
+				if (buttonCode == player[i].controlRight)
+				{
+					cursorPosition = 1;
+				}
+				if (buttonCode == player[i].controlLeft)
+				{
+					cursorPosition = 2;
+				}
+				if (buttonCode == player[i].controlDown && cursorPosition != 1)
 				{
 					cursorPosition += 1;
-					if (cursorPosition > 3)
+					if (cursorPosition > 4)
 					{
-						cursorPosition = 1;
+						cursorPosition = 2;
 					}
 				}
-				else if (buttonCode == player[i].controlUp)
+				else if (buttonCode == player[i].controlUp && cursorPosition != 1)
 				{
 					cursorPosition -= 1;
-					if (cursorPosition <= 0)// change this if there is more than 2 button
+					if (cursorPosition <= 1)// change this if there is more than 2 button
 					{
-						cursorPosition = 3;
+						cursorPosition = 4;
 					}
 				}
 				if (buttonCode == player[i].controlAttack)
@@ -2107,20 +2274,32 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 					}
 					else if (cursorPosition == 3)
 					{
+						screen = "howto";
+					}
+					else if (cursorPosition == 4)
+					{
 						Gdx.app.exit();
 					}
 				}
 				if (cursorPosition == 1)
 				{
-					menuArrow.setY(350);
+					menuArrow.setX(menuPointerStart.getX());
+					menuArrow.setY(menuPointerStart.getY());
 				}
 				else if (cursorPosition == 2)
 				{
-					menuArrow.setY(180);
+					menuArrow.setX(menuPointerSetting.getX());
+					menuArrow.setY(menuPointerSetting.getY());
 				}
 				else if (cursorPosition == 3)
 				{
-					menuArrow.setY(80);
+					menuArrow.setX(menuPointerHowTo.getX());
+					menuArrow.setY(menuPointerHowTo.getY());
+				}
+				else if (cursorPosition == 4)
+				{
+					menuArrow.setX(menuPointerExit.getX());
+					menuArrow.setY(menuPointerExit.getY());
 				}
 			}
 		}
@@ -2381,9 +2560,31 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		}
 	}
 	
+	public void buttonDownInHowToStage(int buttonCode)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (player[i].controlType.equals("keyboard"))
+			{
+				continue;
+			}
+			for (int j = 0; j < Controllers.getControllers().size; j++)
+			{
+				if (player[i].controllerCount != j)
+				{
+					continue;
+				}
+				//start if control here
+				if (buttonCode == player[i].controlBack)
+				{
+					screen = "menu";
+				}
+			}
+		}
+	}
+	
 	@Override
 	public boolean buttonUp(Controller controller, int buttonCode) {
-		// TODO Auto-generated method stub
 		if (screen.equals("game"))
 		{
 			buttonUpInGameStage(buttonCode);
@@ -2495,8 +2696,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 
 	@Override
 	public boolean povMoved(Controller controller, int povCode, PovDirection value) {
-		// TODO Auto-generated method stub
-		if(value == PovDirection.center)System.out.println(value);
 		if (screen.equals("menu"))
 		{
 			povInMenuStage(value);
@@ -2536,33 +2735,49 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 					controllerNumber += 1 ;
 					continue;
 				}
-				if (value == PovDirection.south)
+				if (value == PovDirection.east)
+				{
+					cursorPosition = 1;
+				}
+				if (value == PovDirection.west)
+				{
+					cursorPosition = 2;
+				}
+				if (value == PovDirection.south && cursorPosition != 1)
 				{
 					cursorPosition += 1;
-					if (cursorPosition > 3)
+					if (cursorPosition > 4)
 					{
-						cursorPosition = 1;
+						cursorPosition = 2;
 					}
 				}
-				else if (value == PovDirection.north)
+				else if (value == PovDirection.north && cursorPosition != 1)
 				{
 					cursorPosition -= 1;
-					if (cursorPosition <= 0)// change this if there is more than 2 button
+					if (cursorPosition <= 1)// change this if there is more than 2 button
 					{
-						cursorPosition = 3;
+						cursorPosition = 4;
 					}
 				}
 				if (cursorPosition == 1)
 				{
-					menuArrow.setY(350);
+					menuArrow.setX(menuPointerStart.getX());
+					menuArrow.setY(menuPointerStart.getY());
 				}
 				else if (cursorPosition == 2)
 				{
-					menuArrow.setY(180);
+					menuArrow.setX(menuPointerSetting.getX());
+					menuArrow.setY(menuPointerSetting.getY());
 				}
 				else if (cursorPosition == 3)
 				{
-					menuArrow.setY(80);
+					menuArrow.setX(menuPointerHowTo.getX());
+					menuArrow.setY(menuPointerHowTo.getY());
+				}
+				else if (cursorPosition == 4)
+				{
+					menuArrow.setX(menuPointerExit.getX());
+					menuArrow.setY(menuPointerExit.getY());
 				}
 			}
 		}

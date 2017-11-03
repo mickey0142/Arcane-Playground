@@ -1,6 +1,6 @@
 
 spear.png
-size: 1024,32
+size: 512,32
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -25,17 +25,3 @@ attack
   orig: 150, 20
   offset: 0, 0
   index: 2
-attack
-  rotate: false
-  xy: 458, 2
-  size: 150, 20
-  orig: 150, 20
-  offset: 0, 0
-  index: 3
-attack
-  rotate: false
-  xy: 610, 2
-  size: 150, 20
-  orig: 150, 20
-  offset: 0, 0
-  index: 4
