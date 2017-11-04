@@ -71,6 +71,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	boolean arrowCharged[] = {false, false, false, false};
 	UI playerSprite[];
 	UI weaponSprite[];
+	Texture noWeapon;
 	BitmapFont font10;
 	SpikeTrap spikeTrap[];
 	Balloon balloon[];
@@ -206,6 +207,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		weaponSprite[1] = new UI ("gray.png", 560, 680, 50, 50);
 		weaponSprite[2] = new UI ("gray.png", 860, 680, 50, 50);
 		weaponSprite[3] = new UI ("gray.png", 1160, 680, 50, 50);
+		noWeapon = new Texture(Gdx.files.internal("gray.png"));
 		player[0] = new PlayerCharacter(50, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, Keys.Q, playerHPBar[0], playerArmorBar[0], PlayerWeapon.fist, PlayerWeapon.fistAnim);
 		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, Keys.ALT_RIGHT, playerHPBar[1], playerArmorBar[1], PlayerWeapon.fist, PlayerWeapon.fistAnim);
 		player[2] = new PlayerCharacter(50, 550, 60, 60, Keys.Y, Keys.H, Keys.G, Keys.J, Keys.U, Keys.T, playerHPBar[2], playerArmorBar[2], PlayerWeapon.fist, PlayerWeapon.fistAnim);
@@ -738,6 +740,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 							{
 								allPlayer.speedBoostTime = 2f;
 							}
+							item.hitbox.setX(-1000);
+							item.hitbox.setY(-1000);
 						}
 					}
 				}
@@ -2171,6 +2175,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		ItemDrop.dropCount = 0;
 		arrowCharged[0] = false;
 		arrowCharged[1] = false;
+		arrowCharged[2] = false;
+		arrowCharged[3] = false;
+		weaponSprite[0].img = noWeapon;
+		weaponSprite[1].img = noWeapon;
+		weaponSprite[2].img = noWeapon;
+		weaponSprite[3].img = noWeapon;
 		for (PlayerCharacter allPlayer : player) {
 			allPlayer.hp = 3;
 			allPlayer.armor = 100;
