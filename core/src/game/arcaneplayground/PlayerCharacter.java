@@ -44,6 +44,7 @@ public class PlayerCharacter extends Actor{
 	boolean dead = false;
 	boolean chargeMax = false;
 	boolean upPressed = false, downPressed = false, leftPressed = false, rightPressed = false;
+	float speedBoostTime = 0;
 	String controlType = "keyboard";
 	int controllerCount = -1;
 	PovDirection controllerUp = PovDirection.north;
@@ -144,6 +145,10 @@ public class PlayerCharacter extends Actor{
 		if (trapDelay > 0)
 		{
 			trapDelay -= Gdx.graphics.getDeltaTime();
+		}
+		if (speedBoostTime > 0)
+		{
+			speedBoostTime -= Gdx.graphics.getDeltaTime();
 		}
 		updateHPBar();
 		updateChargeBar();

@@ -717,11 +717,28 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 						item.dropped = false;
 						item.setVisible(item.dropped);
 						ItemDrop.dropCount -= 1;
-						//set all variable about weapon here
-						allPlayer.updateNewWeapon(item);
-						item.hitbox.setX(-1000);
-						item.hitbox.setY(-1000);
-						weaponSprite[weaponCount].img = item.img;
+						if (item.dropType.equals("weapon"))
+						{
+							//set all variable about weapon here
+							allPlayer.updateNewWeapon(item);
+							item.hitbox.setX(-1000);
+							item.hitbox.setY(-1000);
+							weaponSprite[weaponCount].img = item.img;
+						}
+						else if (item.dropType.equals("powerup"))
+						{
+							if (item.powerUpName.equals("life"))
+							{
+								if (allPlayer.hp < 3)
+								{
+									allPlayer.hp += 1;
+								}
+							}
+							else if (item.powerUpName.equals("shoe"))
+							{
+								allPlayer.speedBoostTime = 2f;
+							}
+						}
 					}
 				}
 			}
@@ -1036,6 +1053,11 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			{
 				allPlayer.speed_x = allPlayer.speedRight - allPlayer.speedLeft;
 				allPlayer.speed_y = allPlayer.speedUp - allPlayer.speedDown;
+				if (allPlayer.speedBoostTime > 0)
+				{
+					allPlayer.speed_x *= 2;
+					allPlayer.speed_y *= 2;
+				}
 			}
 		}
 	}
@@ -2187,6 +2209,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			allPlayer.arrow.setX(-100);
 			allPlayer.arrow.setY(-100);
 			allPlayer.attackSound = PlayerWeapon.fistSound;
+			allPlayer.speedBoostTime = 0;
 			if (allPlayer == player[0])
 			{
 				allPlayer.setX(50);

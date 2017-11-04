@@ -16,12 +16,15 @@ public class ItemDrop extends GameObject{
 	Animation<TextureRegion> effectAnimation, weaponAnimation, weaponLV2Animation, weaponLV3Animation;
 	String weaponName;
 	Sound weaponSound;
+	String dropType, powerUpName;
 	
 	static int dropCount = 0;
 	static Texture swordDropTexture = new Texture(Gdx.files.internal("sworddrop.png"));
 	static Texture spearDropTexture = new Texture(Gdx.files.internal("speardrop.png"));
 	static Texture axeDropTexture = new Texture(Gdx.files.internal("axedrop.png"));
 	static Texture bowDropTexture = new Texture(Gdx.files.internal("bowdrop.png"));
+	static Texture lifeDropTexture = new Texture(Gdx.files.internal("life.png"));
+	static Texture shoeDropTexture = new Texture(Gdx.files.internal("shoe.png"));
 	static final float SWORD_ATTACK_WIDTH = 40;
 	static final float SWORD_ATTACK_HEIGHT = 40;
 	static final float SWORD_CHARGE_TIME = 1;
@@ -95,6 +98,7 @@ public class ItemDrop extends GameObject{
 		int drop = (int)(Math.random()*100+1);
 		if (drop <= 40)
 		{
+			dropType = "weapon";
 			int num = (int)(Math.random()*100+1);// random 1 to multiplier
 			if (num >= 1 && num <= 25)
 			{
@@ -223,6 +227,28 @@ public class ItemDrop extends GameObject{
 				weaponAtlas[2] = PlayerWeapon.bowLV3;
 				weaponLV3Animation = PlayerWeapon.bowLV3Anim;
 				weaponSound = PlayerWeapon.bowSound;
+			}
+			dropCount += 1;
+			dropped = true;
+			this.setX(locationX+10);
+			this.setY(locationY+10);
+			this.setVisible(dropped);
+			hitbox.setX(this.getX());
+			hitbox.setY(this.getY());
+		}
+		else if (drop >= 41 && drop <= 50)
+		{
+			dropType = "powerup";
+			int num = (int)(Math.random()*100+1);// random 1 to multiplier
+			if (num >= 1 && num <= 50)
+			{
+				this.img = lifeDropTexture;
+				powerUpName = "life";
+			}
+			else if (num >= 51 && num <= 100)
+			{
+				this.img = shoeDropTexture;
+				powerUpName = "shoe";
 			}
 			dropCount += 1;
 			dropped = true;
