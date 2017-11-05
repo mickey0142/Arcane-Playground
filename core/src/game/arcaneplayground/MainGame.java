@@ -16,11 +16,9 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Vector2;
@@ -87,18 +85,14 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	
 	Stage setting;
 	UI settingBackground;
-	UI playerSetting[] = new UI[4];
 	boolean changeControl = false;
 	Texture gray;
 	int playerNumber = -1;
 	String controlName = "";
 	BitmapFont font12;
-	TextureAtlas controlType;
-	Animation<TextureRegion> controlTypeKeyboard;
-	Animation<TextureRegion> controlTypeController1;
-	Animation<TextureRegion> controlTypeController2;
-	Animation<TextureRegion> controlTypeAnim;
 	UI playerControlType[];
+	UI playerButtonSetting[][];
+	UI settingBackButton;
 	int playerCount;
 	
 	Music menuMusic, gameMusic, endMusic;
@@ -544,39 +538,28 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	
 	public void createInSettingStage()
 	{
-		settingBackground = new UI("settingbackground.jpg", 0, 0, 1350, 750);
-		playerSetting[0] = new UI("playersetting.jpg", 15, 50, 300, 400);
-		playerSetting[1] = new UI("playersetting.jpg", 355, 50, 300, 400);
-		playerSetting[2] = new UI("playersetting.jpg", 695, 50, 300, 400);
-		playerSetting[3] = new UI("playersetting.jpg", 1035, 50, 300, 400);
+		settingBackground = new UI("settingbackground.png", 0, 0, 1350, 750);
 		gray = new Texture(Gdx.files.internal("gray.png"));
-		controlType = new TextureAtlas(Gdx.files.internal("controltype.atlas"));
-		controlTypeKeyboard = new Animation<TextureRegion>(1f, controlType.findRegions("0001"));
-		controlTypeController1 = new Animation<TextureRegion>(1f, controlType.findRegions("0002"));
-		controlTypeController1 = new Animation<TextureRegion>(1f, controlType.findRegions("0003"));
 		playerControlType = new UI[4];
-		playerControlType[0] = new UI("whitebox.png", 65, 500, 200, 200);
-		playerControlType[0].animation = true;
-		playerControlType[0].setAnimation(controlType, "0001");
-		playerControlType[1] = new UI("whitebox.png", 405, 500, 200, 200);
-		playerControlType[1].animation = true;
-		playerControlType[1].setAnimation(controlType, "0001");
-		playerControlType[2] = new UI("whitebox.png", 745, 500, 200, 200);
-		playerControlType[2].animation = true;
-		playerControlType[2].setAnimation(controlType, "0001");
-		playerControlType[3] = new UI("whitebox.png", 1085, 500, 200, 200);
-		playerControlType[3].animation = true;
-		playerControlType[3].setAnimation(controlType, "0001");
+		playerControlType[0] = new UI("whitebox.png", 303, 430, 230, 60);
+		playerControlType[1] = new UI("whitebox.png", 560, 430, 230, 60);
+		playerControlType[2] = new UI("whitebox.png", 817, 430, 230, 60);
+		playerControlType[3] = new UI("whitebox.png", 1074, 430, 230, 60);
+		playerButtonSetting = new UI[4][6];
+		settingBackButton = new UI("whitebox.png", 1177, 26, 161, 60);
+		float posX = 303, posY = 374;
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 6; j++)
+			{
+				playerButtonSetting[i][j] = new UI("whitebox.png", posX, posY, 230, 56);
+				posY -= 56;
+			}
+			posX += 257;
+			posY = 374;
+		}
 		
 		setting.addActor(settingBackground);
-		setting.addActor(playerSetting[0]);
-		setting.addActor(playerSetting[1]);
-		setting.addActor(playerSetting[2]);
-		setting.addActor(playerSetting[3]);
-		setting.addActor(playerControlType[0]);
-		setting.addActor(playerControlType[1]);
-		setting.addActor(playerControlType[2]);
-		setting.addActor(playerControlType[3]);
 	}
 	
 	@Override
@@ -1080,29 +1063,52 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	{
 		setting.draw();
 		batch.begin();
-		float xPosition = 200;
 		for (int i = 0; i < 4; i++)
 		{
-			//if player[i] use keyboard
+			float centerShift = 0;
+			String controlType = "Keyboard";
+			centerShift = controlType.length()*8;
+			if (player[i].controllerCount == 0)
+			{
+				controlType = "Controller1";
+				centerShift = controlType.length()*7;
+			}
+			else if (player[i].controllerCount == 1)
+			{
+				controlType = "Controller2";
+				centerShift = controlType.length()*7;
+			}
+			font12.draw(batch, controlType, playerControlType[i].getX()+playerControlType[i].getWidth()/2-centerShift, playerControlType[i].getY()+playerControlType[i].getHeight()/2);
 			if (player[i].controlType.equals("keyboard"))
 			{
-				font12.draw(batch, Keys.toString(player[i].controlUp), xPosition, 430);
-				font12.draw(batch, Keys.toString(player[i].controlDown), xPosition, 370);
-				font12.draw(batch, Keys.toString(player[i].controlLeft), xPosition, 310);
-				font12.draw(batch, Keys.toString(player[i].controlRight), xPosition, 250);
-				font12.draw(batch, Keys.toString(player[i].controlAttack), xPosition, 190);
-				font12.draw(batch, Keys.toString(player[i].controlBack), xPosition, 130);
+				centerShift = Keys.toString(player[i].controlUp).length()*7;
+				font12.draw(batch, Keys.toString(player[i].controlUp), playerButtonSetting[i][0].getX()+(playerButtonSetting[i][0].getWidth()/2)-centerShift, playerButtonSetting[i][0].getY()+playerButtonSetting[i][0].getHeight()/2);
+				centerShift = Keys.toString(player[i].controlDown).length()*7;
+				font12.draw(batch, Keys.toString(player[i].controlDown), playerButtonSetting[i][1].getX()+(playerButtonSetting[i][1].getWidth()/2)-centerShift, playerButtonSetting[i][1].getY()+playerButtonSetting[i][1].getHeight()/2);
+				centerShift = Keys.toString(player[i].controlLeft).length()*7;
+				font12.draw(batch, Keys.toString(player[i].controlLeft), playerButtonSetting[i][2].getX()+(playerButtonSetting[i][2].getWidth()/2)-centerShift, playerButtonSetting[i][2].getY()+playerButtonSetting[i][2].getHeight()/2);
+				centerShift = Keys.toString(player[i].controlRight).length()*7;
+				font12.draw(batch, Keys.toString(player[i].controlRight), playerButtonSetting[i][3].getX()+(playerButtonSetting[i][3].getWidth()/2)-centerShift, playerButtonSetting[i][3].getY()+playerButtonSetting[i][3].getHeight()/2);
+				centerShift = Keys.toString(player[i].controlAttack).length()*7;
+				font12.draw(batch, Keys.toString(player[i].controlAttack), playerButtonSetting[i][4].getX()+(playerButtonSetting[i][4].getWidth()/2)-centerShift, playerButtonSetting[i][4].getY()+playerButtonSetting[i][4].getHeight()/2);
+				centerShift = Keys.toString(player[i].controlBack).length()*7;
+				font12.draw(batch, Keys.toString(player[i].controlBack), playerButtonSetting[i][5].getX()+(playerButtonSetting[i][5].getWidth()/2)-centerShift, playerButtonSetting[i][5].getY()+playerButtonSetting[i][5].getHeight()/2);
 			}
 			else
 			{
-					font12.draw(batch, Integer.toString(player[i].controlUp), xPosition, 430);
-					font12.draw(batch, Integer.toString(player[i].controlDown), xPosition, 370);
-					font12.draw(batch, Integer.toString(player[i].controlLeft), xPosition, 310);
-					font12.draw(batch, Integer.toString(player[i].controlRight), xPosition, 250);
-					font12.draw(batch, Integer.toString(player[i].controlAttack), xPosition, 190);
-					font12.draw(batch, Integer.toString(player[i].controlBack), xPosition, 130);
+					centerShift = Integer.toString(player[i].controlUp).length()*7;
+					font12.draw(batch, Integer.toString(player[i].controlUp), playerButtonSetting[i][0].getX()+(playerButtonSetting[i][1].getWidth()/2)-centerShift, playerButtonSetting[i][0].getY()+playerButtonSetting[i][0].getHeight()/2);
+					centerShift = Integer.toString(player[i].controlDown).length()*7;
+					font12.draw(batch, Integer.toString(player[i].controlDown), playerButtonSetting[i][1].getX()+(playerButtonSetting[i][1].getWidth()/2)-centerShift, playerButtonSetting[i][1].getY()+playerButtonSetting[i][1].getHeight()/2);
+					centerShift = Integer.toString(player[i].controlLeft).length()*7;
+					font12.draw(batch, Integer.toString(player[i].controlLeft), playerButtonSetting[i][2].getX()+(playerButtonSetting[i][2].getWidth()/2)-centerShift, playerButtonSetting[i][2].getY()+playerButtonSetting[i][2].getHeight()/2);
+					centerShift = Integer.toString(player[i].controlRight).length()*7;
+					font12.draw(batch, Integer.toString(player[i].controlRight), playerButtonSetting[i][3].getX()+(playerButtonSetting[i][3].getWidth()/2)-centerShift, playerButtonSetting[i][3].getY()+playerButtonSetting[i][3].getHeight()/2);
+					centerShift = Integer.toString(player[i].controlAttack).length()*7;
+					font12.draw(batch, Integer.toString(player[i].controlAttack), playerButtonSetting[i][4].getX()+(playerButtonSetting[i][4].getWidth()/2)-centerShift, playerButtonSetting[i][4].getY()+playerButtonSetting[i][4].getHeight()/2);
+					centerShift = Integer.toString(player[i].controlBack).length()*7;
+					font12.draw(batch, Integer.toString(player[i].controlBack), playerButtonSetting[i][5].getX()+(playerButtonSetting[i][5].getWidth()/2)-centerShift, playerButtonSetting[i][5].getY()+playerButtonSetting[i][5].getHeight()/2);
 			}
-			xPosition += 350;
 		}
 		if(changeControl)
 		{
@@ -1819,55 +1825,48 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	{
 		if (button == Buttons.LEFT && !changeControl)
 		{
-			float xPosition = 165;
 			for(int i = 0; i < 4; i++)
 			{
-				if (mousePosition.x >= xPosition && mousePosition.x <= xPosition + 150)
+				for(int j = 0; j < 6; j++)
 				{
-					if (mousePosition.y >= 390 && mousePosition.y <= 450)
+					float buttonX = playerButtonSetting[i][j].getX();
+					float buttonXWidth = buttonX+playerButtonSetting[i][j].getWidth();
+					float buttonY = playerButtonSetting[i][j].getY();
+					float buttonYHeight = buttonY+playerButtonSetting[i][j].getHeight();
+					if (mousePosition.x >= buttonX && mousePosition.x <= buttonXWidth)
 					{
-						changeControl = true;
-						playerNumber = i;
-						controlName = "up";
-						confirmSound.play();
-					}
-					else if (mousePosition.y >= 330 && mousePosition.y <= 389)
-					{
-						changeControl = true;
-						playerNumber = i;
-						controlName = "down";
-						confirmSound.play();
-					}
-					else if (mousePosition.y >= 270 && mousePosition.y <= 329)
-					{
-						changeControl = true;
-						playerNumber = i;
-						controlName = "left";
-						confirmSound.play();
-					}
-					else if (mousePosition.y >= 210 && mousePosition.y <= 269)
-					{
-						changeControl = true;
-						playerNumber = i;
-						controlName = "right";
-						confirmSound.play();
-					}
-					else if (mousePosition.y >= 150 && mousePosition.y <= 209)
-					{
-						changeControl = true;
-						playerNumber = i;
-						controlName = "attack";
-						confirmSound.play();
-					}
-					else if (mousePosition.y >= 90 && mousePosition.y <= 149)
-					{
-						changeControl = true;
-						playerNumber = i;
-						controlName = "back";
-						confirmSound.play();
+						if (mousePosition.y >= buttonY && mousePosition.y <= buttonYHeight)
+						{
+							changeControl = true;
+							playerNumber = i;
+							confirmSound.play();
+							if (j == 0)
+							{
+								controlName = "up";	
+							}
+							else if (j == 1)
+							{
+								controlName = "down";
+							}
+							else if (j == 2)
+							{
+								controlName = "left";
+							}
+							else if (j == 3)
+							{
+								controlName = "right";
+							}
+							else if (j == 4)
+							{
+								controlName = "attack";
+							}
+							else if (j == 5)
+							{
+								controlName = "back";
+							}
+						}
 					}
 				}
-				xPosition += 350;
 			}
 			// check click control type
 			for (int i = 0; i < 4; i++)
@@ -1883,25 +1882,32 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 						if (player[i].controlType.equals("keyboard"))
 						{
 							player[i].controlType = "controller1";
-							playerControlType[i].setAnimation(controlType, "0002");
 							player[i].controllerCount = 0;
+							// set string to represent controltype here
 							confirmSound.play();
 						}
 						else if (player[i].controlType.equals("controller1"))
 						{
 							player[i].controlType = "controller2";
-							playerControlType[i].setAnimation(controlType, "0003");
 							player[i].controllerCount = 1;
 							confirmSound.play();
 						}
 						else if (player[i].controlType.equals("controller2"))
 						{
 							player[i].controlType = "keyboard";
-							playerControlType[i].setAnimation(controlType, "0001");
 							player[i].controllerCount = -1;
 							confirmSound.play();
 						}
 					}
+				}
+			}
+			// check click back to menu button
+			if (mousePosition.x >= settingBackButton.getX() && mousePosition.x <= settingBackButton.getX()+settingBackButton.getWidth())
+			{
+				if (mousePosition.y >= settingBackButton.getY() && mousePosition.y <= settingBackButton.getY()+settingBackButton.getHeight())
+				{
+					cancelSound.play();
+					screen = back;
 				}
 			}
 		}// if button left
