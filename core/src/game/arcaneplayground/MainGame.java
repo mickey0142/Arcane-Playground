@@ -163,7 +163,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		menuBackground.currentAnim.setFrameDuration(0.2f);
 		menuArrow = new UI("pointer.png", 1155, 305, 32, 32);
 		menuButtonStart = new UI("whitebox.png", 800, 280, 285, 70);
-		menuButtonSetting = new UI("whitebox.png", 200, 200, 50, 50);
+		menuButtonSetting = new UI("whitebox.png", 200, 350, 50, 50);
 		menuButtonHowto = new UI("whitebox.png", 200, 200, 50, 50);
 		menuButtonExit = new UI("whitebox.png", 166, 70, 445, 100);
 		menuPointerStart = new UI("whitebox.png", 1155, 305, 50, 50);
@@ -173,6 +173,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		menu.addActor(menuBackground);
 		menu.addActor(menuArrow);
 		menu.addActor(menuButtonStart);
+		menu.addActor(menuButtonSetting);
+		menu.addActor(menuButtonHowto);
 		menu.addActor(menuButtonExit);
 		menuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/menumusic.ogg"));
 		menuMusic.setLooping(true);
@@ -1791,6 +1793,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (mousePosition.y >= menuButtonStart.getY() && mousePosition.y <= menuButtonStart.getY()+menuButtonStart.getHeight())
 			{
+				System.out.println("start");
 				screen = "character";
 				confirmSound.play();
 			}
@@ -1799,6 +1802,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (mousePosition.y >= menuButtonSetting.getY() && mousePosition.y <= menuButtonSetting.getY()+menuButtonSetting.getHeight())
 			{
+				System.out.println("setting");
 				screen = "setting";
 				back = "menu";
 				confirmSound.play();
@@ -1808,6 +1812,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (mousePosition.y >= menuButtonHowto.getY() && mousePosition.y <= menuButtonHowto.getY()+menuButtonHowto.getHeight())
 			{
+				System.out.println("howto");
 				screen = "howto";
 				confirmSound.play();
 			}
@@ -1816,6 +1821,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (mousePosition.y >= menuButtonExit.getY() && mousePosition.y <= menuButtonExit.getY()+menuButtonExit.getHeight())
 			{
+				System.out.println("exit");
 				Gdx.app.exit();
 			}
 		}
