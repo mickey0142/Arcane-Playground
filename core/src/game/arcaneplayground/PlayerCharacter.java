@@ -78,10 +78,10 @@ public class PlayerCharacter extends Actor{
 	static Texture character2Lose = new Texture(Gdx.files.internal("char2lose.png"));
 	static Texture character3Lose = new Texture(Gdx.files.internal("char3lose.png"));
 	static Texture character4Lose = new Texture(Gdx.files.internal("char4lose.png"));
-	static Texture character1Win = new Texture(Gdx.files.internal("char1Win.png"));
-	static Texture character2Win = new Texture(Gdx.files.internal("char2Win.png"));
-	static Texture character3Win = new Texture(Gdx.files.internal("char3Win.png"));
-	static Texture character4Win = new Texture(Gdx.files.internal("char4Win.png"));
+	static Texture character1Win = new Texture(Gdx.files.internal("char1win.png"));
+	static Texture character2Win = new Texture(Gdx.files.internal("char2win.png"));
+	static Texture character3Win = new Texture(Gdx.files.internal("char3win.png"));
+	static Texture character4Win = new Texture(Gdx.files.internal("char4win.png"));
 	// new textureatlas and animation for dead animation for each character here
 	
 	// temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp
