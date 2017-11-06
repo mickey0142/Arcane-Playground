@@ -180,10 +180,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		menuPointerExit = new UI("whitebox.png", 635, 95, 50, 50);
 		menu.addActor(menuBackground);
 		menu.addActor(menuArrow);
-		menu.addActor(menuButtonStart);
-		menu.addActor(menuButtonSetting);
-		menu.addActor(menuButtonHowto);
-		menu.addActor(menuButtonExit);
+//		menu.addActor(menuButtonStart);
+//		menu.addActor(menuButtonSetting);
+//		menu.addActor(menuButtonHowto);
+//		menu.addActor(menuButtonExit);
 		menuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/menumusic.ogg"));
 		menuMusic.setLooping(true);
 	}
