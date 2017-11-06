@@ -31,7 +31,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class MainGame extends ApplicationAdapter implements InputProcessor, ControllerListener{
 	SpriteBatch batch;
-	Texture img;
 	Vector2 mousePositionScreen = new Vector2();
 	Vector2 mousePositionStage = new Vector2();
 	String screen = "menu";
@@ -53,6 +52,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	UI playerCharacterSelect[];
 	
 	Stage game;
+	float startDelay = 3;
 	float delay = 3; // this is how much time before switch to end stage reset this in end stage
 	GameObject playGround;
 	UI gameBackground;
@@ -99,13 +99,19 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	UI playerButtonSetting[][];
 	UI settingBackButton;
 	int playerCount;
+	String commandCode = "";
 	
 	Music menuMusic, gameMusic, endMusic;
 	Sound damagedSound, hpDownSound, deadSound, trapHitSound, parryArrowSound, healSound, collectSound, cursorSound, cancelSound, confirmSound, victorySound;
-
+	Sound shunGokuSatsuSound;
+	boolean metsu = false;
+	Texture fade, ten;
+	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		fade = new Texture(Gdx.files.internal("whitebox.png"));
+		ten = new Texture(Gdx.files.internal("ten.png"));
 
 		menu = new Stage(new FitViewport(1350, 750));
 		character = new Stage(new FitViewport(1350, 750));
@@ -128,6 +134,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		cancelSound = Gdx.audio.newSound(Gdx.files.internal("audio/cancel.ogg"));
 		confirmSound = Gdx.audio.newSound(Gdx.files.internal("audio/confirm.ogg"));
 		victorySound = Gdx.audio.newSound(Gdx.files.internal("audio/victory.ogg"));
+		shunGokuSatsuSound = Gdx.audio.newSound(Gdx.files.internal("audio/shun goku satsu.mp3"));
 
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/font.ttf"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
@@ -638,11 +645,33 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			if(player[1].isVisible())font24.draw(batch, "LV." + player[1].weaponLV, weaponSprite[1].getX(), weaponSprite[1].getY()-12);
 			if(player[2].isVisible())font24.draw(batch, "LV." + player[2].weaponLV, weaponSprite[2].getX(), weaponSprite[2].getY()-12);
 			if(player[3].isVisible())font24.draw(batch, "LV." + player[3].weaponLV, weaponSprite[3].getX(), weaponSprite[3].getY()-12);
-			batch.end();
 			if (playerCount <= 1)
 			{
 				delay -= Gdx.graphics.getDeltaTime();
+				if (metsu)
+				{
+					batch.setColor(0, 0, 0, 1-delay/7.9f);
+					batch.draw(fade, 0, 0, 1350, 750);
+					batch.setColor(Color.WHITE);
+					if (delay <= 5.3f)
+					{
+						player[0].dead = false;
+						player[1].dead = true;
+						player[2].dead = true;
+						player[3].dead = true;
+					}
+				}
 			}
+			if (startDelay > 0)
+			{
+				batch.draw(gray, 0, 0, 1350, 750);
+				String numString = String.valueOf(startDelay);
+				if (numString.length() >= 4)
+				numString = new String(numString.substring(0, 4));
+				font128.draw(batch, "Get Ready " + numString, 300, 500);
+				startDelay -= Gdx.graphics.getDeltaTime();
+			}
+			batch.end();
 			if (delay <= 0)
 			{
 				screen = "end";
@@ -705,6 +734,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			menuMusic.stop();
 			gameMusic.stop();
 			endStageRender();
+			if (metsu)
+			{
+				batch.begin();
+				batch.draw(ten, 0, 0, 1350, 750);
+				batch.end();
+			}
 		}
 		else if (screen.equals("pause"))
 		{
@@ -1306,7 +1341,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		}
 		for (PlayerCharacter allPlayer : player)
 		{
-			if (keycode == allPlayer.controlRight)
+			if (keycode == allPlayer.controlRight && cursorPosition != 1)
 			{
 				cursorPosition = 1;
 				cursorSound.play();
@@ -1493,7 +1528,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 
 	public void keyDownInGameStage(int keycode)
 	{
-		if (keycode == Keys.ESCAPE)
+		if (keycode == Keys.ESCAPE && !metsu)
 		{
 			screen = "pause";
 			cancelSound.play();
@@ -1503,7 +1538,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			//			{
 			//				continue;
 			//			}// comment this make player able to change direction of attack while charging}
-			if (allPlayer.dead  || playerCount <= 1 || !allPlayer.isVisible())
+			if (allPlayer.dead  || playerCount <= 1 || !allPlayer.isVisible() || startDelay > 0 || metsu)
 			{
 				continue;
 			}
@@ -1885,7 +1920,41 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 
 	@Override
 	public boolean keyTyped(char character) {
-		return false;
+		if (screen.equals("game"))
+		{
+			if ((commandCode.equals("") || commandCode.equals("g")) && character == 'g')
+			{
+				commandCode += character;
+			}
+			else if (commandCode.equals("gg") && character == 'd')
+			{
+				commandCode += character;
+			}
+			else if (commandCode.equals("ggd") && character == 'b')
+			{
+				commandCode += character;
+			}
+			else if (commandCode.equals("ggdb") && character == 'j')
+			{
+				commandCode += character;
+			}
+			else
+			{
+				commandCode = "";
+			}
+			if (commandCode.equals("ggdbj"))
+			{
+				commandCode = "";
+				if (!metsu)
+				{
+					shunGokuSatsuSound.play();
+					metsu = true;
+					delay = 7.9f;
+					playerCount = 1;
+				}
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -2304,6 +2373,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	public void resetVariableInGameStage()
 	{
 		delay = 3;
+		startDelay = 3;
 		for (Actor wall : game.getActors())
 		{
 			if (wall instanceof NormalWall)
@@ -2385,6 +2455,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			}
 			allPlayer.setIngame(false);
 		}
+		metsu = false;
 	}
 
 	public void moveNormalWallZIndex()
@@ -2937,7 +3008,6 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 
 	@Override
 	public boolean axisMoved(Controller controller, int axisCode, float value) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
