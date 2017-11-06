@@ -3,7 +3,7 @@ package game.arcaneplayground.desktop;
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import game.arcaneplayground.MainGame;
+import game.arcaneplayground.ArcanePlayground;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -13,6 +13,6 @@ public class DesktopLauncher {
 		config.fullscreen = false;
 		config.forceExit = true;
 		config.addIcon("icon.png", FileType.Internal);
-		new LwjglApplication(new MainGame(), config);
+		new LwjglApplication(new ArcanePlayground(), config);
 	}
 }
