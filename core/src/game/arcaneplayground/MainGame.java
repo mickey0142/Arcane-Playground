@@ -171,8 +171,8 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		menuBackground.currentAnim.setFrameDuration(0.2f);
 		menuArrow = new UI("pointer.png", 1155, 305, 32, 32);
 		menuButtonStart = new UI("whitebox.png", 800, 280, 285, 70);
-		menuButtonSetting = new UI("whitebox.png", 158, 377, 285, 70);
-		menuButtonHowto = new UI("whitebox.png", 200, 200, 50, 50);
+		menuButtonSetting = new UI("whitebox.png", 158, 377, 448, 110);
+		menuButtonHowto = new UI("whitebox.png", 125, 230, 448, 110);
 		menuButtonExit = new UI("whitebox.png", 166, 70, 445, 100);
 		menuPointerStart = new UI("whitebox.png", 1155, 305, 50, 50);
 		menuPointerSetting = new UI("whitebox.png", 635, 435, 50, 50);
