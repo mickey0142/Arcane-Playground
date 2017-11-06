@@ -1311,7 +1311,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				cursorPosition = 1;
 				cursorSound.play();
 			}
-			if (keycode == allPlayer.controlLeft)
+			if (keycode == allPlayer.controlLeft && cursorPosition == 1)
 			{
 				cursorPosition = 2;
 				cursorSound.play();
@@ -2081,6 +2081,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (mousePositionStage.y >= menuButtonStart.getY() && mousePositionStage.y <= menuButtonStart.getY()+menuButtonStart.getHeight())
 			{
+				if (cursorPosition != 1)
+				{
+					cursorSound.play();
+				}
 				cursorPosition = 1;
 				menuArrow.setX(menuPointerStart.getX());
 				menuArrow.setY(menuPointerStart.getY());
@@ -2090,6 +2094,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (mousePositionStage.y >= menuButtonSetting.getY() && mousePositionStage.y <= menuButtonSetting.getY()+menuButtonSetting.getHeight())
 			{
+				if (cursorPosition != 2)
+				{
+					cursorSound.play();
+				}
 				cursorPosition = 2;
 				menuArrow.setX(menuPointerSetting.getX());
 				menuArrow.setY(menuPointerSetting.getY());
@@ -2099,6 +2107,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (mousePositionStage.y >= menuButtonHowto.getY() && mousePositionStage.y <= menuButtonHowto.getY()+menuButtonHowto.getHeight())
 			{
+				if (cursorPosition != 3)
+				{
+					cursorSound.play();
+				}
 				cursorPosition = 3;
 				menuArrow.setX(menuPointerHowTo.getX());
 				menuArrow.setY(menuPointerHowTo.getY());
@@ -2108,6 +2120,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		{
 			if (mousePositionStage.y >= menuButtonExit.getY() && mousePositionStage.y <= menuButtonExit.getY()+menuButtonExit.getHeight())
 			{
+				if (cursorPosition != 4)
+				{
+					cursorSound.play();
+				}
 				cursorPosition = 4;
 				menuArrow.setX(menuPointerExit.getX());
 				menuArrow.setY(menuPointerExit.getY());
@@ -2478,7 +2494,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 					cursorPosition = 1;
 					cursorSound.play();
 				}
-				if (buttonCode == player[i].controlLeft)
+				if (buttonCode == player[i].controlLeft && cursorPosition == 1)
 				{
 					cursorPosition = 2;
 					cursorSound.play();
@@ -2965,7 +2981,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 					cursorPosition = 1;
 					cursorSound.play();
 				}
-				if (value == PovDirection.west)
+				if (value == PovDirection.west && cursorPosition == 1)
 				{
 					cursorPosition = 2;
 					cursorSound.play();
