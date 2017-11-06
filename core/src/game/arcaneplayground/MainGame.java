@@ -70,13 +70,18 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	UI playerSprite[];
 	UI weaponSprite[];
 	Texture noWeapon;
-	BitmapFont font10;
+	BitmapFont font24;
 	SpikeTrap spikeTrap[];
 	Balloon balloon[];
 	
 	Stage howTo;
 	
 	Stage end;
+	UI endPlayerSprite[];
+	UI platform;
+	UI trophy;
+	Balloon winnerBalloon;
+	String winner;
 	
 	Stage pause;
 	int pauseCursorPosition = 1;
@@ -89,7 +94,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	Texture gray;
 	int playerNumber = -1;
 	String controlName = "";
-	BitmapFont font12;
+	BitmapFont font32, font128;
 	UI playerControlType[];
 	UI playerButtonSetting[][];
 	UI settingBackButton;
@@ -128,9 +133,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 		parameter.size = 32;
 		parameter.color = Color.BLACK;
-		font12 = generator.generateFont(parameter); // font size 12 pixels
+		font32 = generator.generateFont(parameter);
 		parameter.size = 24;
-		font10 = generator.generateFont(parameter);
+		font24 = generator.generateFont(parameter);
+		parameter.size = 128;
+		parameter.color = Color.YELLOW;
+		font128 = generator.generateFont(parameter);
 		generator.dispose();
 		
 		itemDrop = new ItemDrop[126];
@@ -163,7 +171,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		menuBackground.currentAnim.setFrameDuration(0.2f);
 		menuArrow = new UI("pointer.png", 1155, 305, 32, 32);
 		menuButtonStart = new UI("whitebox.png", 800, 280, 285, 70);
-		menuButtonSetting = new UI("whitebox.png", 200, 350, 50, 50);
+		menuButtonSetting = new UI("whitebox.png", 158, 377, 285, 70);
 		menuButtonHowto = new UI("whitebox.png", 200, 200, 50, 50);
 		menuButtonExit = new UI("whitebox.png", 166, 70, 445, 100);
 		menuPointerStart = new UI("whitebox.png", 1155, 305, 50, 50);
@@ -527,6 +535,31 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	{
 		endMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/endmusic.ogg"));
 		endMusic.setLooping(true);
+		endPlayerSprite = new UI[4];
+		endPlayerSprite[0] = new UI("char1lose.png", 250, 240, 60, 60);
+		endPlayerSprite[1] = new UI("char1lose.png", 500, 240, 60, 60);
+		endPlayerSprite[2] = new UI("char1lose.png", 750, 240, 60, 60);
+		endPlayerSprite[3] = new UI("char1lose.png", 1000, 240, 60, 60);
+		endPlayerSprite[0].setVisible(false);
+		endPlayerSprite[1].setVisible(false);
+		endPlayerSprite[2].setVisible(false);
+		endPlayerSprite[3].setVisible(false);
+		platform = new UI("box.png", 0, 0, 60, 60);
+		winnerBalloon = new Balloon();
+		winnerBalloon.loop = true;
+		winnerBalloon.onPlayer = false;
+		winnerBalloon.setWidth(50);
+		winnerBalloon.setHeight(50);
+		trophy = new UI("box.png", 0, 0, 60, 60);
+		
+//		end.addActor(endBackground);
+		end.addActor(endPlayerSprite[0]);
+		end.addActor(endPlayerSprite[1]);
+		end.addActor(endPlayerSprite[2]);
+		end.addActor(endPlayerSprite[3]);
+		end.addActor(platform);
+		end.addActor(winnerBalloon);
+		end.addActor(trophy);
 	}
 
 	public void createInPauseStage()
@@ -601,10 +634,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			endMusic.stop();
 			gameStageRender();
 			batch.begin();
-			if(player[0].isVisible())font10.draw(batch, "LV." + player[0].weaponLV, weaponSprite[0].getX(), weaponSprite[0].getY()-12);
-			if(player[1].isVisible())font10.draw(batch, "LV." + player[1].weaponLV, weaponSprite[1].getX(), weaponSprite[1].getY()-12);
-			if(player[2].isVisible())font10.draw(batch, "LV." + player[2].weaponLV, weaponSprite[2].getX(), weaponSprite[2].getY()-12);
-			if(player[3].isVisible())font10.draw(batch, "LV." + player[3].weaponLV, weaponSprite[3].getX(), weaponSprite[3].getY()-12);
+			if(player[0].isVisible())font24.draw(batch, "LV." + player[0].weaponLV, weaponSprite[0].getX(), weaponSprite[0].getY()-12);
+			if(player[1].isVisible())font24.draw(batch, "LV." + player[1].weaponLV, weaponSprite[1].getX(), weaponSprite[1].getY()-12);
+			if(player[2].isVisible())font24.draw(batch, "LV." + player[2].weaponLV, weaponSprite[2].getX(), weaponSprite[2].getY()-12);
+			if(player[3].isVisible())font24.draw(batch, "LV." + player[3].weaponLV, weaponSprite[3].getX(), weaponSprite[3].getY()-12);
 			batch.end();
 			if (playerCount <= 1)
 			{
@@ -626,7 +659,31 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 						}
 						else
 						{
-							System.out.println("Player : " + numPlayerWin + " Win!");
+							winner = "Player " + (numPlayerWin+1) + " Win !!!";
+							platform.setX(endPlayerSprite[numPlayerWin].getX());
+							platform.setY(endPlayerSprite[numPlayerWin].getY());
+							winnerBalloon.setX(endPlayerSprite[numPlayerWin].getX()+10);
+							winnerBalloon.setY(endPlayerSprite[numPlayerWin].getY()+140);
+							winnerBalloon.runAnimation("music");
+							trophy.setX(platform.getX());
+							trophy.setY(winnerBalloon.getY()+60);
+							endPlayerSprite[numPlayerWin].setY(endPlayerSprite[numPlayerWin].getY()+60);
+							if (characterIndex[numPlayerWin] == 0)
+							{
+								endPlayerSprite[numPlayerWin].img = PlayerCharacter.character1Win;								
+							}
+							else if (characterIndex[numPlayerWin] == 1)
+							{
+								endPlayerSprite[numPlayerWin].img = PlayerCharacter.character2Win;								
+							}
+							else if (characterIndex[numPlayerWin] == 2)
+							{
+								endPlayerSprite[numPlayerWin].img = PlayerCharacter.character3Win;								
+							}
+							else if (characterIndex[numPlayerWin] == 3)
+							{
+								endPlayerSprite[numPlayerWin].img = PlayerCharacter.character4Win;								
+							}
 							break;
 						}
 					}
@@ -634,6 +691,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				else
 				{
 					System.out.println("Draw!");
+					winner = "Draw !!!";
 				}
 			}
 		}
@@ -684,15 +742,65 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				weaponCount += 1;
 				continue;
 			}
-			if (allPlayer.hitbox.getX() == allPlayer.checkBlock.hitbox.getX() && allPlayer.hitbox.getY() == allPlayer.checkBlock.hitbox.getY())
+			if (allPlayer.speed_x < 0)
 			{
-				allPlayer.moving = false;
-				allPlayer.speedUp = 0;
-				allPlayer.speedDown = 0;
-				allPlayer.speedLeft = 0;
-				allPlayer.speedRight = 0;
-				allPlayer.speed_x = 0;
-				allPlayer.speed_y = 0;
+				if (allPlayer.hitbox.getX() <= allPlayer.checkBlock.hitbox.getX() && allPlayer.hitbox.getY() == allPlayer.checkBlock.hitbox.getY())
+				{
+					allPlayer.moving = false;
+					allPlayer.speedUp = 0;
+					allPlayer.speedDown = 0;
+					allPlayer.speedLeft = 0;
+					allPlayer.speedRight = 0;
+					allPlayer.speed_x = 0;
+					allPlayer.speed_y = 0;
+					allPlayer.setX(allPlayer.checkBlock.hitbox.getX()-15);
+					allPlayer.updateHitbox();
+				}
+			}
+			if (allPlayer.speed_x > 0)
+			{
+				if (allPlayer.hitbox.getX() >= allPlayer.checkBlock.hitbox.getX() && allPlayer.hitbox.getY() == allPlayer.checkBlock.hitbox.getY())
+				{
+					allPlayer.moving = false;
+					allPlayer.speedUp = 0;
+					allPlayer.speedDown = 0;
+					allPlayer.speedLeft = 0;
+					allPlayer.speedRight = 0;
+					allPlayer.speed_x = 0;
+					allPlayer.speed_y = 0;
+					allPlayer.setX(allPlayer.checkBlock.hitbox.getX()-15);
+					allPlayer.updateHitbox();
+				}
+			}
+			if (allPlayer.speed_y < 0)
+			{
+				if (allPlayer.hitbox.getX() == allPlayer.checkBlock.hitbox.getX() && allPlayer.hitbox.getY() <= allPlayer.checkBlock.hitbox.getY())
+				{
+					allPlayer.moving = false;
+					allPlayer.speedUp = 0;
+					allPlayer.speedDown = 0;
+					allPlayer.speedLeft = 0;
+					allPlayer.speedRight = 0;
+					allPlayer.speed_x = 0;
+					allPlayer.speed_y = 0;
+					allPlayer.setY(allPlayer.checkBlock.hitbox.getY()-2);
+					allPlayer.updateHitbox();
+				}
+			}
+			if (allPlayer.speed_y > 0)
+			{
+				if (allPlayer.hitbox.getX() == allPlayer.checkBlock.hitbox.getX() && allPlayer.hitbox.getY() >= allPlayer.checkBlock.hitbox.getY())
+				{
+					allPlayer.moving = false;
+					allPlayer.speedUp = 0;
+					allPlayer.speedDown = 0;
+					allPlayer.speedLeft = 0;
+					allPlayer.speedRight = 0;
+					allPlayer.speed_x = 0;
+					allPlayer.speed_y = 0;
+					allPlayer.setY(allPlayer.checkBlock.hitbox.getY()-2);
+					allPlayer.updateHitbox();
+				}
 			}
 			for (ItemDrop item : itemDrop)
 			{
@@ -750,7 +858,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				{
 					trapHitSound.play();
 					allPlayer.trapDelay = 2;
-					allPlayer.balloon.runAnimation("1");
+					allPlayer.balloon.runAnimation("trap");
 					if (allPlayer.armor > 0)
 					{
 						allPlayer.armor -= 50;
@@ -1054,6 +1162,10 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 	public void endStageRender()
 	{
 		end.draw();
+		float centerShift = winner.length()*25;
+		batch.begin();
+		font128.draw(batch, winner, end.getWidth()/2-centerShift, 650);
+		batch.end();
 	}
 
 	public void pauseStageRender()
@@ -1080,42 +1192,42 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				controlType = "Controller2";
 				centerShift = controlType.length()*7;
 			}
-			font12.draw(batch, controlType, playerControlType[i].getX()+playerControlType[i].getWidth()/2-centerShift, playerControlType[i].getY()+playerControlType[i].getHeight()/2);
+			font32.draw(batch, controlType, playerControlType[i].getX()+playerControlType[i].getWidth()/2-centerShift, playerControlType[i].getY()+playerControlType[i].getHeight()/2);
 			if (player[i].controlType.equals("keyboard"))
 			{
 				centerShift = Keys.toString(player[i].controlUp).length()*7;
-				font12.draw(batch, Keys.toString(player[i].controlUp), playerButtonSetting[i][0].getX()+(playerButtonSetting[i][0].getWidth()/2)-centerShift, playerButtonSetting[i][0].getY()+playerButtonSetting[i][0].getHeight()/2);
+				font32.draw(batch, Keys.toString(player[i].controlUp), playerButtonSetting[i][0].getX()+(playerButtonSetting[i][0].getWidth()/2)-centerShift, playerButtonSetting[i][0].getY()+playerButtonSetting[i][0].getHeight()/2);
 				centerShift = Keys.toString(player[i].controlDown).length()*7;
-				font12.draw(batch, Keys.toString(player[i].controlDown), playerButtonSetting[i][1].getX()+(playerButtonSetting[i][1].getWidth()/2)-centerShift, playerButtonSetting[i][1].getY()+playerButtonSetting[i][1].getHeight()/2);
+				font32.draw(batch, Keys.toString(player[i].controlDown), playerButtonSetting[i][1].getX()+(playerButtonSetting[i][1].getWidth()/2)-centerShift, playerButtonSetting[i][1].getY()+playerButtonSetting[i][1].getHeight()/2);
 				centerShift = Keys.toString(player[i].controlLeft).length()*7;
-				font12.draw(batch, Keys.toString(player[i].controlLeft), playerButtonSetting[i][2].getX()+(playerButtonSetting[i][2].getWidth()/2)-centerShift, playerButtonSetting[i][2].getY()+playerButtonSetting[i][2].getHeight()/2);
+				font32.draw(batch, Keys.toString(player[i].controlLeft), playerButtonSetting[i][2].getX()+(playerButtonSetting[i][2].getWidth()/2)-centerShift, playerButtonSetting[i][2].getY()+playerButtonSetting[i][2].getHeight()/2);
 				centerShift = Keys.toString(player[i].controlRight).length()*7;
-				font12.draw(batch, Keys.toString(player[i].controlRight), playerButtonSetting[i][3].getX()+(playerButtonSetting[i][3].getWidth()/2)-centerShift, playerButtonSetting[i][3].getY()+playerButtonSetting[i][3].getHeight()/2);
+				font32.draw(batch, Keys.toString(player[i].controlRight), playerButtonSetting[i][3].getX()+(playerButtonSetting[i][3].getWidth()/2)-centerShift, playerButtonSetting[i][3].getY()+playerButtonSetting[i][3].getHeight()/2);
 				centerShift = Keys.toString(player[i].controlAttack).length()*7;
-				font12.draw(batch, Keys.toString(player[i].controlAttack), playerButtonSetting[i][4].getX()+(playerButtonSetting[i][4].getWidth()/2)-centerShift, playerButtonSetting[i][4].getY()+playerButtonSetting[i][4].getHeight()/2);
+				font32.draw(batch, Keys.toString(player[i].controlAttack), playerButtonSetting[i][4].getX()+(playerButtonSetting[i][4].getWidth()/2)-centerShift, playerButtonSetting[i][4].getY()+playerButtonSetting[i][4].getHeight()/2);
 				centerShift = Keys.toString(player[i].controlBack).length()*7;
-				font12.draw(batch, Keys.toString(player[i].controlBack), playerButtonSetting[i][5].getX()+(playerButtonSetting[i][5].getWidth()/2)-centerShift, playerButtonSetting[i][5].getY()+playerButtonSetting[i][5].getHeight()/2);
+				font32.draw(batch, Keys.toString(player[i].controlBack), playerButtonSetting[i][5].getX()+(playerButtonSetting[i][5].getWidth()/2)-centerShift, playerButtonSetting[i][5].getY()+playerButtonSetting[i][5].getHeight()/2);
 			}
 			else
 			{
 					centerShift = Integer.toString(player[i].controlUp).length()*7;
-					font12.draw(batch, Integer.toString(player[i].controlUp), playerButtonSetting[i][0].getX()+(playerButtonSetting[i][1].getWidth()/2)-centerShift, playerButtonSetting[i][0].getY()+playerButtonSetting[i][0].getHeight()/2);
+					font32.draw(batch, Integer.toString(player[i].controlUp), playerButtonSetting[i][0].getX()+(playerButtonSetting[i][1].getWidth()/2)-centerShift, playerButtonSetting[i][0].getY()+playerButtonSetting[i][0].getHeight()/2);
 					centerShift = Integer.toString(player[i].controlDown).length()*7;
-					font12.draw(batch, Integer.toString(player[i].controlDown), playerButtonSetting[i][1].getX()+(playerButtonSetting[i][1].getWidth()/2)-centerShift, playerButtonSetting[i][1].getY()+playerButtonSetting[i][1].getHeight()/2);
+					font32.draw(batch, Integer.toString(player[i].controlDown), playerButtonSetting[i][1].getX()+(playerButtonSetting[i][1].getWidth()/2)-centerShift, playerButtonSetting[i][1].getY()+playerButtonSetting[i][1].getHeight()/2);
 					centerShift = Integer.toString(player[i].controlLeft).length()*7;
-					font12.draw(batch, Integer.toString(player[i].controlLeft), playerButtonSetting[i][2].getX()+(playerButtonSetting[i][2].getWidth()/2)-centerShift, playerButtonSetting[i][2].getY()+playerButtonSetting[i][2].getHeight()/2);
+					font32.draw(batch, Integer.toString(player[i].controlLeft), playerButtonSetting[i][2].getX()+(playerButtonSetting[i][2].getWidth()/2)-centerShift, playerButtonSetting[i][2].getY()+playerButtonSetting[i][2].getHeight()/2);
 					centerShift = Integer.toString(player[i].controlRight).length()*7;
-					font12.draw(batch, Integer.toString(player[i].controlRight), playerButtonSetting[i][3].getX()+(playerButtonSetting[i][3].getWidth()/2)-centerShift, playerButtonSetting[i][3].getY()+playerButtonSetting[i][3].getHeight()/2);
+					font32.draw(batch, Integer.toString(player[i].controlRight), playerButtonSetting[i][3].getX()+(playerButtonSetting[i][3].getWidth()/2)-centerShift, playerButtonSetting[i][3].getY()+playerButtonSetting[i][3].getHeight()/2);
 					centerShift = Integer.toString(player[i].controlAttack).length()*7;
-					font12.draw(batch, Integer.toString(player[i].controlAttack), playerButtonSetting[i][4].getX()+(playerButtonSetting[i][4].getWidth()/2)-centerShift, playerButtonSetting[i][4].getY()+playerButtonSetting[i][4].getHeight()/2);
+					font32.draw(batch, Integer.toString(player[i].controlAttack), playerButtonSetting[i][4].getX()+(playerButtonSetting[i][4].getWidth()/2)-centerShift, playerButtonSetting[i][4].getY()+playerButtonSetting[i][4].getHeight()/2);
 					centerShift = Integer.toString(player[i].controlBack).length()*7;
-					font12.draw(batch, Integer.toString(player[i].controlBack), playerButtonSetting[i][5].getX()+(playerButtonSetting[i][5].getWidth()/2)-centerShift, playerButtonSetting[i][5].getY()+playerButtonSetting[i][5].getHeight()/2);
+					font32.draw(batch, Integer.toString(player[i].controlBack), playerButtonSetting[i][5].getX()+(playerButtonSetting[i][5].getWidth()/2)-centerShift, playerButtonSetting[i][5].getY()+playerButtonSetting[i][5].getHeight()/2);
 			}
 		}
 		if(changeControl)
 		{
 			batch.draw(gray, 0, 0, 1350, 750);
-			font12.draw(batch, "press button to change or press esc to cancel", 350, 600);
+			font128.draw(batch, "press button to change\nor press esc to cancel", 50, 600);
 		}
 		batch.end();
 	}
@@ -1283,6 +1395,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				{
 					playerSprite[i].setVisible(false);
 					weaponSprite[i].setVisible(false);
+					endPlayerSprite[i].setVisible(false);
 					continue;
 				}
 				else
@@ -1290,6 +1403,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 					playerSprite[i].setVisible(true);
 					playerSprite[i].setAnimation(player[i].walkingAtlas, "0001");
 					weaponSprite[i].setVisible(true);
+					endPlayerSprite[i].setVisible(true);
 				}
 			}
 		}
@@ -1353,21 +1467,25 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				{
 					playerCharacterSelect[i].setAnimation(PlayerCharacter.character1, "0001");
 					player[i].setTexture(PlayerCharacter.character1, PlayerCharacter.character1Dead);
+					endPlayerSprite[i].img = PlayerCharacter.character1Lose;
 				}
 				else if(characterIndex[i] == 1)
 				{
 					playerCharacterSelect[i].setAnimation(PlayerCharacter.character2, "0001");
 					player[i].setTexture(PlayerCharacter.character2, PlayerCharacter.character2Dead);
+					endPlayerSprite[i].img = PlayerCharacter.character2Lose;
 				}
 				else if(characterIndex[i] == 2)
 				{
 					playerCharacterSelect[i].setAnimation(PlayerCharacter.character3, "0001");
 					player[i].setTexture(PlayerCharacter.character3, PlayerCharacter.character3Dead);
+					endPlayerSprite[i].img = PlayerCharacter.character3Lose;
 				}
 				else if(characterIndex[i] == 3)
 				{
 					playerCharacterSelect[i].setAnimation(PlayerCharacter.character4, "0001");
 					player[i].setTexture(PlayerCharacter.character4, PlayerCharacter.character4Dead);
+					endPlayerSprite[i].img = PlayerCharacter.character4Lose;
 				}
 			}
 		}
@@ -1798,7 +1916,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				confirmSound.play();
 			}
 		}
-		else if (mousePosition.x >= menuButtonSetting.getX() && mousePosition.x <= menuButtonSetting.getX()+menuButtonSetting.getWidth())
+		if (mousePosition.x >= menuButtonSetting.getX() && mousePosition.x <= menuButtonSetting.getX()+menuButtonSetting.getWidth())
 		{
 			if (mousePosition.y >= menuButtonSetting.getY() && mousePosition.y <= menuButtonSetting.getY()+menuButtonSetting.getHeight())
 			{
@@ -1808,7 +1926,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				confirmSound.play();
 			}
 		}
-		else if (mousePosition.x >= menuButtonHowto.getX() && mousePosition.x <= menuButtonHowto.getX()+menuButtonHowto.getWidth())
+		if (mousePosition.x >= menuButtonHowto.getX() && mousePosition.x <= menuButtonHowto.getX()+menuButtonHowto.getWidth())
 		{
 			if (mousePosition.y >= menuButtonHowto.getY() && mousePosition.y <= menuButtonHowto.getY()+menuButtonHowto.getHeight())
 			{
@@ -1817,7 +1935,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				confirmSound.play();
 			}
 		}
-		else if (mousePosition.x >= menuButtonExit.getX() && mousePosition.x <= menuButtonExit.getX()+menuButtonExit.getWidth())
+		if (mousePosition.x >= menuButtonExit.getX() && mousePosition.x <= menuButtonExit.getX()+menuButtonExit.getWidth())
 		{
 			if (mousePosition.y >= menuButtonExit.getY() && mousePosition.y <= menuButtonExit.getY()+menuButtonExit.getHeight())
 			{
@@ -1968,7 +2086,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				menuArrow.setY(menuPointerStart.getY());
 			}
 		}
-		else if (mousePositionStage.x >= menuButtonSetting.getX() && mousePositionStage.x <= menuButtonSetting.getX()+menuButtonSetting.getWidth())
+		if (mousePositionStage.x >= menuButtonSetting.getX() && mousePositionStage.x <= menuButtonSetting.getX()+menuButtonSetting.getWidth())
 		{
 			if (mousePositionStage.y >= menuButtonSetting.getY() && mousePositionStage.y <= menuButtonSetting.getY()+menuButtonSetting.getHeight())
 			{
@@ -1977,7 +2095,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				menuArrow.setY(menuPointerSetting.getY());
 			}
 		}
-		else if (mousePositionStage.x >= menuButtonHowto.getX() && mousePositionStage.x <= menuButtonHowto.getX()+menuButtonHowto.getWidth())
+		if (mousePositionStage.x >= menuButtonHowto.getX() && mousePositionStage.x <= menuButtonHowto.getX()+menuButtonHowto.getWidth())
 		{
 			if (mousePositionStage.y >= menuButtonHowto.getY() && mousePositionStage.y <= menuButtonHowto.getY()+menuButtonHowto.getHeight())
 			{
@@ -1986,7 +2104,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 				menuArrow.setY(menuPointerHowTo.getY());
 			}
 		}
-		else if (mousePositionStage.x >= menuButtonExit.getX() && mousePositionStage.x <= menuButtonExit.getX()+menuButtonExit.getWidth())
+		if (mousePositionStage.x >= menuButtonExit.getX() && mousePositionStage.x <= menuButtonExit.getX()+menuButtonExit.getWidth())
 		{
 			if (mousePositionStage.y >= menuButtonExit.getY() && mousePositionStage.y <= menuButtonExit.getY()+menuButtonExit.getHeight())
 			{
@@ -2193,6 +2311,12 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 		weaponSprite[1].img = noWeapon;
 		weaponSprite[2].img = noWeapon;
 		weaponSprite[3].img = noWeapon;
+		endPlayerSprite[0].setY(240);
+		endPlayerSprite[1].setY(240);
+		endPlayerSprite[2].setY(240);
+		endPlayerSprite[3].setY(240);
+		platform.setX(-1000);
+		winnerBalloon.setX(-1000);
 		for (PlayerCharacter allPlayer : player) {
 			allPlayer.hp = 3;
 			allPlayer.armor = 100;
@@ -2222,6 +2346,7 @@ public class MainGame extends ApplicationAdapter implements InputProcessor, Cont
 			allPlayer.rightPressed = false;
 			allPlayer.upPressed = false;
 			allPlayer.rightPressed = false;
+			allPlayer.moving = false;
 			allPlayer.speed_x = 0;
 			allPlayer.speed_y = 0;
 			allPlayer.speedUp = 0;

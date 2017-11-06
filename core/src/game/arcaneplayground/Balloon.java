@@ -9,11 +9,15 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class Balloon extends Actor{
 	float time;
+	boolean loop = false;
+	boolean onPlayer = true;
 	PlayerCharacter player;
 	Animation<TextureRegion> currentAnim;
 	
-	static TextureAtlas balloon1 = new TextureAtlas(Gdx.files.internal("character1.atlas"));//change name later
-	static Animation<TextureRegion> balloon1Anim = new Animation<TextureRegion>(0.5f, balloon1.getRegions());
+	static TextureAtlas trapBalloon = new TextureAtlas(Gdx.files.internal("trapballoon.atlas"));
+	static Animation<TextureRegion> trapBalloonAnim = new Animation<TextureRegion>(0.3f, trapBalloon.getRegions());
+//	static TextureAtlas musicBalloon = new TextureAtlas(Gdx.files.internal("musicballoon.atlas"));
+//	static Animation<TextureRegion> musicBalloonAnim = new Animation<TextureRegion>(0.3f, musicBalloon.getRegions());
 	public Balloon()
 	{
 		this.setX(-100);
@@ -33,21 +37,36 @@ public class Balloon extends Actor{
 	}
 	public void draw(Batch batch, float alpha)
 	{
-		this.setX(player.getX()+15);
-		this.setY(player.getY()+70);
-		time += Gdx.graphics.getDeltaTime();
-		batch.draw(currentAnim.getKeyFrame(time, true), this.getX(), this.getY(), this.getWidth(), this.getHeight());
-		if (currentAnim.isAnimationFinished(time))
+		if (onPlayer)
 		{
-			this.setVisible(false);
-			time = 0;
+			this.setX(player.getX()+15);
+			this.setY(player.getY()+70);
+		}
+		time += Gdx.graphics.getDeltaTime();
+		if (loop)
+		{
+			batch.draw(currentAnim.getKeyFrame(time, true), this.getX(), this.getY(), this.getWidth(), this.getHeight());
+		}
+		else
+		{
+			batch.draw(currentAnim.getKeyFrame(time, true), this.getX(), this.getY(), this.getWidth(), this.getHeight());
+			if (currentAnim.isAnimationFinished(time))
+			{
+				this.setVisible(false);
+				time = 0;
+			}
 		}
 	}
 	public void runAnimation(String animationName)
 	{
-		if (animationName.equals("1"))
+		if (animationName.equals("trap"))
 		{
-			currentAnim = balloon1Anim;
+			currentAnim = trapBalloonAnim;
+			this.setVisible(true);
+		}
+		else if (animationName.equals("music"))
+		{
+			currentAnim = trapBalloonAnim;// change here
 			this.setVisible(true);
 		}
 	}
