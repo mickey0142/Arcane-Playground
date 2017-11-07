@@ -99,19 +99,13 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	UI playerButtonSetting[][];
 	UI settingBackButton;
 	int playerCount;
-	String commandCode = "";
 	
 	Music menuMusic, gameMusic, endMusic;
 	Sound damagedSound, hpDownSound, deadSound, trapHitSound, parryArrowSound, healSound, collectSound, cursorSound, cancelSound, confirmSound, victorySound;
-	Sound shunGokuSatsuSound;
-	boolean metsu = false;
-	Texture fade, ten;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		fade = new Texture(Gdx.files.internal("whitebox.png"));
-		ten = new Texture(Gdx.files.internal("ten.png"));
 
 		menu = new Stage(new FitViewport(1350, 750));
 		character = new Stage(new FitViewport(1350, 750));
@@ -134,7 +128,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		cancelSound = Gdx.audio.newSound(Gdx.files.internal("audio/cancel.ogg"));
 		confirmSound = Gdx.audio.newSound(Gdx.files.internal("audio/confirm.ogg"));
 		victorySound = Gdx.audio.newSound(Gdx.files.internal("audio/victory.ogg"));
-		shunGokuSatsuSound = Gdx.audio.newSound(Gdx.files.internal("audio/shun goku satsu.mp3"));
 
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/font.ttf"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
@@ -648,19 +641,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			if (playerCount <= 1)
 			{
 				delay -= Gdx.graphics.getDeltaTime();
-				if (metsu)
-				{
-					batch.setColor(0, 0, 0, 1-delay/7.9f);
-					batch.draw(fade, 0, 0, 1350, 750);
-					batch.setColor(Color.WHITE);
-					if (delay <= 5.3f)
-					{
-						player[0].dead = false;
-						player[1].dead = true;
-						player[2].dead = true;
-						player[3].dead = true;
-					}
-				}
 			}
 			if (startDelay > 0)
 			{
@@ -734,12 +714,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			menuMusic.stop();
 			gameMusic.stop();
 			endStageRender();
-			if (metsu)
-			{
-				batch.begin();
-				batch.draw(ten, 0, 0, 1350, 750);
-				batch.end();
-			}
 		}
 		else if (screen.equals("pause"))
 		{
@@ -1528,7 +1502,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void keyDownInGameStage(int keycode)
 	{
-		if (keycode == Keys.ESCAPE && !metsu)
+		if (keycode == Keys.ESCAPE)
 		{
 			screen = "pause";
 			cancelSound.play();
@@ -1538,7 +1512,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			//			{
 			//				continue;
 			//			}// comment this make player able to change direction of attack while charging}
-			if (allPlayer.dead  || playerCount <= 1 || !allPlayer.isVisible() || startDelay > 0 || metsu)
+			if (allPlayer.dead  || playerCount <= 1 || !allPlayer.isVisible() || startDelay > 0)
 			{
 				continue;
 			}
@@ -1920,41 +1894,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	@Override
 	public boolean keyTyped(char character) {
-		if (screen.equals("game"))
-		{
-			if ((commandCode.equals("") || commandCode.equals("g")) && character == 'g')
-			{
-				commandCode += character;
-			}
-			else if (commandCode.equals("gg") && character == 'd')
-			{
-				commandCode += character;
-			}
-			else if (commandCode.equals("ggd") && character == 'b')
-			{
-				commandCode += character;
-			}
-			else if (commandCode.equals("ggdb") && character == 'j')
-			{
-				commandCode += character;
-			}
-			else
-			{
-				commandCode = "";
-			}
-			if (commandCode.equals("ggdbj"))
-			{
-				commandCode = "";
-				if (!metsu)
-				{
-					shunGokuSatsuSound.play();
-					metsu = true;
-					delay = 7.9f;
-					playerCount = 1;
-				}
-			}
-		}
-		return true;
+		return false;
 	}
 
 	@Override
@@ -2455,7 +2395,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			}
 			allPlayer.setIngame(false);
 		}
-		metsu = false;
 	}
 
 	public void moveNormalWallZIndex()
