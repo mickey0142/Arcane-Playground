@@ -828,6 +828,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 							item.hitbox.setX(-1000);
 							item.hitbox.setY(-1000);
 							weaponSprite[weaponCount].img = item.img;
+							if (allPlayer.currentChargeTime > allPlayer.attackChargeTime)
+							{
+								allPlayer.currentChargeTime = allPlayer.attackChargeTime;
+							}
 						}
 						else if (item.dropType.equals("powerup"))
 						{
@@ -2631,21 +2635,25 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 					{
 						playerCharacterSelect[i].setAnimation(PlayerCharacter.character1, "0001");
 						player[i].setTexture(PlayerCharacter.character1, PlayerCharacter.character1Dead);
+						endPlayerSprite[i].img = PlayerCharacter.character1Lose;
 					}
 					else if(characterIndex[i] == 1)
 					{
 						playerCharacterSelect[i].setAnimation(PlayerCharacter.character2, "0001");
 						player[i].setTexture(PlayerCharacter.character2, PlayerCharacter.character2Dead);
+						endPlayerSprite[i].img = PlayerCharacter.character2Lose;
 					}
 					else if(characterIndex[i] == 2)
 					{
 						playerCharacterSelect[i].setAnimation(PlayerCharacter.character3, "0001");
 						player[i].setTexture(PlayerCharacter.character3, PlayerCharacter.character3Dead);
+						endPlayerSprite[i].img = PlayerCharacter.character3Lose;
 					}
 					else if(characterIndex[i] == 3)
 					{
 						playerCharacterSelect[i].setAnimation(PlayerCharacter.character4, "0001");
 						player[i].setTexture(PlayerCharacter.character4, PlayerCharacter.character4Dead);
+						endPlayerSprite[i].img = PlayerCharacter.character4Lose;
 					}
 				}
 			}//}
@@ -2663,7 +2671,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			if (Controllers.getControllers().get(player[i].controllerCount) == controller)
 			{
 				// start if control here
-				if (player[i].dead  || playerCount <= 1 || !player[i].isVisible())
+				if (player[i].dead  || playerCount <= 1 || !player[i].isVisible() || startDelay > 0)
 				{
 					continue;
 				}
@@ -3069,21 +3077,25 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 					{
 						playerCharacterSelect[i].setAnimation(PlayerCharacter.character1, "0001");
 						player[i].setTexture(PlayerCharacter.character1, PlayerCharacter.character1Dead);
+						endPlayerSprite[i].img = PlayerCharacter.character1Lose;
 					}
 					else if(characterIndex[i] == 1)
 					{
 						playerCharacterSelect[i].setAnimation(PlayerCharacter.character2, "0001");
 						player[i].setTexture(PlayerCharacter.character2, PlayerCharacter.character2Dead);
+						endPlayerSprite[i].img = PlayerCharacter.character2Lose;
 					}
 					else if(characterIndex[i] == 2)
 					{
 						playerCharacterSelect[i].setAnimation(PlayerCharacter.character3, "0001");
 						player[i].setTexture(PlayerCharacter.character3, PlayerCharacter.character3Dead);
+						endPlayerSprite[i].img = PlayerCharacter.character3Lose;
 					}
 					else if(characterIndex[i] == 3)
 					{
 						playerCharacterSelect[i].setAnimation(PlayerCharacter.character4, "0001");
 						player[i].setTexture(PlayerCharacter.character4, PlayerCharacter.character4Dead);
+						endPlayerSprite[i].img = PlayerCharacter.character4Lose;
 					}
 				}
 			}
@@ -3145,6 +3157,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			}
 			if (Controllers.getControllers().get(player[i].controllerCount) == controller)
 			{
+				if (player[i].dead  || playerCount <= 1 || !player[i].isVisible() || startDelay > 0)
+				{
+					continue;
+				}
 				//start check for input here
 				if (value == PovDirection.north)
 				{
