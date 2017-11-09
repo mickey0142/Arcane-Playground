@@ -411,7 +411,7 @@ public class PlayerCharacter extends Actor{
 		}
 		if (charging)
 		{
-			chargeBar.red = 0f;
+			chargeBar.red = 1f;
 			chargeBar.green = 1f;
 			chargeBar.blue = 0f;
 		}
@@ -419,6 +419,12 @@ public class PlayerCharacter extends Actor{
 		{
 			chargeBar.red = 1f;
 			chargeBar.green = 0f;
+			chargeBar.blue = 0f;
+		}
+		if (chargeMax)
+		{
+			chargeBar.red = 0f;
+			chargeBar.green = 1f;
 			chargeBar.blue = 0f;
 		}
 		chargeBar.setWidth(currentChargeTime/attackChargeTime*60);
