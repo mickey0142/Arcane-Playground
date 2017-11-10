@@ -72,6 +72,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	Texture noWeapon;
 	BitmapFont font24;
 	SpikeTrap spikeTrap[];
+	WaterTrap waterTrap[];
 	Balloon balloon[];
 	
 	Stage howTo;
@@ -102,7 +103,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	
 	Music menuMusic, gameMusic, endMusic;
 	Sound damagedSound, hpDownSound, deadSound, trapHitSound, parryArrowSound, healSound, collectSound, cursorSound, cancelSound, confirmSound, victorySound;
-	
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -144,6 +145,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		itemDrop = new ItemDrop[126];
 		normalWalls = new NormalWall[126];
 		spikeTrap = new SpikeTrap[4];
+		waterTrap = new WaterTrap[4];
 		for (int i = 0; i < 126; i++)
 		{
 			itemDrop[i] = new ItemDrop();
@@ -292,6 +294,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		for (int i = 0; i < 4; i++)
 		{
 			spikeTrap[i] = new SpikeTrap(100, 100);
+			waterTrap[i] = new WaterTrap(100, 100);
 		}
 		// add all actor for game stage in here. adding order should be background playground itemdrop wall player playerweapon playerattackeffect
 		game.addActor(gameBackground);
@@ -318,6 +321,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		game.addActor(spikeTrap[1]);
 		game.addActor(spikeTrap[2]);
 		game.addActor(spikeTrap[3]);
+		game.addActor(waterTrap[0]);
+		game.addActor(waterTrap[1]);
+		game.addActor(waterTrap[2]);
+		game.addActor(waterTrap[3]);
 
 		walls = new UnbreakableWall[136];
 		int posX = 0;
@@ -415,6 +422,11 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		NormalWall.hp2 = NormalWall.wall1.findRegion("0002");
 		NormalWall.hp1 = NormalWall.wall1.findRegion("0003");
 		NormalWall.hp0 = NormalWall.wall1.findRegion("0004");
+		//playGround.img =
+//		for (UnbreakableWall wall : walls)
+//		{
+//			wall.img = 
+//		}
 		int normalWallCount = 0;
 		float[] possibleY1 = {50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550};
 		float[] possibleY2 = {50, 150, 250, 350, 450, 550};
@@ -463,14 +475,15 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		}
 		// set spiketrap position
 		int spikeTrapCount = 0;
+		int waterTrapCount = 0;
 		float x2 = 100, y2 = 100;
-		float savePositionX[] = {-1, -1, -1, -1};
-		float savePositionY[] = {-1, -1, -1, -1};
+		float savePositionX[] = {-1, -1, -1, -1, -1, -1, -1, -1};
+		float savePositionY[] = {-1, -1, -1, -1, -1, -1, -1, -1};
 		GameObject mapChecker = new GameObject("whitebox.png", 100, 100, 40, 40, false);
 		boolean skip = false;
-		while (spikeTrapCount < 4)
+		while (spikeTrapCount < 4 || waterTrapCount < 4)
 		{
-			for (int i = 0; i < 4; i++)
+			for (int i = 0; i < 8; i++)
 			{
 				if (savePositionX[i] == -1)
 				{
@@ -503,15 +516,30 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			}
 			if (!skip)
 			{
-				// set spiketraphere
-				if ((int)(Math.random()*20) == 0)
+				if (spikeTrapCount < 4)
 				{
-					savePositionX[spikeTrapCount] = x2;
-					savePositionY[spikeTrapCount] = y2;
-					spikeTrap[spikeTrapCount].setX(x2);
-					spikeTrap[spikeTrapCount].setY(y2);
-					spikeTrap[spikeTrapCount].updateHitbox();
-					spikeTrapCount += 1;
+					// set spiketrap here
+					if ((int)(Math.random()*20) == 0)
+					{
+						savePositionX[spikeTrapCount] = x2;
+						savePositionY[spikeTrapCount] = y2;
+						spikeTrap[spikeTrapCount].setX(x2);
+						spikeTrap[spikeTrapCount].setY(y2);
+						spikeTrap[spikeTrapCount].updateHitbox();
+						spikeTrapCount += 1;
+					}
+				}
+				else if (waterTrapCount < 4)
+				{
+					if ((int)(Math.random()*20) == 0)
+					{
+						savePositionX[spikeTrapCount+waterTrapCount] = x2;
+						savePositionY[spikeTrapCount+waterTrapCount] = y2;
+						waterTrap[waterTrapCount].setX(x2);
+						waterTrap[waterTrapCount].setY(y2);
+						waterTrap[waterTrapCount].updateHitbox();
+						waterTrapCount += 1;
+					}
 				}
 			}
 			y2 += 50;
@@ -634,10 +662,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			endMusic.stop();
 			gameStageRender();
 			batch.begin();
-			if(player[0].isVisible())font24.draw(batch, "LV." + player[0].weaponLV, weaponSprite[0].getX(), weaponSprite[0].getY()-12);
-			if(player[1].isVisible())font24.draw(batch, "LV." + player[1].weaponLV, weaponSprite[1].getX(), weaponSprite[1].getY()-12);
-			if(player[2].isVisible())font24.draw(batch, "LV." + player[2].weaponLV, weaponSprite[2].getX(), weaponSprite[2].getY()-12);
-			if(player[3].isVisible())font24.draw(batch, "LV." + player[3].weaponLV, weaponSprite[3].getX(), weaponSprite[3].getY()-12);
+			if(player[0].isVisible())font24.draw(batch, "LV." + player[0].weaponLV, weaponSprite[0].getX(), weaponSprite[0].getY()-15);
+			if(player[1].isVisible())font24.draw(batch, "LV." + player[1].weaponLV, weaponSprite[1].getX(), weaponSprite[1].getY()-15);
+			if(player[2].isVisible())font24.draw(batch, "LV." + player[2].weaponLV, weaponSprite[2].getX(), weaponSprite[2].getY()-15);
+			if(player[3].isVisible())font24.draw(batch, "LV." + player[3].weaponLV, weaponSprite[3].getX(), weaponSprite[3].getY()-15);
 			if (playerCount <= 1)
 			{
 				delay -= Gdx.graphics.getDeltaTime();
@@ -896,6 +924,14 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 					}
 				}
 			}
+			for (GameObject trap : waterTrap)
+			{
+				if (checkCollision(allPlayer, trap))
+				{
+					allPlayer.slowTime = 2;
+					allPlayer.balloon.runAnimation("trap");
+				}
+			}
 		}
 		int arrowCount = 0;
 		for (PlayerCharacter allPlayer : player) 
@@ -1083,28 +1119,28 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			{
 				if (allPlayer.leftPressed)
 				{
-					allPlayer.speedLeft = 5;
+					allPlayer.speedLeft = allPlayer.playerMoveSpeed;
 					allPlayer.direction = "left";
 					allPlayer.updateCheckBlockPosition(allPlayer.hitbox.getX()-50, allPlayer.hitbox.getY(), allPlayer.hitbox.getWidth(), allPlayer.hitbox.getHeight());
 					allPlayer.moving = true;
 				}
 				if (allPlayer.rightPressed)
 				{
-					allPlayer.speedRight = 5;
+					allPlayer.speedRight = allPlayer.playerMoveSpeed;
 					allPlayer.direction = "right";
 					allPlayer.updateCheckBlockPosition(allPlayer.hitbox.getX()+50, allPlayer.hitbox.getY(), allPlayer.hitbox.getWidth(), allPlayer.hitbox.getHeight());
 					allPlayer.moving = true;
 				}
 				if (allPlayer.upPressed)
 				{
-					allPlayer.speedUp = 5;
+					allPlayer.speedUp = allPlayer.playerMoveSpeed;
 					allPlayer.direction = "up";
 					allPlayer.updateCheckBlockPosition(allPlayer.hitbox.getX(), allPlayer.hitbox.getY()+50, allPlayer.hitbox.getWidth(), allPlayer.hitbox.getHeight());
 					allPlayer.moving = true;
 				}
 				if (allPlayer.downPressed)
 				{
-					allPlayer.speedDown = 5;
+					allPlayer.speedDown = allPlayer.playerMoveSpeed;
 					allPlayer.direction = "down";
 					allPlayer.updateCheckBlockPosition(allPlayer.hitbox.getX(), allPlayer.hitbox.getY()-50, allPlayer.hitbox.getWidth(), allPlayer.hitbox.getHeight());
 					allPlayer.moving = true;
@@ -2377,6 +2413,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			allPlayer.upPressed = false;
 			allPlayer.rightPressed = false;
 			allPlayer.moving = false;
+			allPlayer.playerMoveSpeed = PlayerCharacter.moveSpeed;
 			allPlayer.speed_x = 0;
 			allPlayer.speed_y = 0;
 			allPlayer.speedUp = 0;
@@ -2387,6 +2424,8 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			allPlayer.arrow.setY(-100);
 			allPlayer.attackSound = PlayerWeapon.fistSound;
 			allPlayer.speedBoostTime = 0;
+			allPlayer.slowTime = 0;
+			allPlayer.fadeTime = 2;
 			if (allPlayer == player[0])
 			{
 				allPlayer.setX(50);
@@ -2955,9 +2994,79 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	@Override
 	public boolean axisMoved(Controller controller, int axisCode, float value) {
-		return false;
+		if (screen.equals("game"))
+		{
+			axisInGameStage(controller, axisCode, value);
+		}
+		return true;
 	}
 
+	public void axisInGameStage(Controller controller, int axisCode, float value)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (player[i].controlType.equals("keyboard"))
+			{
+				continue;
+			}
+			if (Controllers.getControllers().get(player[i].controllerCount) == controller)
+			{
+				if (player[i].dead  || playerCount <= 1 || !player[i].isVisible() || startDelay > 0)
+				{
+					continue;
+				}
+				if (axisCode % 2 == 0)//even axiscode is y
+				{
+					if (value > 0.7)// up
+					{
+						player[i].downPressed = true;
+						player[i].leftPressed = false;
+						player[i].rightPressed = false;
+						player[i].upPressed = false;	
+					}
+					else if (value < -0.7)// down
+					{
+						player[i].upPressed = true;
+						player[i].leftPressed = false;
+						player[i].rightPressed = false;
+						player[i].downPressed = false;
+					}
+					else
+					{
+						player[i].leftPressed = false;
+						player[i].upPressed = false;
+						player[i].downPressed = false;
+						player[i].rightPressed = false;
+					}
+				}
+				else
+				{
+					if (value > 0.7)// right
+					{
+						player[i].rightPressed = true;
+						player[i].upPressed = false;
+						player[i].downPressed = false;
+						player[i].leftPressed = false;
+					}
+					else if (value < -0.7)// left
+					{
+						player[i].leftPressed = true;
+						player[i].upPressed = false;
+						player[i].downPressed = false;
+						player[i].rightPressed = false;
+					}
+					else
+					{
+						player[i].leftPressed = false;
+						player[i].upPressed = false;
+						player[i].downPressed = false;
+						player[i].rightPressed = false;
+					}
+				}
+			}
+		}
+	}
+	
 	@Override
 	public boolean povMoved(Controller controller, int povCode, PovDirection value) {
 		if (screen.equals("menu"))
@@ -2982,7 +3091,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		}
 		return true;
 	}
-
+	
 	public void povInMenuStage(Controller controller, PovDirection value)
 	{
 		for (int i = 0; i < 4; i++)

@@ -31,7 +31,7 @@ public class ItemDrop extends GameObject{
 	static final float SWORD_ATTACK = 5;
 	static final float SWORDLV2_ATTACK_WIDTH = 40;
 	static final float SWORDLV2_ATTACK_HEIGHT = 40;
-	static final float SWORDLV2_CHARGE_TIME = 1;
+	static final float SWORDLV2_CHARGE_TIME = 0.8f;
 	static final float SWORDLV2_ATTACK = 10;
 	static final float SWORDLV3_ATTACK_WIDTH = 40;
 	static final float SWORDLV3_ATTACK_HEIGHT = 40;
@@ -40,41 +40,41 @@ public class ItemDrop extends GameObject{
 	
 	static final float SPEAR_ATTACK_WIDTH = 40;
 	static final float SPEAR_ATTACK_HEIGHT = 40;
-	static final float SPEAR_CHARGE_TIME = 1;
-	static final float SPEAR_ATTACK = 5;
+	static final float SPEAR_CHARGE_TIME = 2f;
+	static final float SPEAR_ATTACK = 6;
 	static final float SPEARLV2_ATTACK_WIDTH = 100;
 	static final float SPEARLV2_ATTACK_HEIGHT = 40;
-	static final float SPEARLV2_CHARGE_TIME = 1;
-	static final float SPEARLV2_ATTACK = 10;
+	static final float SPEARLV2_CHARGE_TIME = 1.5f;
+	static final float SPEARLV2_ATTACK = 12;
 	static final float SPEARLV3_ATTACK_WIDTH = 100;
 	static final float SPEARLV3_ATTACK_HEIGHT = 40;
-	static final float SPEARLV3_CHARGE_TIME = 0.5f;
-	static final float SPEARLV3_ATTACK = 15;
+	static final float SPEARLV3_CHARGE_TIME = 1f;
+	static final float SPEARLV3_ATTACK = 18;
 	
 	static final float AXE_ATTACK_WIDTH = 40;
 	static final float AXE_ATTACK_HEIGHT = 40;
-	static final float AXE_CHARGE_TIME = 1;
-	static final float AXE_ATTACK = 5;
+	static final float AXE_CHARGE_TIME = 2.5f;
+	static final float AXE_ATTACK = 8;
 	static final float AXELV2_ATTACK_WIDTH = 40;
 	static final float AXELV2_ATTACK_HEIGHT = 80;
-	static final float AXELV2_CHARGE_TIME = 1;
-	static final float AXELV2_ATTACK = 10;
+	static final float AXELV2_CHARGE_TIME = 2;
+	static final float AXELV2_ATTACK = 16;
 	static final float AXELV3_ATTACK_WIDTH = 40;
 	static final float AXELV3_ATTACK_HEIGHT = 80;
-	static final float AXELV3_CHARGE_TIME = 0.5f;
-	static final float AXELV3_ATTACK = 15;
+	static final float AXELV3_CHARGE_TIME = 1.5f;
+	static final float AXELV3_ATTACK = 24;
 	
 	static final float BOW_ATTACK_WIDTH = 40;
 	static final float BOW_ATTACK_HEIGHT = 40;
-	static final float BOW_CHARGE_TIME = 1;
+	static final float BOW_CHARGE_TIME = 1.5f;
 	static final float BOW_ATTACK = 5;
 	static final float BOWLV2_ATTACK_WIDTH = 40;
 	static final float BOWLV2_ATTACK_HEIGHT = 40;
-	static final float BOWLV2_CHARGE_TIME = 1;
+	static final float BOWLV2_CHARGE_TIME = 1.2f;
 	static final float BOWLV2_ATTACK = 10;
 	static final float BOWLV3_ATTACK_WIDTH = 40;
 	static final float BOWLV3_ATTACK_HEIGHT = 40;
-	static final float BOWLV3_CHARGE_TIME = 0.5f;
+	static final float BOWLV3_CHARGE_TIME = 0.8f;
 	static final float BOWLV3_ATTACK = 15;
 
 	public ItemDrop()

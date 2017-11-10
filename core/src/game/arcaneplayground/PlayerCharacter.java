@@ -18,6 +18,7 @@ public class PlayerCharacter extends Actor{
 	String weaponName = "fist";
 	int weaponLV;
 	int controlLeft, controlRight, controlUp, controlDown, controlAttack, controlBack;
+	float playerMoveSpeed = moveSpeed;
 	Rectangle hitbox, attackHitbox;
 	float attackWidth = 40, attackHeight = 40;
 	int hp = 3;//, hpMax = 100;// use hpmax if character have different hp
@@ -45,6 +46,8 @@ public class PlayerCharacter extends Actor{
 	boolean chargeMax = false;
 	boolean upPressed = false, downPressed = false, leftPressed = false, rightPressed = false;
 	float speedBoostTime = 0;
+	float slowTime = 0;
+	float fadeTime = 2;
 	String controlType = "keyboard";
 	int controllerCount = -1;
 	PovDirection controllerUp = PovDirection.north;
@@ -61,6 +64,7 @@ public class PlayerCharacter extends Actor{
 	Balloon balloon;
 	Sound attackSound;
 	
+	static float moveSpeed = 5;
 	static TextureAtlas heart = new TextureAtlas(Gdx.files.internal("heart.atlas"));
 	static Animation<TextureRegion> heart3 = new Animation<TextureRegion>(1f, heart.findRegions("0003"));
 	static Animation<TextureRegion> heart2 = new Animation<TextureRegion>(1f, heart.findRegions("0002"));
@@ -158,6 +162,15 @@ public class PlayerCharacter extends Actor{
 		{
 			speedBoostTime -= Gdx.graphics.getDeltaTime();
 		}
+		if (slowTime > 0)
+		{
+			slowTime -= Gdx.graphics.getDeltaTime();
+			playerMoveSpeed = moveSpeed-3;
+			if (slowTime <= 0)
+			{
+				playerMoveSpeed = moveSpeed;
+			}
+		}
 		updateHPBar();
 		updateChargeBar();
 		updateArmorBar();
@@ -183,6 +196,11 @@ public class PlayerCharacter extends Actor{
 		{
 			currentAnim = deadAnim;
 			weapon.setVisible(false);
+			fadeTime -= Gdx.graphics.getDeltaTime();
+			if (fadeTime <= 0)
+			{
+				this.setVisible(false);
+			}
 		}
 		if (hurt)
 		{
@@ -211,7 +229,7 @@ public class PlayerCharacter extends Actor{
 		{
 			batch.draw(currentAnim.getKeyFrame(time, true), (faceLeft ? this.getX()+this.getWidth() : this.getX()), this.getY(), (faceLeft ? -this.getWidth() : this.getWidth()), this.getHeight());
 		}
-		batch.draw(temp2, attackHitbox.getX(), attackHitbox.getY(), attackHitbox.getWidth(), attackHitbox.getHeight());
+		//batch.draw(temp2, attackHitbox.getX(), attackHitbox.getY(), attackHitbox.getWidth(), attackHitbox.getHeight());
 		//if(currentChargeTime > 0)
 		{
 			//batch.draw(temp, hitbox.getX(), hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
@@ -399,7 +417,7 @@ public class PlayerCharacter extends Actor{
 		}
 		if (charging)
 		{
-			chargeBar.red = 0f;
+			chargeBar.red = 1f;
 			chargeBar.green = 1f;
 			chargeBar.blue = 0f;
 		}
@@ -407,6 +425,12 @@ public class PlayerCharacter extends Actor{
 		{
 			chargeBar.red = 1f;
 			chargeBar.green = 0f;
+			chargeBar.blue = 0f;
+		}
+		if (chargeMax)
+		{
+			chargeBar.red = 0f;
+			chargeBar.green = 1f;
 			chargeBar.blue = 0f;
 		}
 		chargeBar.setWidth(currentChargeTime/attackChargeTime*60);

@@ -55,15 +55,15 @@ public class Arrow extends GameObject{
 		this.setY(y);
 		if (weaponLV == 1)
 		{
-			maxSpeed = 3;
+			maxSpeed = 5;
 		}
 		else if (weaponLV == 2)
 		{
-			maxSpeed = 5;
+			maxSpeed = 7;
 		}
 		else if (weaponLV == 3)
 		{
-			maxSpeed = 7;
+			maxSpeed = 9;
 		}
 		if (direction.equals("up"))
 		{
