@@ -662,10 +662,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			endMusic.stop();
 			gameStageRender();
 			batch.begin();
-			if(player[0].isVisible())font24.draw(batch, "LV." + player[0].weaponLV, weaponSprite[0].getX(), weaponSprite[0].getY()-12);
-			if(player[1].isVisible())font24.draw(batch, "LV." + player[1].weaponLV, weaponSprite[1].getX(), weaponSprite[1].getY()-12);
-			if(player[2].isVisible())font24.draw(batch, "LV." + player[2].weaponLV, weaponSprite[2].getX(), weaponSprite[2].getY()-12);
-			if(player[3].isVisible())font24.draw(batch, "LV." + player[3].weaponLV, weaponSprite[3].getX(), weaponSprite[3].getY()-12);
+			if(player[0].isVisible())font24.draw(batch, "LV." + player[0].weaponLV, weaponSprite[0].getX(), weaponSprite[0].getY()-15);
+			if(player[1].isVisible())font24.draw(batch, "LV." + player[1].weaponLV, weaponSprite[1].getX(), weaponSprite[1].getY()-15);
+			if(player[2].isVisible())font24.draw(batch, "LV." + player[2].weaponLV, weaponSprite[2].getX(), weaponSprite[2].getY()-15);
+			if(player[3].isVisible())font24.draw(batch, "LV." + player[3].weaponLV, weaponSprite[3].getX(), weaponSprite[3].getY()-15);
 			if (playerCount <= 1)
 			{
 				delay -= Gdx.graphics.getDeltaTime();
@@ -2992,9 +2992,79 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	@Override
 	public boolean axisMoved(Controller controller, int axisCode, float value) {
-		return false;
+		if (screen.equals("game"))
+		{
+			axisInGameStage(controller, axisCode, value);
+		}
+		return true;
 	}
 
+	public void axisInGameStage(Controller controller, int axisCode, float value)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			if (player[i].controlType.equals("keyboard"))
+			{
+				continue;
+			}
+			if (Controllers.getControllers().get(player[i].controllerCount) == controller)
+			{
+				if (player[i].dead  || playerCount <= 1 || !player[i].isVisible() || startDelay > 0)
+				{
+					continue;
+				}
+				if (axisCode % 2 == 0)//even axiscode is y
+				{
+					if (value > 0.7)// up
+					{
+						player[i].downPressed = true;
+						player[i].leftPressed = false;
+						player[i].rightPressed = false;
+						player[i].upPressed = false;	
+					}
+					else if (value < -0.7)// down
+					{
+						player[i].upPressed = true;
+						player[i].leftPressed = false;
+						player[i].rightPressed = false;
+						player[i].downPressed = false;
+					}
+					else
+					{
+						player[i].leftPressed = false;
+						player[i].upPressed = false;
+						player[i].downPressed = false;
+						player[i].rightPressed = false;
+					}
+				}
+				else
+				{
+					if (value > 0.7)// right
+					{
+						player[i].rightPressed = true;
+						player[i].upPressed = false;
+						player[i].downPressed = false;
+						player[i].leftPressed = false;
+					}
+					else if (value < -0.7)// left
+					{
+						player[i].leftPressed = true;
+						player[i].upPressed = false;
+						player[i].downPressed = false;
+						player[i].rightPressed = false;
+					}
+					else
+					{
+						player[i].leftPressed = false;
+						player[i].upPressed = false;
+						player[i].downPressed = false;
+						player[i].rightPressed = false;
+					}
+				}
+			}
+		}
+	}
+	
 	@Override
 	public boolean povMoved(Controller controller, int povCode, PovDirection value) {
 		if (screen.equals("menu"))
@@ -3019,7 +3089,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		}
 		return true;
 	}
-
+	
 	public void povInMenuStage(Controller controller, PovDirection value)
 	{
 		for (int i = 0; i < 4; i++)
