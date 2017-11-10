@@ -65,6 +65,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	UI playerChargeBar[] = new UI[4];
 	UI playerHPBar[] = new UI[4];
 	UI playerArmorBar[] = new UI[4];
+	UI playerShadow[] = new UI[4];
 	Arrow playerArrow[];
 	boolean arrowCharged[] = {false, false, false, false};
 	UI playerSprite[];
@@ -80,7 +81,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	Stage end;
 	UI endPlayerSprite[];
 	UI platform;
-	UI trophy;
+	UI crown;
 	Balloon winnerBalloon;
 	String winner;
 	
@@ -225,6 +226,14 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 		playerArrow = new Arrow[4];
 		balloon = new Balloon[4];
+		playerShadow[0] = new UI("shadow1.png", -100, 0, 50, 50);
+		playerShadow[1] = new UI("shadow2.png", -100, 0, 50, 50);
+		playerShadow[2] = new UI("shadow3.png", -100, 0, 50, 50);
+		playerShadow[3] = new UI("shadow4.png", -100, 0, 50, 50);
+		player[0].setShadow(playerShadow[0]);
+		player[1].setShadow(playerShadow[1]);
+		player[2].setShadow(playerShadow[2]);
+		player[3].setShadow(playerShadow[3]);
 		for (int i = 0; i < 4; i++)
 		{
 			attackEffectRenderer[i] = new EffectRenderer(player[i]);
@@ -241,7 +250,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			player[i].setIngame(false);
 			balloon[i] = new Balloon(player[i]);
 			player[i].setBalloon(balloon[i]);
-		}	
+		}
 		
 		// ui in stage
 		characterBackground = new UI("characterbackground.jpg", 0, 0, 1350, 750);
@@ -380,6 +389,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		}
 		
 		//change this to loop later
+		game.addActor(playerShadow[0]);
+		game.addActor(playerShadow[1]);
+		game.addActor(playerShadow[2]);
+		game.addActor(playerShadow[3]);
 		game.addActor(player[0]);
 		game.addActor(player[1]);
 		game.addActor(player[2]);
@@ -578,7 +591,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		winnerBalloon.onPlayer = false;
 		winnerBalloon.setWidth(50);
 		winnerBalloon.setHeight(50);
-		trophy = new UI("box.png", 0, 0, 60, 60);
+		crown = new UI("box.png", 0, 0, 60, 60);
 		
 //		end.addActor(endBackground);
 		end.addActor(endPlayerSprite[0]);
@@ -587,7 +600,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		end.addActor(endPlayerSprite[3]);
 		end.addActor(platform);
 		end.addActor(winnerBalloon);
-		end.addActor(trophy);
+		end.addActor(crown);
 	}
 
 	public void createInPauseStage()
@@ -701,9 +714,9 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 							platform.setY(endPlayerSprite[numPlayerWin].getY());
 							winnerBalloon.setX(endPlayerSprite[numPlayerWin].getX()+10);
 							winnerBalloon.setY(endPlayerSprite[numPlayerWin].getY()+140);
-							winnerBalloon.runAnimation("music");
-							trophy.setX(platform.getX());
-							trophy.setY(winnerBalloon.getY()+60);
+							winnerBalloon.runAnimation("winner");
+							crown.setX(platform.getX());
+							crown.setY(winnerBalloon.getY()+60);
 							endPlayerSprite[numPlayerWin].setY(endPlayerSprite[numPlayerWin].getY()+60);
 							if (characterIndex[numPlayerWin] == 0)
 							{
@@ -1061,12 +1074,13 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				//checkcollision between arrow and player
 				for (PlayerCharacter otherPlayer : player)
 				{
-					if (allPlayer == otherPlayer || !allPlayer.isVisible() || allPlayer.dead)
+					if (allPlayer == otherPlayer || !otherPlayer.isVisible() || otherPlayer.dead)
 					{
 						continue;
 					}
 					if (checkCollision(otherPlayer, allPlayer.arrow) && !otherPlayer.hurt)
 					{
+						characterSkill(allPlayer, otherPlayer, arrowCharged[arrowCount]);
 						PlayerWeapon.fistSound.play();
 						otherPlayer.regenDelay = 5f;
 						if (otherPlayer.armor <= 0)
@@ -1960,7 +1974,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		{
 			if (mousePosition.y >= menuButtonStart.getY() && mousePosition.y <= menuButtonStart.getY()+menuButtonStart.getHeight())
 			{
-				System.out.println("start");
 				screen = "character";
 				confirmSound.play();
 			}
@@ -1969,7 +1982,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		{
 			if (mousePosition.y >= menuButtonSetting.getY() && mousePosition.y <= menuButtonSetting.getY()+menuButtonSetting.getHeight())
 			{
-				System.out.println("setting");
 				screen = "setting";
 				back = "menu";
 				confirmSound.play();
@@ -1979,7 +1991,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		{
 			if (mousePosition.y >= menuButtonHowto.getY() && mousePosition.y <= menuButtonHowto.getY()+menuButtonHowto.getHeight())
 			{
-				System.out.println("howto");
 				screen = "howto";
 				confirmSound.play();
 			}
@@ -1988,7 +1999,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		{
 			if (mousePosition.y >= menuButtonExit.getY() && mousePosition.y <= menuButtonExit.getY()+menuButtonExit.getHeight())
 			{
-				System.out.println("exit");
 				Gdx.app.exit();
 			}
 		}
@@ -2285,6 +2295,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			}
 			if (checkCollision(playerAttack, allPlayer, "attack") && !allPlayer.hurt)
 			{
+				characterSkill(playerAttack, allPlayer, false);
 				allPlayer.regenDelay = 5f;
 				if (allPlayer.armor <= 0)
 				{
@@ -2336,6 +2347,57 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		playerAttack.chargeMax = false;
 	}
 
+	public void characterSkill(PlayerCharacter playerAttack, PlayerCharacter playerDamaged, boolean arrowCharged)
+	{
+		if (playerAttack.chargeMax || arrowCharged)
+		{
+			int num = (int)(Math.random()*100);
+			if (playerAttack.deadAtlas == PlayerCharacter.character1Dead)// character 1 skill
+			{
+				if (num <= 20)
+				{
+					if (playerDamaged.armor > 0)
+					{
+						playerDamaged.armor -= playerAttack.attack / 2;
+						if (playerDamaged.armor < 0)
+						{
+							playerDamaged.armor = 0;
+						}
+					}
+					playerAttack.balloon.runAnimation("trap");// play skill icon balloon here
+				}
+			}
+			else if (playerAttack.deadAtlas == PlayerCharacter.character2Dead)// character 2 skill
+			{
+				if (num <= 20)
+				{
+					playerDamaged.slowTime = 1;
+					playerAttack.balloon.runAnimation("trap");// play skill icon balloon here
+				}
+			}
+			else if (playerAttack.deadAtlas == PlayerCharacter.character3Dead)// character 3 skill
+			{
+				if (num <= 20)
+				{
+					playerAttack.speedBoostTime = 1;
+					playerAttack.balloon.runAnimation("trap");// play skill icon balloon here
+				}
+			}
+			else if (playerAttack.deadAtlas == PlayerCharacter.character4Dead)// character 4 skill
+			{
+				if (num <= 20)
+				{
+					playerAttack.armor += playerAttack.attack/2;
+					if (playerAttack.armor > 100)
+					{
+						playerAttack.armor = 100;
+					}
+					playerAttack.balloon.runAnimation("trap");// play skill icon balloon here
+				}
+			}
+		}
+	}
+	
 	public void resetVariableInCharacterStage()
 	{
 		playerCount = 0;
@@ -3031,7 +3093,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 						player[i].rightPressed = false;
 						player[i].downPressed = false;
 					}
-					else
+					else if (value > -0.1 && value < 0.1)
 					{
 						player[i].leftPressed = false;
 						player[i].upPressed = false;

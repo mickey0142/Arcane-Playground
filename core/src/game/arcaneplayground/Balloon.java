@@ -16,8 +16,8 @@ public class Balloon extends Actor{
 	
 	static TextureAtlas trapBalloon = new TextureAtlas(Gdx.files.internal("trapballoon.atlas"));
 	static Animation<TextureRegion> trapBalloonAnim = new Animation<TextureRegion>(0.3f, trapBalloon.getRegions());
-//	static TextureAtlas musicBalloon = new TextureAtlas(Gdx.files.internal("musicballoon.atlas"));
-//	static Animation<TextureRegion> musicBalloonAnim = new Animation<TextureRegion>(0.3f, musicBalloon.getRegions());
+	static TextureAtlas winnerBalloon = new TextureAtlas(Gdx.files.internal("winnerballoon.atlas"));
+	static Animation<TextureRegion> winnerBalloonAnim = new Animation<TextureRegion>(0.8f, winnerBalloon.getRegions());
 	public Balloon()
 	{
 		this.setX(-100);
@@ -64,9 +64,9 @@ public class Balloon extends Actor{
 			currentAnim = trapBalloonAnim;
 			this.setVisible(true);
 		}
-		else if (animationName.equals("music"))
+		else if (animationName.equals("winner"))
 		{
-			currentAnim = trapBalloonAnim;// change here
+			currentAnim = winnerBalloonAnim;
 			this.setVisible(true);
 		}
 	}

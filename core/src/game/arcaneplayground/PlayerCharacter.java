@@ -57,6 +57,7 @@ public class PlayerCharacter extends Actor{
 	UI hpBar;
 	UI chargeBar;
 	UI armorBar;
+	UI shadow;
 	EffectRenderer attackEffect;
 	PlayerWeapon weapon;
 	GameObject checkBlock;
@@ -176,6 +177,7 @@ public class PlayerCharacter extends Actor{
 		updateArmorBar();
 		updateHitbox();
 		updateAttackHitbox();
+		updateShadow();
 		if (speed_x > 0)
 		{
 			faceLeft = false;
@@ -196,6 +198,7 @@ public class PlayerCharacter extends Actor{
 		{
 			currentAnim = deadAnim;
 			weapon.setVisible(false);
+			shadow.setVisible(false);
 			fadeTime -= Gdx.graphics.getDeltaTime();
 			if (fadeTime <= 0)
 			{
@@ -468,6 +471,17 @@ public class PlayerCharacter extends Actor{
 		this.arrow = arrow;
 	}
 	
+	public void setShadow(UI shadow)
+	{
+		this.shadow = shadow;
+	}
+	
+	public void updateShadow()
+	{
+		shadow.setX(this.getX()-3);
+		shadow.setY(this.getY()-3);
+	}
+	
 	public void setIngame(boolean ingame)
 	{
 		hpBar.setVisible(ingame);
@@ -476,6 +490,7 @@ public class PlayerCharacter extends Actor{
 		attackEffect.setVisible(ingame);
 		weapon.setVisible(ingame);
 		checkBlock.setVisible(ingame);
+		shadow.setVisible(ingame);
 		//arrow.setVisible(ingame);
 		this.setVisible(ingame);
 		if (ingame)
