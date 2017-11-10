@@ -47,6 +47,7 @@ public class PlayerCharacter extends Actor{
 	boolean upPressed = false, downPressed = false, leftPressed = false, rightPressed = false;
 	float speedBoostTime = 0;
 	float slowTime = 0;
+	float fadeTime = 2;
 	String controlType = "keyboard";
 	int controllerCount = -1;
 	PovDirection controllerUp = PovDirection.north;
@@ -195,6 +196,11 @@ public class PlayerCharacter extends Actor{
 		{
 			currentAnim = deadAnim;
 			weapon.setVisible(false);
+			fadeTime -= Gdx.graphics.getDeltaTime();
+			if (fadeTime <= 0)
+			{
+				this.setVisible(false);
+			}
 		}
 		if (hurt)
 		{

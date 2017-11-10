@@ -929,6 +929,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				if (checkCollision(allPlayer, trap))
 				{
 					allPlayer.slowTime = 2;
+					allPlayer.balloon.runAnimation("trap");
 				}
 			}
 		}
@@ -2424,6 +2425,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			allPlayer.attackSound = PlayerWeapon.fistSound;
 			allPlayer.speedBoostTime = 0;
 			allPlayer.slowTime = 0;
+			allPlayer.fadeTime = 2;
 			if (allPlayer == player[0])
 			{
 				allPlayer.setX(50);
