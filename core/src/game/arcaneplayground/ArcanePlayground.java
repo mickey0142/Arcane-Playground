@@ -50,6 +50,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	int characterIndex[] = new int[4];// change 4 to number of character texture here
 	UI characterBackground;
 	UI playerCharacterSelect[];
+	Texture char1Info, char2Info, char3Info, char4Info;
 	
 	Stage game;
 	float startDelay = 3;
@@ -199,21 +200,21 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		checkBlock[2] = new GameObject("box3.png", 0, 0, 100, 100, false);
 		checkBlock[3] = new GameObject("box3.png", 0, 0, 100, 100, false);
 		playerHPBar[0] = new UI("heart.png", 100, 690, 150, 40);
-		playerHPBar[1] = new UI("heart.png", 400, 690, 150, 40);
-		playerHPBar[2] = new UI("heart.png", 700, 690, 150, 40);
-		playerHPBar[3] = new UI("heart.png", 1000, 690, 150, 40);
+		playerHPBar[1] = new UI("heart.png", 430, 690, 150, 40);
+		playerHPBar[2] = new UI("heart.png", 760, 690, 150, 40);
+		playerHPBar[3] = new UI("heart.png", 1090, 690, 150, 40);
 		playerArmorBar[0] = new UI ("box3.png", 100, 660, 10, 15);
-		playerArmorBar[1] = new UI ("box3.png", 400, 660, 10, 15);
-		playerArmorBar[2] = new UI ("box3.png", 700, 660, 10, 15);
-		playerArmorBar[3] = new UI ("box3.png", 1000, 660, 10, 15);
+		playerArmorBar[1] = new UI ("box3.png", 430, 660, 10, 15);
+		playerArmorBar[2] = new UI ("box3.png", 760, 660, 10, 15);
+		playerArmorBar[3] = new UI ("box3.png", 1090, 660, 10, 15);
 		playerChargeBar[0] = new UI("whitebox.png", 0, 0, 60, 10, true);
 		playerChargeBar[1] = new UI("whitebox.png", 0, 0, 60, 10, true);
 		playerChargeBar[2] = new UI("whitebox.png", 0, 0, 60, 10, true);
 		playerChargeBar[3] = new UI("whitebox.png", 0, 0, 60, 10, true);
 		weaponSprite[0] = new UI ("gray.png", 260, 680, 50, 50);
-		weaponSprite[1] = new UI ("gray.png", 560, 680, 50, 50);
-		weaponSprite[2] = new UI ("gray.png", 860, 680, 50, 50);
-		weaponSprite[3] = new UI ("gray.png", 1160, 680, 50, 50);
+		weaponSprite[1] = new UI ("gray.png", 590, 680, 50, 50);
+		weaponSprite[2] = new UI ("gray.png", 920, 680, 50, 50);
+		weaponSprite[3] = new UI ("gray.png", 1250, 680, 50, 50);
 		noWeapon = new Texture(Gdx.files.internal("gray.png"));
 		player[0] = new PlayerCharacter(50, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, Keys.Q, playerHPBar[0], playerArmorBar[0], PlayerWeapon.fist, PlayerWeapon.fistAnim);
 		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, Keys.ALT_RIGHT, playerHPBar[1], playerArmorBar[1], PlayerWeapon.fist, PlayerWeapon.fistAnim);
@@ -251,22 +252,18 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			balloon[i] = new Balloon(player[i]);
 			player[i].setBalloon(balloon[i]);
 		}
+		char1Info = new Texture(Gdx.files.internal("char1info.png"));
+		char2Info = new Texture(Gdx.files.internal("char2info.png"));
+		char3Info = new Texture(Gdx.files.internal("char3info.png"));
+		char4Info = new Texture(Gdx.files.internal("char4info.png"));
 		
 		// ui in stage
-		characterBackground = new UI("characterbackground.jpg", 0, 0, 1350, 750);
+		characterBackground = new UI("characterbackground.png", 0, 0, 1350, 750);
 		playerCharacterSelect =  new UI[4];
-		playerCharacterSelect[0] = new UI("character1.png", 200, 600, 60, 60);
-		playerCharacterSelect[0].animation = true;
-		playerCharacterSelect[0].setAnimation(PlayerCharacter.character1, "0001");
-		playerCharacterSelect[1] = new UI("character1.png", 400, 600, 60, 60);
-		playerCharacterSelect[1].animation = true;
-		playerCharacterSelect[1].setAnimation(PlayerCharacter.character1, "0001");
-		playerCharacterSelect[2] = new UI("character1.png", 600, 600, 60, 60);
-		playerCharacterSelect[2].animation = true;
-		playerCharacterSelect[2].setAnimation(PlayerCharacter.character1, "0001");
-		playerCharacterSelect[3] = new UI("character1.png", 800, 600, 60, 60);
-		playerCharacterSelect[3].animation = true;
-		playerCharacterSelect[3].setAnimation(PlayerCharacter.character1, "0001");
+		playerCharacterSelect[0] = new UI("char1info.png", 52, 105, 273, 548);
+		playerCharacterSelect[1] = new UI("char1info.png", 377, 105, 273, 548);
+		playerCharacterSelect[2] = new UI("char1info.png", 702, 105, 273, 548);
+		playerCharacterSelect[3] = new UI("char1info.png", 1027, 105, 273, 548);
 
 		character.addActor(characterBackground);
 		character.addActor(playerCharacterSelect[0]);
@@ -290,13 +287,13 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		playerSprite[0] = new UI("whitebox.png", 30, 660, 60, 60);
 		playerSprite[0].animation = true;
 		playerSprite[0].setAnimation(PlayerCharacter.character1, "0001");
-		playerSprite[1] = new UI("whitebox.png", 330, 660, 60, 60);
+		playerSprite[1] = new UI("whitebox.png", 360, 660, 60, 60);
 		playerSprite[1].animation = true;
 		playerSprite[1].setAnimation(PlayerCharacter.character1, "0001");
-		playerSprite[2] = new UI("whitebox.png", 630, 660, 60, 60);
+		playerSprite[2] = new UI("whitebox.png", 690, 660, 60, 60);
 		playerSprite[2].animation = true;
 		playerSprite[2].setAnimation(PlayerCharacter.character1, "0001");
-		playerSprite[3] = new UI("whitebox.png", 930, 660, 60, 60);
+		playerSprite[3] = new UI("whitebox.png", 1020, 660, 60, 60);
 		playerSprite[3].animation = true;
 		playerSprite[3].setAnimation(PlayerCharacter.character1, "0001");
 		
@@ -675,10 +672,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			endMusic.stop();
 			gameStageRender();
 			batch.begin();
-			if(player[0].isVisible())font24.draw(batch, "LV." + player[0].weaponLV, weaponSprite[0].getX(), weaponSprite[0].getY()-15);
-			if(player[1].isVisible())font24.draw(batch, "LV." + player[1].weaponLV, weaponSprite[1].getX(), weaponSprite[1].getY()-15);
-			if(player[2].isVisible())font24.draw(batch, "LV." + player[2].weaponLV, weaponSprite[2].getX(), weaponSprite[2].getY()-15);
-			if(player[3].isVisible())font24.draw(batch, "LV." + player[3].weaponLV, weaponSprite[3].getX(), weaponSprite[3].getY()-15);
+			if(player[0].isVisible())font24.draw(batch, "LV." + player[0].weaponLV, weaponSprite[0].getX(), weaponSprite[0].getY()-12);
+			if(player[1].isVisible())font24.draw(batch, "LV." + player[1].weaponLV, weaponSprite[1].getX(), weaponSprite[1].getY()-12);
+			if(player[2].isVisible())font24.draw(batch, "LV." + player[2].weaponLV, weaponSprite[2].getX(), weaponSprite[2].getY()-12);
+			if(player[3].isVisible())font24.draw(batch, "LV." + player[3].weaponLV, weaponSprite[3].getX(), weaponSprite[3].getY()-12);
 			if (playerCount <= 1)
 			{
 				delay -= Gdx.graphics.getDeltaTime();
@@ -1528,25 +1525,25 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				}
 				if (characterIndex[i] == 0)
 				{
-					playerCharacterSelect[i].setAnimation(PlayerCharacter.character1, "0001");
+					playerCharacterSelect[i].img = char1Info;
 					player[i].setTexture(PlayerCharacter.character1, PlayerCharacter.character1Dead);
 					endPlayerSprite[i].img = PlayerCharacter.character1Lose;
 				}
 				else if(characterIndex[i] == 1)
 				{
-					playerCharacterSelect[i].setAnimation(PlayerCharacter.character2, "0001");
+					playerCharacterSelect[i].img = char2Info;
 					player[i].setTexture(PlayerCharacter.character2, PlayerCharacter.character2Dead);
 					endPlayerSprite[i].img = PlayerCharacter.character2Lose;
 				}
 				else if(characterIndex[i] == 2)
 				{
-					playerCharacterSelect[i].setAnimation(PlayerCharacter.character3, "0001");
+					playerCharacterSelect[i].img = char3Info;
 					player[i].setTexture(PlayerCharacter.character3, PlayerCharacter.character3Dead);
 					endPlayerSprite[i].img = PlayerCharacter.character3Lose;
 				}
 				else if(characterIndex[i] == 3)
 				{
-					playerCharacterSelect[i].setAnimation(PlayerCharacter.character4, "0001");
+					playerCharacterSelect[i].img = char4Info;
 					player[i].setTexture(PlayerCharacter.character4, PlayerCharacter.character4Dead);
 					endPlayerSprite[i].img = PlayerCharacter.character4Lose;
 				}
@@ -2734,25 +2731,25 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 					}
 					if (characterIndex[i] == 0)
 					{
-						playerCharacterSelect[i].setAnimation(PlayerCharacter.character1, "0001");
+						playerCharacterSelect[i].img = char1Info;
 						player[i].setTexture(PlayerCharacter.character1, PlayerCharacter.character1Dead);
 						endPlayerSprite[i].img = PlayerCharacter.character1Lose;
 					}
 					else if(characterIndex[i] == 1)
 					{
-						playerCharacterSelect[i].setAnimation(PlayerCharacter.character2, "0001");
+						playerCharacterSelect[i].img = char2Info;
 						player[i].setTexture(PlayerCharacter.character2, PlayerCharacter.character2Dead);
 						endPlayerSprite[i].img = PlayerCharacter.character2Lose;
 					}
 					else if(characterIndex[i] == 2)
 					{
-						playerCharacterSelect[i].setAnimation(PlayerCharacter.character3, "0001");
+						playerCharacterSelect[i].img = char3Info;
 						player[i].setTexture(PlayerCharacter.character3, PlayerCharacter.character3Dead);
 						endPlayerSprite[i].img = PlayerCharacter.character3Lose;
 					}
 					else if(characterIndex[i] == 3)
 					{
-						playerCharacterSelect[i].setAnimation(PlayerCharacter.character4, "0001");
+						playerCharacterSelect[i].img = char4Info;
 						player[i].setTexture(PlayerCharacter.character4, PlayerCharacter.character4Dead);
 						endPlayerSprite[i].img = PlayerCharacter.character4Lose;
 					}
@@ -3077,7 +3074,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				{
 					continue;
 				}
-				if (axisCode % 2 == 0)//even axiscode is y
+				if (axisCode % 2 == 0 && !player[i].leftPressed && !player[i].rightPressed)//even axiscode is y
 				{
 					if (value > 0.7)// up
 					{
@@ -3101,7 +3098,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 						player[i].rightPressed = false;
 					}
 				}
-				else
+				else if (axisCode % 2 == 1 && !player[i].upPressed && !player[i].downPressed)
 				{
 					if (value > 0.7)// right
 					{
@@ -3246,25 +3243,25 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 					}
 					if (characterIndex[i] == 0)
 					{
-						playerCharacterSelect[i].setAnimation(PlayerCharacter.character1, "0001");
+						playerCharacterSelect[i].img = char1Info;
 						player[i].setTexture(PlayerCharacter.character1, PlayerCharacter.character1Dead);
 						endPlayerSprite[i].img = PlayerCharacter.character1Lose;
 					}
 					else if(characterIndex[i] == 1)
 					{
-						playerCharacterSelect[i].setAnimation(PlayerCharacter.character2, "0001");
+						playerCharacterSelect[i].img = char2Info;
 						player[i].setTexture(PlayerCharacter.character2, PlayerCharacter.character2Dead);
 						endPlayerSprite[i].img = PlayerCharacter.character2Lose;
 					}
 					else if(characterIndex[i] == 2)
 					{
-						playerCharacterSelect[i].setAnimation(PlayerCharacter.character3, "0001");
+						playerCharacterSelect[i].img = char3Info;
 						player[i].setTexture(PlayerCharacter.character3, PlayerCharacter.character3Dead);
 						endPlayerSprite[i].img = PlayerCharacter.character3Lose;
 					}
 					else if(characterIndex[i] == 3)
 					{
-						playerCharacterSelect[i].setAnimation(PlayerCharacter.character4, "0001");
+						playerCharacterSelect[i].img = char4Info;
 						player[i].setTexture(PlayerCharacter.character4, PlayerCharacter.character4Dead);
 						endPlayerSprite[i].img = PlayerCharacter.character4Lose;
 					}
