@@ -107,7 +107,8 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	
 	Music menuMusic, gameMusic, endMusic;
 	Sound damagedSound, hpDownSound, deadSound, trapHitSound, parryArrowSound, healSound, collectSound, cursorSound, cancelSound, confirmSound, victorySound;
-
+	Sound skill1Sound, skill2Sound, skill3Sound, skill4Sound;
+	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -133,6 +134,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		cancelSound = Gdx.audio.newSound(Gdx.files.internal("audio/cancel.ogg"));
 		confirmSound = Gdx.audio.newSound(Gdx.files.internal("audio/confirm.ogg"));
 		victorySound = Gdx.audio.newSound(Gdx.files.internal("audio/victory.ogg"));
+		skill1Sound = Gdx.audio.newSound(Gdx.files.internal("audio/skill1.ogg"));
+		skill2Sound = Gdx.audio.newSound(Gdx.files.internal("audio/skill2.ogg"));
+		skill3Sound = Gdx.audio.newSound(Gdx.files.internal("audio/skill3.ogg"));
+		skill4Sound = Gdx.audio.newSound(Gdx.files.internal("audio/skill4.ogg"));
 
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/font.ttf"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
@@ -444,7 +449,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			NormalWall.wallTexture = NormalWall.wall1;
 			playGround.img = playground2;
 			unbreakWall = UnbreakableWall.wall2;
-			NormalWall.currentBreakSound = NormalWall.wallBreakSound;
+			NormalWall.currentBreakSound = NormalWall.wallBreakSound2;
 		}
 		NormalWall.hp3 = NormalWall.wallTexture.findRegion("0001");
 		NormalWall.hp2 = NormalWall.wallTexture.findRegion("0002");
@@ -898,7 +903,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 							}
 							else if (item.powerUpName.equals("shoe"))
 							{
-								allPlayer.speedBoostTime = 2f;
+								allPlayer.speedBoostTime = 3f;
 							}
 							item.hitbox.setX(-1000);
 							item.hitbox.setY(-1000);
@@ -2371,13 +2376,14 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				{
 					if (playerDamaged.armor > 0)
 					{
-						playerDamaged.armor -= playerAttack.attack / 2;
+						playerDamaged.armor -= playerAttack.attack/2;
 						if (playerDamaged.armor < 0)
 						{
 							playerDamaged.armor = 0;
 						}
 					}
 					playerAttack.balloon.runAnimation("skill1");// play skill icon balloon here
+					skill1Sound.play();
 				}
 			}
 			else if (playerAttack.deadAtlas == PlayerCharacter.character2Dead)// character 2 skill
@@ -2386,6 +2392,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				{
 					playerDamaged.slowTime = 1.5f;
 					playerAttack.balloon.runAnimation("skill2");// play skill icon balloon here
+					skill1Sound.play();
 				}
 			}
 			else if (playerAttack.deadAtlas == PlayerCharacter.character3Dead)// character 3 skill
@@ -2394,6 +2401,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				{
 					playerAttack.speedBoostTime = 1.5f;
 					playerAttack.balloon.runAnimation("skill3");// play skill icon balloon here
+					skill1Sound.play();
 				}
 			}
 			else if (playerAttack.deadAtlas == PlayerCharacter.character4Dead)// character 4 skill
@@ -2406,6 +2414,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 						playerAttack.armor = 100;
 					}
 					playerAttack.balloon.runAnimation("skill4");// play skill icon balloon here
+					skill1Sound.play();
 				}
 			}
 		}
