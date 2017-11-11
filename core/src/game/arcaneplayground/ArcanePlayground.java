@@ -283,7 +283,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		gameBackground = new UI("gamebackground.jpg", 0, 0, 1350, 750, false);
 		playGround = new GameObject("playground.png", 25, 0, 1300, 650, false);
 		playground1 = new Texture(Gdx.files.internal("playground.png"));
-		playground2 = new Texture(Gdx.files.internal("playground.png"));// insert new picture here
+		playground2 = new Texture(Gdx.files.internal("mapwood.png"));// insert new picture here
 		gameMusic  = Gdx.audio.newMusic(Gdx.files.internal("audio/gamemusic.ogg"));
 		gameMusic.setLooping(true);
 		
@@ -437,12 +437,14 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			NormalWall.wallTexture = NormalWall.wall1;// insert new picture here
 			playGround.img = playground1;
 			unbreakWall = UnbreakableWall.wall1;
+			NormalWall.currentBreakSound = NormalWall.wallBreakSound;
 		}
 		else if (num == 1)
 		{
 			NormalWall.wallTexture = NormalWall.wall1;
 			playGround.img = playground2;
 			unbreakWall = UnbreakableWall.wall2;
+			NormalWall.currentBreakSound = NormalWall.wallBreakSound;
 		}
 		NormalWall.hp3 = NormalWall.wallTexture.findRegion("0001");
 		NormalWall.hp2 = NormalWall.wallTexture.findRegion("0002");

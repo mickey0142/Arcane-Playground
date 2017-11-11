@@ -199,6 +199,7 @@ public class PlayerCharacter extends Actor{
 			currentAnim = deadAnim;
 			weapon.setVisible(false);
 			shadow.setVisible(false);
+			chargeBar.setVisible(false);
 			fadeTime -= Gdx.graphics.getDeltaTime();
 			if (fadeTime <= 0)
 			{

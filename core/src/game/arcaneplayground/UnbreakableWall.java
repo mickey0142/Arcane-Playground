@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class UnbreakableWall extends GameObject{
 	static Texture wall1 = new Texture(Gdx.files.internal("block.png"));
-	static Texture wall2 = new Texture(Gdx.files.internal("blockold.png"));
+	static Texture wall2 = new Texture(Gdx.files.internal("blockwood.png"));
 	public UnbreakableWall()
 	{
 		

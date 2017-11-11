@@ -16,8 +16,11 @@ public class NormalWall extends GameObject{
 	static TextureAtlas wallTexture;
 	static TextureRegion hp3, hp2, hp1, hp0;
 
+	static Sound currentBreakSound;
 	static TextureAtlas wall1 = new TextureAtlas("normalwall.atlas");
 	static Sound wallBreakSound = Gdx.audio.newSound(Gdx.files.internal("audio/wallbreak.ogg"));
+//	static TextureAtlas wall2 = new TextureAtlas("normalwall.atlas");
+//	static Sound wallBreakSound2 = Gdx.audio.newSound(Gdx.files.internal("audio/glassbreak.wav"));
 
 	public NormalWall()
 	{
@@ -41,7 +44,7 @@ public class NormalWall extends GameObject{
 			{
 				spawnItem(itemdrop);
 				dropItem = true;
-				wallBreakSound.play(0.5f);
+				currentBreakSound.play(0.5f);
 			}
 			this.hitbox.setX(-1000);
 			this.hitbox.setY(-1000);
