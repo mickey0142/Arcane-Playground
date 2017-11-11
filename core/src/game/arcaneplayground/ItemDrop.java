@@ -244,12 +244,12 @@ public class ItemDrop extends GameObject{
 		{
 			dropType = "powerup";
 			int num = (int)(Math.random()*100+1);// random 1 to multiplier
-			if (num >= 1 && num <= 50)
+			if (num >= 1 && num <= 25)
 			{
 				this.img = lifeDropTexture;
 				powerUpName = "life";
 			}
-			else if (num >= 51 && num <= 100)
+			else if (num >= 26 && num <= 100)
 			{
 				this.img = shoeDropTexture;
 				powerUpName = "shoe";
