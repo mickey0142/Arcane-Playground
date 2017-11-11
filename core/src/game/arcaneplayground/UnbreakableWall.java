@@ -2,9 +2,12 @@ package game.arcaneplayground;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class UnbreakableWall extends GameObject{
+	static Texture wall1 = new Texture(Gdx.files.internal("block.png"));
+	static Texture wall2 = new Texture(Gdx.files.internal("blockold.png"));
 	public UnbreakableWall()
 	{
 		
@@ -18,5 +21,9 @@ public class UnbreakableWall extends GameObject{
 		this.setHeight(height);
 		this.solid = solid;
 		hitbox = new Rectangle(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+	}
+	public void draw(Batch batch, float alpha)
+	{
+		batch.draw(img, this.getX(), this.getY(), this.getWidth(), this.getHeight());
 	}
 }

@@ -18,6 +18,14 @@ public class Balloon extends Actor{
 	static Animation<TextureRegion> trapBalloonAnim = new Animation<TextureRegion>(0.3f, trapBalloon.getRegions());
 	static TextureAtlas winnerBalloon = new TextureAtlas(Gdx.files.internal("winnerballoon.atlas"));
 	static Animation<TextureRegion> winnerBalloonAnim = new Animation<TextureRegion>(0.8f, winnerBalloon.getRegions());
+	static TextureAtlas skill1Balloon = new TextureAtlas(Gdx.files.internal("skill1balloon.atlas"));
+	static Animation<TextureRegion> skill1BalloonAnim = new Animation<TextureRegion>(1f, skill1Balloon.getRegions());
+	static TextureAtlas skill2Balloon = new TextureAtlas(Gdx.files.internal("skill2balloon.atlas"));
+	static Animation<TextureRegion> skill2BalloonAnim = new Animation<TextureRegion>(1f, skill2Balloon.getRegions());
+	static TextureAtlas skill3Balloon = new TextureAtlas(Gdx.files.internal("skill3balloon.atlas"));
+	static Animation<TextureRegion> skill3BalloonAnim = new Animation<TextureRegion>(1f, skill3Balloon.getRegions());
+	static TextureAtlas skill4Balloon = new TextureAtlas(Gdx.files.internal("skill4balloon.atlas"));
+	static Animation<TextureRegion> skill4BalloonAnim = new Animation<TextureRegion>(1f, skill4Balloon.getRegions());
 	public Balloon()
 	{
 		this.setX(-100);
@@ -67,6 +75,26 @@ public class Balloon extends Actor{
 		else if (animationName.equals("winner"))
 		{
 			currentAnim = winnerBalloonAnim;
+			this.setVisible(true);
+		}
+		else if (animationName.equals("skill1"))
+		{
+			currentAnim = skill1BalloonAnim;
+			this.setVisible(true);
+		}
+		else if (animationName.equals("skill2"))
+		{
+			currentAnim = skill2BalloonAnim;
+			this.setVisible(true);
+		}
+		else if (animationName.equals("skill3"))
+		{
+			currentAnim = skill3BalloonAnim;
+			this.setVisible(true);
+		}
+		else if (animationName.equals("skill4"))
+		{
+			currentAnim = skill4BalloonAnim;
 			this.setVisible(true);
 		}
 	}

@@ -72,17 +72,19 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	UI playerSprite[];
 	UI weaponSprite[];
 	Texture noWeapon;
+	Texture unbreakWall;
 	BitmapFont font24;
 	SpikeTrap spikeTrap[];
 	WaterTrap waterTrap[];
 	Balloon balloon[];
+	Texture playground1, playground2;
 	
 	Stage howTo;
 	
 	Stage end;
 	UI endPlayerSprite[];
 	UI platform;
-	UI crown;
+	UI medal;
 	Balloon winnerBalloon;
 	String winner;
 	
@@ -280,6 +282,8 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	{
 		gameBackground = new UI("gamebackground.jpg", 0, 0, 1350, 750, false);
 		playGround = new GameObject("playground.png", 25, 0, 1300, 650, false);
+		playground1 = new Texture(Gdx.files.internal("playground.png"));
+		playground2 = new Texture(Gdx.files.internal("playground.png"));// insert new picture here
 		gameMusic  = Gdx.audio.newMusic(Gdx.files.internal("audio/gamemusic.ogg"));
 		gameMusic.setLooping(true);
 		
@@ -404,15 +408,15 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		game.addActor(playerArrow[2]);
 		game.addActor(playerArrow[3]);
 		
-		game.addActor(balloon[0]);
-		game.addActor(balloon[1]);
-		game.addActor(balloon[2]);
-		game.addActor(balloon[3]);
-		
 		game.addActor(playerChargeBar[0]);
 		game.addActor(playerChargeBar[1]);
 		game.addActor(playerChargeBar[2]);
 		game.addActor(playerChargeBar[3]);
+		
+		game.addActor(balloon[0]);
+		game.addActor(balloon[1]);
+		game.addActor(balloon[2]);
+		game.addActor(balloon[3]);
 
 		//temp remove this latertemp remove this latertemp remove this latertemp remove this latertemp remove this latertemp remove this latertemp remove this later
 		//game.addActor(checkBlock[0]);
@@ -427,16 +431,27 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	public void createMap()// maybe add argument in this method and set map and wall texture according to that
 	{
 		// set textureatlas for block here change wall1 to input
-		NormalWall.wallTexture = NormalWall.wall1;
-		NormalWall.hp3 = NormalWall.wall1.findRegion("0001");
-		NormalWall.hp2 = NormalWall.wall1.findRegion("0002");
-		NormalWall.hp1 = NormalWall.wall1.findRegion("0003");
-		NormalWall.hp0 = NormalWall.wall1.findRegion("0004");
-		//playGround.img =
-//		for (UnbreakableWall wall : walls)
-//		{
-//			wall.img = 
-//		}
+		int num = (int)(Math.random()*2);
+		if (num == 0)
+		{
+			NormalWall.wallTexture = NormalWall.wall1;// insert new picture here
+			playGround.img = playground1;
+			unbreakWall = UnbreakableWall.wall1;
+		}
+		else if (num == 1)
+		{
+			NormalWall.wallTexture = NormalWall.wall1;
+			playGround.img = playground2;
+			unbreakWall = UnbreakableWall.wall2;
+		}
+		NormalWall.hp3 = NormalWall.wallTexture.findRegion("0001");
+		NormalWall.hp2 = NormalWall.wallTexture.findRegion("0002");
+		NormalWall.hp1 = NormalWall.wallTexture.findRegion("0003");
+		NormalWall.hp0 = NormalWall.wallTexture.findRegion("0004");
+		for (UnbreakableWall wall : walls)
+		{
+			wall.img = unbreakWall;
+		}
 		int normalWallCount = 0;
 		float[] possibleY1 = {50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550};
 		float[] possibleY2 = {50, 150, 250, 350, 450, 550};
@@ -448,8 +463,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				int[] y = new Random().ints(0, 6).distinct().limit(4).toArray();
 				for (int j = 0; j < 4; j++)
 				{
-					normalWalls[normalWallCount] = new NormalWall("block2.png", x, possibleY2[y[j]], 50, 50, true);
-					normalWalls[normalWallCount].setName("wall");
+					normalWalls[normalWallCount] = new NormalWall(x, possibleY2[y[j]], 50, 50, true);
 					game.addActor(normalWalls[normalWallCount]);
 					normalWallCount += 1;
 				}
@@ -476,7 +490,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				}
 				for (int j = 0; j < 6; j++)
 				{
-					normalWalls[normalWallCount] = new NormalWall("block2.png", x, possibleY1[y[j]], 50, 50, true);
+					normalWalls[normalWallCount] = new NormalWall(x, possibleY1[y[j]], 50, 50, true);
 					game.addActor(normalWalls[normalWallCount]);
 					normalWallCount += 1;
 				}
@@ -582,13 +596,13 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		endPlayerSprite[1].setVisible(false);
 		endPlayerSprite[2].setVisible(false);
 		endPlayerSprite[3].setVisible(false);
-		platform = new UI("box.png", 0, 0, 60, 60);
+		platform = new UI("podium.png", 0, 0, 60, 60);
 		winnerBalloon = new Balloon();
 		winnerBalloon.loop = true;
 		winnerBalloon.onPlayer = false;
 		winnerBalloon.setWidth(50);
 		winnerBalloon.setHeight(50);
-		crown = new UI("box.png", 0, 0, 60, 60);
+		medal = new UI("medal.png", 0, 0, 60, 60);
 		
 //		end.addActor(endBackground);
 		end.addActor(endPlayerSprite[0]);
@@ -597,7 +611,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		end.addActor(endPlayerSprite[3]);
 		end.addActor(platform);
 		end.addActor(winnerBalloon);
-		end.addActor(crown);
+		end.addActor(medal);
 	}
 
 	public void createInPauseStage()
@@ -709,11 +723,11 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 							winner = "Player " + (numPlayerWin+1) + " Win !!!";
 							platform.setX(endPlayerSprite[numPlayerWin].getX());
 							platform.setY(endPlayerSprite[numPlayerWin].getY());
-							winnerBalloon.setX(endPlayerSprite[numPlayerWin].getX()+10);
-							winnerBalloon.setY(endPlayerSprite[numPlayerWin].getY()+140);
+							winnerBalloon.setX(endPlayerSprite[numPlayerWin].getX()+50);
+							winnerBalloon.setY(endPlayerSprite[numPlayerWin].getY()+120);
 							winnerBalloon.runAnimation("winner");
-							crown.setX(platform.getX());
-							crown.setY(winnerBalloon.getY()+60);
+							medal.setX(platform.getX());
+							medal.setY(endPlayerSprite[numPlayerWin].getY()+140);
 							endPlayerSprite[numPlayerWin].setY(endPlayerSprite[numPlayerWin].getY()+60);
 							if (characterIndex[numPlayerWin] == 0)
 							{
@@ -956,7 +970,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				{
 					if (!allPlayer.arrow.isVisible())
 					{
-						allPlayer.attackSound.play();
+						allPlayer.attackSound.play(0.4f);
 						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
 						allPlayer.arrow.setVisible(true);
 						if (allPlayer.chargeMax)
@@ -2249,7 +2263,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void checkPlayerAttack(PlayerCharacter playerAttack)
 	{
-		playerAttack.attackSound.play();
+		playerAttack.attackSound.play(0.4f);
 		for (GameObject wall : normalWalls) {
 			if (checkCollision(playerAttack, wall, "attack"))
 			{
@@ -2351,7 +2365,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			int num = (int)(Math.random()*100);
 			if (playerAttack.deadAtlas == PlayerCharacter.character1Dead)// character 1 skill
 			{
-				if (num <= 20)
+				if (num <= 50)
 				{
 					if (playerDamaged.armor > 0)
 					{
@@ -2361,35 +2375,35 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 							playerDamaged.armor = 0;
 						}
 					}
-					playerAttack.balloon.runAnimation("trap");// play skill icon balloon here
+					playerAttack.balloon.runAnimation("skill1");// play skill icon balloon here
 				}
 			}
 			else if (playerAttack.deadAtlas == PlayerCharacter.character2Dead)// character 2 skill
 			{
-				if (num <= 20)
+				if (num <= 50)
 				{
-					playerDamaged.slowTime = 1;
-					playerAttack.balloon.runAnimation("trap");// play skill icon balloon here
+					playerDamaged.slowTime = 1.5f;
+					playerAttack.balloon.runAnimation("skill2");// play skill icon balloon here
 				}
 			}
 			else if (playerAttack.deadAtlas == PlayerCharacter.character3Dead)// character 3 skill
 			{
-				if (num <= 20)
+				if (num <= 50)
 				{
-					playerAttack.speedBoostTime = 1;
-					playerAttack.balloon.runAnimation("trap");// play skill icon balloon here
+					playerAttack.speedBoostTime = 1.5f;
+					playerAttack.balloon.runAnimation("skill3");// play skill icon balloon here
 				}
 			}
 			else if (playerAttack.deadAtlas == PlayerCharacter.character4Dead)// character 4 skill
 			{
-				if (num <= 20)
+				if (num <= 50)
 				{
 					playerAttack.armor += playerAttack.attack/2;
 					if (playerAttack.armor > 100)
 					{
 						playerAttack.armor = 100;
 					}
-					playerAttack.balloon.runAnimation("trap");// play skill icon balloon here
+					playerAttack.balloon.runAnimation("skill4");// play skill icon balloon here
 				}
 			}
 		}

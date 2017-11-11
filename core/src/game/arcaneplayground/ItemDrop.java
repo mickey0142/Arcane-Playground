@@ -217,6 +217,8 @@ public class ItemDrop extends GameObject{
 				attackHeight[1] = BOWLV2_ATTACK_HEIGHT;
 				attackChargeTime[1] = BOWLV2_CHARGE_TIME;
 				attack[1] = BOWLV2_ATTACK;
+				effectAtlas = EffectRenderer.punchAtlas;
+				effectAnimation = EffectRenderer.punchAnimation;
 				weaponAtlas[1] = PlayerWeapon.bowLV2;
 				weaponLV2Animation = PlayerWeapon.bowLV2Anim;
 				//lv3
@@ -224,6 +226,8 @@ public class ItemDrop extends GameObject{
 				attackHeight[2] = BOWLV3_ATTACK_HEIGHT;
 				attackChargeTime[2] = BOWLV3_CHARGE_TIME;
 				attack[2] = BOWLV3_ATTACK;
+				effectAtlas = EffectRenderer.punchAtlas;
+				effectAnimation = EffectRenderer.punchAnimation;
 				weaponAtlas[2] = PlayerWeapon.bowLV3;
 				weaponLV3Animation = PlayerWeapon.bowLV3Anim;
 				weaponSound = PlayerWeapon.bowSound;
