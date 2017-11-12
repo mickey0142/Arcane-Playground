@@ -51,7 +51,9 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	UI characterBackground;
 	UI playerCharacterSelect[];
 	UI selectCharacterTop;
+	UI charSelectButtonStart, charSelectButtonBack;
 	Texture char1Info, char2Info, char3Info, char4Info;
+	int charSelectCursor = -1;
 	
 	Stage game;
 	float startDelay = 3;
@@ -202,6 +204,8 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void createInCharacterStage()
 	{
+		charSelectButtonStart = new UI("whitebox.png", 1175, 680, 165, 45);
+		charSelectButtonBack = new UI("whitebox.png", 15, 680, 165, 45);
 		weaponSprite = new UI[4];
 		checkBlock[0] = new GameObject("box3.png", 0, 0, 100, 100, false);// remove box3.png and add null and don't add this actor to stage i think that can avoid nullpointerexception because this.draw don't get call
 		checkBlock[1] = new GameObject("box3.png", 0, 0, 100, 100, false);
@@ -1986,6 +1990,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		{
 			touchDownInSettingStage(mousePositionStage, button);
 		}
+		else if (screen.equals("character"))
+		{
+			touchDownInCharacterStage(mousePositionStage, button);
+		}
 		return false;
 	}
 
@@ -2116,6 +2124,51 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			}
 		}// if button left
 	}
+
+	public void touchDownInCharacterStage(Vector2 mousePosition, int button)
+	{
+		if (button == Buttons.LEFT)
+		{
+			if (mousePositionStage.x >= charSelectButtonStart.getX() && mousePositionStage.x <= charSelectButtonStart.getX()+charSelectButtonStart.getWidth())
+			{
+				if (mousePositionStage.y >= charSelectButtonStart.getY() && mousePositionStage.y <= charSelectButtonStart.getY()+charSelectButtonStart.getHeight())
+				{
+					if (playerCount >= 2)
+					{
+						createMap();
+						screen = "game";
+						confirmSound.play();
+						for (int i = 0; i < 4; i++)
+						{
+							if (!player[i].isVisible())
+							{
+								playerSprite[i].setVisible(false);
+								weaponSprite[i].setVisible(false);
+								endPlayerSprite[i].setVisible(false);
+								continue;
+							}
+							else
+							{
+								playerSprite[i].setVisible(true);
+								playerSprite[i].setAnimation(player[i].walkingAtlas, "0001");
+								weaponSprite[i].setVisible(true);
+								endPlayerSprite[i].setVisible(true);
+							}
+						}
+					}
+				}
+			}
+			if (mousePositionStage.x >= charSelectButtonBack.getX() && mousePositionStage.x <= charSelectButtonBack.getX()+charSelectButtonBack.getWidth())
+			{
+				if (mousePositionStage.y >= charSelectButtonBack.getY() && mousePositionStage.y <= charSelectButtonBack.getY()+charSelectButtonBack.getHeight())
+				{
+					screen = "menu";
+					cancelSound.play();
+					resetVariableInCharacterStage();
+				}
+			}
+		}
+	}
 	
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
@@ -2143,10 +2196,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		else if (screen.equals("character"))
 		{
 			mouseMovedInCharacterStage(mousePositionStage);
-		}
-		else if (screen.equals("setting"))
-		{
-			mouseMovedInSettingStage(mousePositionStage);
 		}
 		else if (screen.equals("pause"))
 		{
@@ -2213,12 +2262,28 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void mouseMovedInCharacterStage(Vector2 mousePosition)
 	{
-		
-	}
-	
-	public void mouseMovedInSettingStage(Vector2 mousePosition)
-	{
-		
+		if (mousePositionStage.x >= charSelectButtonStart.getX() && mousePositionStage.x <= charSelectButtonStart.getX()+charSelectButtonStart.getWidth())
+		{
+			if (mousePositionStage.y >= charSelectButtonStart.getY() && mousePositionStage.y <= charSelectButtonStart.getY()+charSelectButtonStart.getHeight())
+			{
+				if (charSelectCursor != 0)
+				{
+					cursorSound.play();
+					charSelectCursor = 0;
+				}
+			}
+		}
+		if (mousePositionStage.x >= charSelectButtonBack.getX() && mousePositionStage.x <= charSelectButtonBack.getX()+charSelectButtonBack.getWidth())
+		{
+			if (mousePositionStage.y >= charSelectButtonBack.getY() && mousePositionStage.y <= charSelectButtonBack.getY()+charSelectButtonBack.getHeight())
+			{
+				if (charSelectCursor != 1)
+				{
+					cursorSound.play();
+					charSelectCursor = 1;
+				}
+			}
+		}
 	}
 	
 	public void mouseMovedInPauseStage(Vector2 mousePosition)
@@ -2435,6 +2500,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		{
 			characterIndex[i] = 0;
 		}
+		charSelectCursor = -1;
 	}
 
 	public void resetVariableInGameStage()
