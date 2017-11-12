@@ -84,6 +84,8 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	Texture playground1, playground2;
 	
 	Stage howTo;
+	UI howToBackground;
+	UI howToButtonBack;
 	
 	Stage end;
 	UI endPlayerSprite[];
@@ -171,6 +173,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		createInEndStage();
 		createInPauseStage();
 		createInSettingStage();
+		createInHowToStage();
 
 		Gdx.input.setInputProcessor(this);
 		Controllers.addListener(this);
@@ -208,10 +211,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		charSelectButtonStart = new UI("whitebox.png", 1175, 680, 165, 45);
 		charSelectButtonBack = new UI("whitebox.png", 15, 680, 165, 45);
 		weaponSprite = new UI[4];
-		checkBlock[0] = new GameObject("box3.png", 0, 0, 100, 100, false);// remove box3.png and add null and don't add this actor to stage i think that can avoid nullpointerexception because this.draw don't get call
-		checkBlock[1] = new GameObject("box3.png", 0, 0, 100, 100, false);
-		checkBlock[2] = new GameObject("box3.png", 0, 0, 100, 100, false);
-		checkBlock[3] = new GameObject("box3.png", 0, 0, 100, 100, false);
+		checkBlock[0] = new GameObject("box3.png", 0, 0, 100, 100);
+		checkBlock[1] = new GameObject("box3.png", 0, 0, 100, 100);
+		checkBlock[2] = new GameObject("box3.png", 0, 0, 100, 100);
+		checkBlock[3] = new GameObject("box3.png", 0, 0, 100, 100);
 		playerHPBar[0] = new UI("heart.png", 100, 690, 150, 40);
 		playerHPBar[1] = new UI("heart.png", 430, 690, 150, 40);
 		playerHPBar[2] = new UI("heart.png", 760, 690, 150, 40);
@@ -298,7 +301,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	public void createInGameStage()
 	{
 		gameBackground = new UI("gamebackground.jpg", 0, 0, 1350, 750, false);
-		playGround = new GameObject("playground.png", 25, 0, 1300, 650, false);
+		playGround = new GameObject("playground.png", 0, 0, 1350, 650);
 		playground1 = new Texture(Gdx.files.internal("playground.png"));
 		playground2 = new Texture(Gdx.files.internal("mapwood.png"));// insert new picture here
 		gameMusic  = Gdx.audio.newMusic(Gdx.files.internal("audio/gamemusic.ogg"));
@@ -363,7 +366,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		int boxX = 50;
 		int boxY = 50;
 		for(int i=0;i<=26;i++) {
-			walls[i] = new UnbreakableWall("block.png", posX, posY, boxX, boxY, true);
+			walls[i] = new UnbreakableWall("block.png", posX, posY, boxX, boxY);
 			game.addActor(walls[i]);
 			posX += 50;
 		}
@@ -371,7 +374,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		posX = 0;
 		posY = 600;
 		for(int i=27;i<=53;i++) {
-			walls[i] = new UnbreakableWall("block.png", posX, posY, boxX, boxY, true);
+			walls[i] = new UnbreakableWall("block.png", posX, posY, boxX, boxY);
 			game.addActor(walls[i]);
 			posX += 50;
 		}
@@ -379,7 +382,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		posX = 0;
 		posY = 50;
 		for(int i=54;i<=64;i++) {
-			walls[i] = new UnbreakableWall("block.png", posX, posY, boxX, boxY, true);
+			walls[i] = new UnbreakableWall("block.png", posX, posY, boxX, boxY);
 			game.addActor(walls[i]);
 			posY += 50;
 		}
@@ -387,7 +390,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		posX = 1300;
 		posY = 50;
 		for(int i=65;i<=75;i++) {
-			walls[i] = new UnbreakableWall("block.png", posX, posY, boxX, boxY, true);
+			walls[i] = new UnbreakableWall("block.png", posX, posY, boxX, boxY);
 			game.addActor(walls[i]);
 			posY += 50;
 		}
@@ -397,7 +400,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		int num_count = 76;
 		for(int i=0;i<5;i++) {
 			for(int j=0;j<12;j++) {
-				walls[j+num_count] = new UnbreakableWall("block.png", posX, posY, boxX, boxY, true);
+				walls[j+num_count] = new UnbreakableWall("block.png", posX, posY, boxX, boxY);
 				game.addActor(walls[j+num_count]);
 				posX += 100;
 			}
@@ -449,7 +452,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		game.addActor(attackEffectRenderer[3]);
 	}
 
-	public void createMap()// maybe add argument in this method and set map and wall texture according to that
+	public void createMap()
 	{
 		// set textureatlas for block here change wall1 to input
 		int num = (int)(Math.random()*2);
@@ -486,7 +489,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				int[] y = new Random().ints(0, 6).distinct().limit(4).toArray();
 				for (int j = 0; j < 4; j++)
 				{
-					normalWalls[normalWallCount] = new NormalWall(x, possibleY2[y[j]], 50, 50, true);
+					normalWalls[normalWallCount] = new NormalWall(x, possibleY2[y[j]], 50, 50);
 					game.addActor(normalWalls[normalWallCount]);
 					normalWallCount += 1;
 				}
@@ -513,7 +516,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				}
 				for (int j = 0; j < 6; j++)
 				{
-					normalWalls[normalWallCount] = new NormalWall(x, possibleY1[y[j]], 50, 50, true);
+					normalWalls[normalWallCount] = new NormalWall(x, possibleY1[y[j]], 50, 50);
 					game.addActor(normalWalls[normalWallCount]);
 					normalWallCount += 1;
 				}
@@ -526,7 +529,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		float x2 = 100, y2 = 100;
 		float savePositionX[] = {-1, -1, -1, -1, -1, -1, -1, -1};
 		float savePositionY[] = {-1, -1, -1, -1, -1, -1, -1, -1};
-		GameObject mapChecker = new GameObject("whitebox.png", 100, 100, 40, 40, false);
+		GameObject mapChecker = new GameObject("whitebox.png", 100, 100, 40, 40);
 		boolean skip = false;
 		while (spikeTrapCount < 4 || waterTrapCount < 4)
 		{
@@ -670,6 +673,14 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		}
 		
 		setting.addActor(settingBackground);
+	}
+	
+	public void createInHowToStage()
+	{
+		howToBackground = new UI("howtobackground.png", 0, 0, 1350, 750);
+		howToButtonBack = new UI("whitebox.png", 19, 19, 160, 60);
+		
+		howTo.addActor(howToBackground);
 	}
 	
 	@Override
@@ -1331,7 +1342,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	
 	public void howToStageRender()
 	{
-		
+		howTo.draw();
 	}
 	
 	@Override
@@ -1343,6 +1354,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		end.dispose();
 		setting.dispose();
 		pause.dispose();
+		howTo.dispose();
 	}
 
 	@Override
@@ -2005,6 +2017,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		{
 			touchDownInCharacterStage(mousePositionStage, button);
 		}
+		else if (screen.equals("howto"))
+		{
+			touchDownInHowToStage(mousePositionStage, button);
+		}
 		return false;
 	}
 
@@ -2183,6 +2199,21 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		}
 	}
 
+	public void touchDownInHowToStage(Vector2 mousePosition, int button)
+	{
+		if (button == Buttons.LEFT)
+		{
+			if (mousePosition.x >= howToButtonBack.getX() && mousePosition.x <= howToButtonBack.getX()+howToButtonBack.getWidth())
+			{
+				if (mousePosition.y >= howToButtonBack.getY() && mousePosition.y <= howToButtonBack.getY()+howToButtonBack.getHeight())
+				{
+					screen = "menu";
+					cancelSound.play();
+				}
+			}
+		}
+	}
+	
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		mousePositionScreen.x = screenX;
@@ -2307,11 +2338,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	@Override
 	public boolean scrolled(int amount) {
 		return false;
-	}
-
-	public boolean checkContain(PlayerCharacter player)
-	{
-		return playGround.hitbox.contains(player.hitbox);
 	}
 
 	public boolean checkCollision(PlayerCharacter player, GameObject object)
@@ -2568,7 +2594,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			allPlayer.attackWidth = 40;
 			allPlayer.direction = "right";
 			//allPlayer.time // should i reset this?
-			allPlayer.attack = 0;
+			allPlayer.attack = 2;
 			allPlayer.weapon.setVisible(true);
 			allPlayer.weaponLV = 0;
 			allPlayer.weaponAtlas = PlayerWeapon.fist;

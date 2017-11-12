@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 public class WaterTrap extends GameObject{
 	float time = 0;
 	static TextureAtlas waterTexture = new TextureAtlas(Gdx.files.internal("watertrap.atlas"));
-	static Animation<TextureRegion> waterAnim = new Animation<TextureRegion>(1f, waterTexture.getRegions());
+	static Animation<TextureRegion> waterAnim = new Animation<TextureRegion>(0.5f, waterTexture.getRegions());
 	public WaterTrap()
 	{
 		

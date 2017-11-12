@@ -32,7 +32,7 @@ public class PlayerCharacter extends Actor{
 	float attackChargeTime = 0.5f;
 	float currentChargeTime;
 	float blinkTime = 2f, currentBlinkTime;
-	float attack;
+	float attack = 2;
 	float regenDelay = 2;
 	float trapDelay = 0;
 	int blinkFrameCount;

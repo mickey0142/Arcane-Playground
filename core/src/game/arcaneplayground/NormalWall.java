@@ -26,13 +26,12 @@ public class NormalWall extends GameObject{
 	{
 
 	}
-	public NormalWall(float x, float y, float width, float height, boolean solid)
+	public NormalWall(float x, float y, float width, float height)
 	{
 		this.setX(x);
 		this.setY(y);
 		this.setWidth(width);
 		this.setHeight(height);
-		this.solid = solid;
 		hitbox = new Rectangle(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 	}
 	public void draw(Batch batch, float alpha)
