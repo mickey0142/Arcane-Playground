@@ -231,10 +231,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		weaponSprite[1] = new UI ("gray.png", 590, 680, 50, 50);
 		weaponSprite[2] = new UI ("gray.png", 920, 680, 50, 50);
 		weaponSprite[3] = new UI ("gray.png", 1250, 680, 50, 50);
-		shieldIcon[0] = new UI("shield.png", 95, 660, 16, 16);
-		shieldIcon[1] = new UI("shield.png", 425, 660, 16, 16);
-		shieldIcon[2] = new UI("shield.png", 755, 660, 16, 16);
-		shieldIcon[3] = new UI("shield.png", 1085, 660, 16, 16);
+		shieldIcon[0] = new UI("shield1.png", 95, 660, 16, 16);
+		shieldIcon[1] = new UI("shield1.png", 425, 660, 16, 16);
+		shieldIcon[2] = new UI("shield1.png", 755, 660, 16, 16);
+		shieldIcon[3] = new UI("shield1.png", 1085, 660, 16, 16);
 		noWeapon = new Texture(Gdx.files.internal("gray.png"));
 		player[0] = new PlayerCharacter(50, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, Keys.Q, playerHPBar[0], playerArmorBar[0], PlayerWeapon.fist, PlayerWeapon.fistAnim);
 		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, Keys.ALT_RIGHT, playerHPBar[1], playerArmorBar[1], PlayerWeapon.fist, PlayerWeapon.fistAnim);
