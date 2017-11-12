@@ -70,6 +70,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	UI playerHPBar[] = new UI[4];
 	UI playerArmorBar[] = new UI[4];
 	UI playerShadow[] = new UI[4];
+	UI shieldIcon[] = new UI[4];
 	Arrow playerArrow[];
 	boolean arrowCharged[] = {false, false, false, false};
 	UI playerSprite[];
@@ -215,10 +216,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		playerHPBar[1] = new UI("heart.png", 430, 690, 150, 40);
 		playerHPBar[2] = new UI("heart.png", 760, 690, 150, 40);
 		playerHPBar[3] = new UI("heart.png", 1090, 690, 150, 40);
-		playerArmorBar[0] = new UI ("box3.png", 100, 660, 10, 15);
-		playerArmorBar[1] = new UI ("box3.png", 430, 660, 10, 15);
-		playerArmorBar[2] = new UI ("box3.png", 760, 660, 10, 15);
-		playerArmorBar[3] = new UI ("box3.png", 1090, 660, 10, 15);
+		playerArmorBar[0] = new UI ("box3.png", 120, 660, 10, 15);
+		playerArmorBar[1] = new UI ("box3.png", 450, 660, 10, 15);
+		playerArmorBar[2] = new UI ("box3.png", 780, 660, 10, 15);
+		playerArmorBar[3] = new UI ("box3.png", 1110, 660, 10, 15);
 		playerChargeBar[0] = new UI("whitebox.png", 0, 0, 60, 10, true);
 		playerChargeBar[1] = new UI("whitebox.png", 0, 0, 60, 10, true);
 		playerChargeBar[2] = new UI("whitebox.png", 0, 0, 60, 10, true);
@@ -227,6 +228,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		weaponSprite[1] = new UI ("gray.png", 590, 680, 50, 50);
 		weaponSprite[2] = new UI ("gray.png", 920, 680, 50, 50);
 		weaponSprite[3] = new UI ("gray.png", 1250, 680, 50, 50);
+		shieldIcon[0] = new UI("shield.png", 95, 660, 16, 16);
+		shieldIcon[1] = new UI("shield.png", 425, 660, 16, 16);
+		shieldIcon[2] = new UI("shield.png", 755, 660, 16, 16);
+		shieldIcon[3] = new UI("shield.png", 1085, 660, 16, 16);
 		noWeapon = new Texture(Gdx.files.internal("gray.png"));
 		player[0] = new PlayerCharacter(50, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, Keys.Q, playerHPBar[0], playerArmorBar[0], PlayerWeapon.fist, PlayerWeapon.fistAnim);
 		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, Keys.ALT_RIGHT, playerHPBar[1], playerArmorBar[1], PlayerWeapon.fist, PlayerWeapon.fistAnim);
@@ -330,6 +335,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		game.addActor(playerArmorBar[1]);
 		game.addActor(playerArmorBar[2]);
 		game.addActor(playerArmorBar[3]);
+		game.addActor(shieldIcon[0]);
+		game.addActor(shieldIcon[1]);
+		game.addActor(shieldIcon[2]);
+		game.addActor(shieldIcon[3]);
 		game.addActor(playerSprite[0]);
 		game.addActor(playerSprite[1]);
 		game.addActor(playerSprite[2]);
@@ -1484,6 +1493,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 					playerSprite[i].setVisible(false);
 					weaponSprite[i].setVisible(false);
 					endPlayerSprite[i].setVisible(false);
+					shieldIcon[i].setVisible(false);
 					continue;
 				}
 				else
@@ -1492,6 +1502,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 					playerSprite[i].setAnimation(player[i].walkingAtlas, "0001");
 					weaponSprite[i].setVisible(true);
 					endPlayerSprite[i].setVisible(true);
+					shieldIcon[i].setVisible(true);
 				}
 			}
 		}
@@ -2145,6 +2156,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 								playerSprite[i].setVisible(false);
 								weaponSprite[i].setVisible(false);
 								endPlayerSprite[i].setVisible(false);
+								shieldIcon[i].setVisible(false);
 								continue;
 							}
 							else
@@ -2153,6 +2165,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 								playerSprite[i].setAnimation(player[i].walkingAtlas, "0001");
 								weaponSprite[i].setVisible(true);
 								endPlayerSprite[i].setVisible(true);
+								shieldIcon[i].setVisible(true);
 							}
 						}
 					}
@@ -2169,7 +2182,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		mousePositionScreen.x = screenX;

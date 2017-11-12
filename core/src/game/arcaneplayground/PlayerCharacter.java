@@ -459,7 +459,7 @@ public class PlayerCharacter extends Actor{
 	
 	public void updateArmorBar()
 	{
-		armorBar.setWidth(armor*1.5f);
+		armorBar.setWidth(armor*1.3f);
 	}
 	
 	public void setBalloon(Balloon balloon)
