@@ -91,6 +91,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	UI endPlayerSprite[];
 	UI platform;
 	UI medal;
+	UI endBackground;
 	Balloon winnerBalloon;
 	String winner;
 	
@@ -462,6 +463,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			playGround.img = playground1;
 			unbreakWall = UnbreakableWall.wall1;
 			NormalWall.currentBreakSound = NormalWall.wallBreakSound;
+			WaterTrap.currentAnim = WaterTrap.waterAnim;
 		}
 		else if (num == 1)
 		{
@@ -469,6 +471,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			playGround.img = playground2;
 			unbreakWall = UnbreakableWall.wall2;
 			NormalWall.currentBreakSound = NormalWall.wallBreakSound2;
+			WaterTrap.currentAnim = WaterTrap.waterAnim2;
 		}
 		NormalWall.hp3 = NormalWall.wallTexture.findRegion("0001");
 		NormalWall.hp2 = NormalWall.wallTexture.findRegion("0002");
@@ -611,6 +614,12 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void createInEndStage()
 	{
+		
+		endBackground = new UI("whitebox.png", 0, 0, 1350, 750);
+		endBackground.animation = true;
+		endBackground.animationLoop = true;
+		endBackground.setAnimation(null);
+		endBackground.currentAnim.setFrameDuration(0.2f);
 		endMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/endmusic.ogg"));
 		endMusic.setLooping(true);
 		endPlayerSprite = new UI[4];
@@ -630,7 +639,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		winnerBalloon.setHeight(50);
 		medal = new UI("medal.png", 0, 0, 60, 60);
 		
-//		end.addActor(endBackground);
+		end.addActor(endBackground);
 		end.addActor(endPlayerSprite[0]);
 		end.addActor(endPlayerSprite[1]);
 		end.addActor(endPlayerSprite[2]);

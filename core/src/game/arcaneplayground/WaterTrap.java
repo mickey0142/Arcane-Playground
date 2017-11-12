@@ -9,8 +9,11 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class WaterTrap extends GameObject{
 	float time = 0;
+	static Animation<TextureRegion> currentAnim;
 	static TextureAtlas waterTexture = new TextureAtlas(Gdx.files.internal("watertrap.atlas"));
 	static Animation<TextureRegion> waterAnim = new Animation<TextureRegion>(0.5f, waterTexture.getRegions());
+	static TextureAtlas waterTexture2 = new TextureAtlas(Gdx.files.internal("watertrap.atlas"));
+	static Animation<TextureRegion> waterAnim2 = new Animation<TextureRegion>(0.5f, waterTexture.getRegions());
 	public WaterTrap()
 	{
 		
@@ -26,6 +29,6 @@ public class WaterTrap extends GameObject{
 	public void draw(Batch batch, float alpha)
 	{
 		time += Gdx.graphics.getDeltaTime();
-		batch.draw(waterAnim.getKeyFrame(time, true), this.getX(), this.getY(), this.getWidth(), this.getHeight());
+		batch.draw(currentAnim.getKeyFrame(time, true), this.getX(), this.getY(), this.getWidth(), this.getHeight());
 	}
 }
