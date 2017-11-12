@@ -50,6 +50,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	int characterIndex[] = new int[4];// change 4 to number of character texture here
 	UI characterBackground;
 	UI playerCharacterSelect[];
+	UI selectCharacterTop;
 	Texture char1Info, char2Info, char3Info, char4Info;
 	
 	Stage game;
@@ -266,6 +267,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		
 		// ui in stage
 		characterBackground = new UI("characterbackground.png", 0, 0, 1350, 750);
+		selectCharacterTop = new UI("selectcharactertop.png", 372, 655, 606, 90);
 		playerCharacterSelect =  new UI[4];
 		playerCharacterSelect[0] = new UI("char1info.png", 52, 105, 273, 548);
 		playerCharacterSelect[1] = new UI("char1info.png", 377, 105, 273, 548);
@@ -273,6 +275,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		playerCharacterSelect[3] = new UI("char1info.png", 1027, 105, 273, 548);
 
 		character.addActor(characterBackground);
+		character.addActor(selectCharacterTop);
 		character.addActor(playerCharacterSelect[0]);
 		playerCharacterSelect[0].setVisible(false);
 		character.addActor(playerCharacterSelect[1]);
