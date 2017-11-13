@@ -616,10 +616,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	{
 		
 		endBackground = new UI("whitebox.png", 0, 0, 1350, 750);
-		endBackground.animation = true;
-		endBackground.animationLoop = true;
-		endBackground.setAnimation(null);
-		endBackground.currentAnim.setFrameDuration(0.2f);
+//		endBackground.animation = true;
+//		endBackground.animationLoop = true;
+//		endBackground.setAnimation(null);
+//		endBackground.currentAnim.setFrameDuration(0.2f);
 		endMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/endmusic.ogg"));
 		endMusic.setLooping(true);
 		endPlayerSprite = new UI[4];
@@ -993,6 +993,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			}
 			for (GameObject trap : waterTrap)
 			{
+				
 				if (checkCollision(allPlayer, trap))
 				{
 					allPlayer.slowTime = 2;
@@ -1036,6 +1037,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			if (allPlayer.arrow.isVisible())
 			{
 				int arrowCount2 = 0;
+				allPlayer.attackEffectAnim = EffectRenderer.punchAnimation;
 				// check collision between arrow
 				for (GameObject arrow : playerArrow)
 				{
@@ -1134,6 +1136,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 					}
 					if (checkCollision(otherPlayer, allPlayer.arrow) && !otherPlayer.hurt)
 					{
+						allPlayer.attackEffectAnim = EffectRenderer.spearAnimation;
 						characterSkill(allPlayer, otherPlayer, arrowCharged[arrowCount]);
 						PlayerWeapon.fistSound.play();
 						otherPlayer.regenDelay = 5f;

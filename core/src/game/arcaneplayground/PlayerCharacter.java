@@ -248,7 +248,7 @@ public class PlayerCharacter extends Actor{
 	}
 	
 	public void updateHitbox()
-	{//temporary adjust hitbox to fit texture
+	{
 		hitbox.setY(this.getY()+2);
 		hitbox.setWidth(this.getWidth()-35);
 		hitbox.setHeight(this.getHeight()-26);
