@@ -37,6 +37,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	String back = "menu";
 	PlayerCharacter player[] = new PlayerCharacter[4];
 	Stage menu;
+	UI gameName;
 	int cursorPosition = 1;
 	UI menuBackground;
 	UI menuButtonStart;
@@ -51,7 +52,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	UI selectCharacterTop;
 	UI charSelectButtonStart, charSelectButtonBack;
 	Texture char1Info, char2Info, char3Info, char4Info;
-	int charSelectCursor = -1;
 
 	Stage game;
 	float startDelay = 3;
@@ -111,7 +111,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	int playerCount;
 
 	boolean axisMove = false;
-	Texture menuStart1, menuStart2, menuSetting1, menuSetting2, menuHowTo1, menuHowTo2, menuExit1, menuExit2;
+	Texture menuStart1, menuStart2, menuSetting1, menuSetting2, menuHowTo1, menuHowTo2, menuExit1, menuExit2, back1, back2;
 
 	Music menuMusic, gameMusic, endMusic;
 	Sound damagedSound, hpDownSound, deadSound, trapHitSound, parryArrowSound, healSound, collectSound, cursorSound, cancelSound, confirmSound, victorySound;
@@ -189,6 +189,12 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		menuBackground.animationLoop = true;
 		menuBackground.setAnimation(temp);
 		menuBackground.currentAnim.setFrameDuration(0.2f);
+		gameName = new UI("whitebox.png", 270, 500, 822, 221);
+		temp = new TextureAtlas(Gdx.files.internal("gamename.atlas"));
+		gameName.animation = true;
+		gameName.animationLoop = true;
+		gameName.setAnimation(temp);
+		gameName.currentAnim.setFrameDuration(0.3f);
 		menuStart1 = new Texture(Gdx.files.internal("Start_button_1.png"));
 		menuStart2 = new Texture(Gdx.files.internal("Start_button_2.png"));
 		menuSetting1 = new Texture(Gdx.files.internal("Setting_button_1.png"));
@@ -197,12 +203,15 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		menuHowTo2 = new Texture(Gdx.files.internal("HowToPlay_button_2.png"));
 		menuExit1 = new Texture(Gdx.files.internal("Exit_button_1.png"));
 		menuExit2 = new Texture(Gdx.files.internal("Exit_button_2.png"));
+		back1 = new Texture(Gdx.files.internal("Back_button1.png"));
+		back2 = new Texture(Gdx.files.internal("Back_button2.png"));
 		menuButtonStart = new UI("Start_button_2.png", 497, 138, 354, 93);
 		menuButtonSetting = new UI("Setting_button_1.png", 497, 30, 354, 93);
 		menuButtonHowto = new UI("HowToPlay_button_1.png", 917, 30, 354, 93);
 		menuButtonExit = new UI("Exit_button_1.png", 70, 30, 354, 93);
 
 		menu.addActor(menuBackground);
+		menu.addActor(gameName);
 		menu.addActor(menuButtonStart);
 		menu.addActor(menuButtonSetting);
 		menu.addActor(menuButtonHowto);
@@ -213,8 +222,8 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void createInCharacterStage()
 	{
-		charSelectButtonStart = new UI("whitebox.png", 1175, 680, 165, 45);
-		charSelectButtonBack = new UI("whitebox.png", 15, 680, 165, 45);
+		charSelectButtonStart = new UI("Start_button_1.png", 1175, 670, 165, 60);
+		charSelectButtonBack = new UI("Back_button1.png", 15, 670, 165, 60);
 		weaponSprite = new UI[4];
 		checkBlock[0] = new GameObject("box3.png", 0, 0, 100, 100);
 		checkBlock[1] = new GameObject("box3.png", 0, 0, 100, 100);
@@ -292,6 +301,8 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		playerCharacterSelect[3] = new UI("char1info.png", 1027, 105, 273, 548);
 
 		character.addActor(characterBackground);
+		character.addActor(charSelectButtonStart);
+		character.addActor(charSelectButtonBack);
 		character.addActor(selectCharacterTop);
 		character.addActor(playerCharacterSelect[0]);
 		playerCharacterSelect[0].setVisible(false);
@@ -667,13 +678,13 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		settingBackground = new UI("settingbackground.png", 0, 0, 1350, 750);
 		gray = new Texture(Gdx.files.internal("gray.png"));
 		playerControlType = new UI[4];
-		playerControlType[0] = new UI("whitebox.png", 303, 430, 230, 60);
-		playerControlType[1] = new UI("whitebox.png", 560, 430, 230, 60);
-		playerControlType[2] = new UI("whitebox.png", 817, 430, 230, 60);
-		playerControlType[3] = new UI("whitebox.png", 1074, 430, 230, 60);
+		playerControlType[0] = new UI("whitebox.png", 303, 450, 230, 60);
+		playerControlType[1] = new UI("whitebox.png", 560, 450, 230, 60);
+		playerControlType[2] = new UI("whitebox.png", 817, 450, 230, 60);
+		playerControlType[3] = new UI("whitebox.png", 1074, 450, 230, 60);
 		playerButtonSetting = new UI[4][6];
-		settingBackButton = new UI("whitebox.png", 1177, 26, 161, 60);
-		float posX = 303, posY = 374;
+		settingBackButton = new UI("Back_button1.png", 19, 19, 161, 60);
+		float posX = 303, posY = 394;
 		for (int i = 0; i < 4; i++)
 		{
 			for (int j = 0; j < 6; j++)
@@ -682,18 +693,20 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				posY -= 56;
 			}
 			posX += 257;
-			posY = 374;
+			posY = 394;
 		}
 
 		setting.addActor(settingBackground);
+		setting.addActor(settingBackButton);
 	}
 
 	public void createInHowToStage()
 	{
 		howToBackground = new UI("howtobackground.png", 0, 0, 1350, 750);
-		howToButtonBack = new UI("whitebox.png", 19, 19, 160, 60);
+		howToButtonBack = new UI("Back_button1.png", 19, 19, 160, 60);
 
 		howTo.addActor(howToBackground);
+		howTo.addActor(howToButtonBack);
 	}
 
 	@Override
@@ -2329,6 +2342,14 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		{
 			mouseMovedInPauseStage(mousePositionStage);
 		}
+		else if (screen.equals("setting"))
+		{
+			mouseMovedInSettingStage(mousePositionStage);
+		}
+		else if (screen.equals("howto"))
+		{
+			mouseMovedInHowToStage(mousePositionStage);
+		}
 		return false;
 	}
 
@@ -2398,27 +2419,43 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	
 	public void mouseMovedInCharacterStage(Vector2 mousePosition)
 	{
-		if (mousePositionStage.x >= charSelectButtonStart.getX() && mousePositionStage.x <= charSelectButtonStart.getX()+charSelectButtonStart.getWidth())
-		{
-			if (mousePositionStage.y >= charSelectButtonStart.getY() && mousePositionStage.y <= charSelectButtonStart.getY()+charSelectButtonStart.getHeight())
-			{
-				if (charSelectCursor != 0)
-				{
-					cursorSound.play();
-					charSelectCursor = 0;
-				}
-			}
-		}
 		if (mousePositionStage.x >= charSelectButtonBack.getX() && mousePositionStage.x <= charSelectButtonBack.getX()+charSelectButtonBack.getWidth())
 		{
 			if (mousePositionStage.y >= charSelectButtonBack.getY() && mousePositionStage.y <= charSelectButtonBack.getY()+charSelectButtonBack.getHeight())
 			{
-				if (charSelectCursor != 1)
+				if (charSelectButtonBack.img == back1)
 				{
 					cursorSound.play();
-					charSelectCursor = 1;
+					charSelectButtonBack.img = back2;
 				}
 			}
+			else
+			{
+				charSelectButtonBack.img = back1;
+			}
+		}
+		else
+		{
+			charSelectButtonBack.img = back1;
+		}
+		if (mousePositionStage.x >= charSelectButtonStart.getX() && mousePositionStage.x <= charSelectButtonStart.getX()+charSelectButtonStart.getWidth())
+		{
+			if (mousePositionStage.y >= charSelectButtonStart.getY() && mousePositionStage.y <= charSelectButtonStart.getY()+charSelectButtonStart.getHeight())
+			{
+				if (charSelectButtonStart.img == menuStart1)
+				{
+					cursorSound.play();
+					charSelectButtonStart.img = menuStart2;
+				}
+			}
+			else
+			{
+				charSelectButtonStart.img = menuStart1;
+			}
+		}
+		else
+		{
+			charSelectButtonStart.img = menuStart1;
 		}
 	}
 
@@ -2427,6 +2464,52 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	}
 
+	public void mouseMovedInSettingStage(Vector2 mousePosition)
+	{
+		if (mousePositionStage.x >= settingBackButton.getX() && mousePositionStage.x <= settingBackButton.getX()+settingBackButton.getWidth())
+		{
+			if (mousePositionStage.y >= settingBackButton.getY() && mousePositionStage.y <= settingBackButton.getY()+settingBackButton.getHeight())
+			{
+				if (settingBackButton.img == back1)
+				{
+					cursorSound.play();
+					settingBackButton.img = back2;
+				}
+			}
+			else
+			{
+				settingBackButton.img = back1;
+			}
+		}
+		else
+		{
+			settingBackButton.img = back1;
+		}
+	}
+	
+	public void mouseMovedInHowToStage(Vector2 mousePosition)
+	{
+		if (mousePositionStage.x >= howToButtonBack.getX() && mousePositionStage.x <= howToButtonBack.getX()+howToButtonBack.getWidth())
+		{
+			if (mousePositionStage.y >= howToButtonBack.getY() && mousePositionStage.y <= howToButtonBack.getY()+howToButtonBack.getHeight())
+			{
+				if (howToButtonBack.img == back1)
+				{
+					cursorSound.play();
+					howToButtonBack.img = back2;
+				}
+			}
+			else
+			{
+				howToButtonBack.img = back1;
+			}
+		}
+		else
+		{
+			howToButtonBack.img = back1;
+		}
+	}
+	
 	@Override
 	public boolean scrolled(int amount) {
 		return false;
@@ -2631,7 +2714,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		{
 			characterIndex[i] = 0;
 		}
-		charSelectCursor = -1;
 	}
 
 	public void resetVariableInGameStage()
