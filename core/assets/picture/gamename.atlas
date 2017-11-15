@@ -1,0 +1,27 @@
+
+gamename.png
+size: 4096,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+0001
+  rotate: false
+  xy: 2, 2
+  size: 822, 221
+  orig: 822, 221
+  offset: 0, 0
+  index: -1
+0002
+  rotate: false
+  xy: 826, 2
+  size: 822, 221
+  orig: 822, 221
+  offset: 0, 0
+  index: -1
+0003
+  rotate: false
+  xy: 1650, 2
+  size: 822, 221
+  orig: 822, 221
+  offset: 0, 0
+  index: -1

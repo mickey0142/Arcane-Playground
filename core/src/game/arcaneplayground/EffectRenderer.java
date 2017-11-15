@@ -14,11 +14,11 @@ public class EffectRenderer extends Actor{
 	String direction;
 	
 	// keep all attack effect here
-	static TextureAtlas punchAtlas = new TextureAtlas(Gdx.files.internal("punch.atlas"));
+	static TextureAtlas punchAtlas = new TextureAtlas(Gdx.files.internal("picture/punch.atlas"));
 	static Animation<TextureRegion> punchAnimation = new Animation<TextureRegion>(0.2f, punchAtlas.getRegions());
-	static TextureAtlas swordEffectAtlas = new TextureAtlas(Gdx.files.internal("swordeffect.atlas"));
+	static TextureAtlas swordEffectAtlas = new TextureAtlas(Gdx.files.internal("picture/swordeffect.atlas"));
 	static Animation<TextureRegion> swordAnimation = new Animation<TextureRegion>(0.1f, swordEffectAtlas.getRegions());
-	static TextureAtlas spearEffectAtlas = new TextureAtlas(Gdx.files.internal("speareffect.atlas"));
+	static TextureAtlas spearEffectAtlas = new TextureAtlas(Gdx.files.internal("picture/speareffect.atlas"));
 	static Animation<TextureRegion> spearAnimation = new Animation<TextureRegion>(0.1f, spearEffectAtlas.getRegions());
 	// keep all attack effect here
 

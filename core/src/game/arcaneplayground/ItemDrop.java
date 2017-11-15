@@ -19,12 +19,12 @@ public class ItemDrop extends GameObject{
 	String dropType, powerUpName;
 	
 	static int dropCount = 0;
-	static Texture swordDropTexture = new Texture(Gdx.files.internal("sworddrop.png"));
-	static Texture spearDropTexture = new Texture(Gdx.files.internal("speardrop.png"));
-	static Texture axeDropTexture = new Texture(Gdx.files.internal("axedrop.png"));
-	static Texture bowDropTexture = new Texture(Gdx.files.internal("bowdrop.png"));
-	static Texture lifeDropTexture = new Texture(Gdx.files.internal("life.png"));
-	static Texture shoeDropTexture = new Texture(Gdx.files.internal("shoe.png"));
+	static Texture swordDropTexture = new Texture(Gdx.files.internal("picture/sworddrop.png"));
+	static Texture spearDropTexture = new Texture(Gdx.files.internal("picture/speardrop.png"));
+	static Texture axeDropTexture = new Texture(Gdx.files.internal("picture/axedrop.png"));
+	static Texture bowDropTexture = new Texture(Gdx.files.internal("picture/bowdrop.png"));
+	static Texture lifeDropTexture = new Texture(Gdx.files.internal("picture/life.png"));
+	static Texture shoeDropTexture = new Texture(Gdx.files.internal("picture/shoe.png"));
 	static final float SWORD_ATTACK_WIDTH = 40;
 	static final float SWORD_ATTACK_HEIGHT = 40;
 	static final float SWORD_CHARGE_TIME = 1;

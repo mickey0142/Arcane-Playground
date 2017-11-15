@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
 public class SpikeTrap extends GameObject{
-	static TextureAtlas spikeTexture = new TextureAtlas(Gdx.files.internal("spiketrap.atlas"));
+	static TextureAtlas spikeTexture = new TextureAtlas(Gdx.files.internal("picture/spiketrap.atlas"));
 	static Animation<TextureRegion> spikeAnim = new Animation<TextureRegion>(1f, spikeTexture.getRegions());
 	float time;
 	boolean active = false;

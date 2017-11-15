@@ -66,27 +66,27 @@ public class PlayerCharacter extends Actor{
 	Sound attackSound;
 	
 	static float moveSpeed = 5;
-	static TextureAtlas heart = new TextureAtlas(Gdx.files.internal("heart.atlas"));
+	static TextureAtlas heart = new TextureAtlas(Gdx.files.internal("picture/heart.atlas"));
 	static Animation<TextureRegion> heart3 = new Animation<TextureRegion>(1f, heart.findRegions("0003"));
 	static Animation<TextureRegion> heart2 = new Animation<TextureRegion>(1f, heart.findRegions("0002"));
 	static Animation<TextureRegion> heart1 = new Animation<TextureRegion>(1f, heart.findRegions("0001"));
 	static Animation<TextureRegion> heart0 = new Animation<TextureRegion>(1f, heart.findRegions("0004"));
-	static TextureAtlas character1 = new TextureAtlas(Gdx.files.internal("character1.atlas"));
-	static TextureAtlas character2 = new TextureAtlas(Gdx.files.internal("character2.atlas"));
-	static TextureAtlas character3 = new TextureAtlas(Gdx.files.internal("character3.atlas"));
-	static TextureAtlas character4 = new TextureAtlas(Gdx.files.internal("character4.atlas"));
-	static TextureAtlas character1Dead = new TextureAtlas(Gdx.files.internal("char1death.atlas"));
-	static TextureAtlas character2Dead = new TextureAtlas(Gdx.files.internal("char2death.atlas"));
-	static TextureAtlas character3Dead = new TextureAtlas(Gdx.files.internal("char3death.atlas"));
-	static TextureAtlas character4Dead = new TextureAtlas(Gdx.files.internal("char4death.atlas"));
-	static Texture character1Lose = new Texture(Gdx.files.internal("char1lose.png"));
-	static Texture character2Lose = new Texture(Gdx.files.internal("char2lose.png"));
-	static Texture character3Lose = new Texture(Gdx.files.internal("char3lose.png"));
-	static Texture character4Lose = new Texture(Gdx.files.internal("char4lose.png"));
-	static Texture character1Win = new Texture(Gdx.files.internal("char1win.png"));
-	static Texture character2Win = new Texture(Gdx.files.internal("char2win.png"));
-	static Texture character3Win = new Texture(Gdx.files.internal("char3win.png"));
-	static Texture character4Win = new Texture(Gdx.files.internal("char4win.png"));
+	static TextureAtlas character1 = new TextureAtlas(Gdx.files.internal("picture/character1.atlas"));
+	static TextureAtlas character2 = new TextureAtlas(Gdx.files.internal("picture/character2.atlas"));
+	static TextureAtlas character3 = new TextureAtlas(Gdx.files.internal("picture/character3.atlas"));
+	static TextureAtlas character4 = new TextureAtlas(Gdx.files.internal("picture/character4.atlas"));
+	static TextureAtlas character1Dead = new TextureAtlas(Gdx.files.internal("picture/char1death.atlas"));
+	static TextureAtlas character2Dead = new TextureAtlas(Gdx.files.internal("picture/char2death.atlas"));
+	static TextureAtlas character3Dead = new TextureAtlas(Gdx.files.internal("picture/char3death.atlas"));
+	static TextureAtlas character4Dead = new TextureAtlas(Gdx.files.internal("picture/char4death.atlas"));
+	static Texture character1Lose = new Texture(Gdx.files.internal("picture/char1lose.png"));
+	static Texture character2Lose = new Texture(Gdx.files.internal("picture/char2lose.png"));
+	static Texture character3Lose = new Texture(Gdx.files.internal("picture/char3lose.png"));
+	static Texture character4Lose = new Texture(Gdx.files.internal("picture/char4lose.png"));
+	static Texture character1Win = new Texture(Gdx.files.internal("picture/char1win.png"));
+	static Texture character2Win = new Texture(Gdx.files.internal("picture/char2win.png"));
+	static Texture character3Win = new Texture(Gdx.files.internal("picture/char3win.png"));
+	static Texture character4Win = new Texture(Gdx.files.internal("picture/char4win.png"));
 	// new textureatlas and animation for dead animation for each character here
 	
 	// temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp
@@ -119,8 +119,8 @@ public class PlayerCharacter extends Actor{
 		attackSound = PlayerWeapon.fistSound;
 		
 		// temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp
-		temp = new Texture(Gdx.files.internal("box.png"));
-		temp2 = new Texture(Gdx.files.internal("box2.png"));
+		temp = new Texture(Gdx.files.internal("picture/box.png"));
+		temp2 = new Texture(Gdx.files.internal("picture/box2.png"));
 	}
 	
 	public void draw(Batch batch, float alpha)

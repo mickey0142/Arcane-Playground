@@ -16,39 +16,39 @@ public class PlayerWeapon extends Actor{
 	float originX, originY, moveX, moveY;
 	
 	// all weapon here
-	static TextureAtlas fist = new TextureAtlas(Gdx.files.internal("fist.atlas"));
+	static TextureAtlas fist = new TextureAtlas(Gdx.files.internal("picture/fist.atlas"));
 	static Animation<TextureRegion> fistAnim = new Animation<TextureRegion>(0.1f, fist.getRegions());
 	static Sound fistSound = Gdx.audio.newSound(Gdx.files.internal("audio/fist.ogg"));
 	
-	static TextureAtlas sword = new TextureAtlas(Gdx.files.internal("sword.atlas"));
+	static TextureAtlas sword = new TextureAtlas(Gdx.files.internal("picture/sword.atlas"));
 	static Animation<TextureRegion> swordAnim = new Animation<TextureRegion>(0.1f, sword.getRegions());
-	static TextureAtlas swordLV2 = new TextureAtlas(Gdx.files.internal("swordlv2.atlas"));
+	static TextureAtlas swordLV2 = new TextureAtlas(Gdx.files.internal("picture/swordlv2.atlas"));
 	static Animation<TextureRegion> swordLV2Anim = new Animation<TextureRegion>(0.1f, swordLV2.getRegions());
-	static TextureAtlas swordLV3 = new TextureAtlas(Gdx.files.internal("swordlv3.atlas"));
+	static TextureAtlas swordLV3 = new TextureAtlas(Gdx.files.internal("picture/swordlv3.atlas"));
 	static Animation<TextureRegion> swordLV3Anim = new Animation<TextureRegion>(0.1f, swordLV3.getRegions());
 	static Sound swordSound = Gdx.audio.newSound(Gdx.files.internal("audio/sword.ogg"));
 	
-	static TextureAtlas spear = new TextureAtlas(Gdx.files.internal("spear.atlas"));
+	static TextureAtlas spear = new TextureAtlas(Gdx.files.internal("picture/spear.atlas"));
 	static Animation<TextureRegion> spearAnim = new Animation<TextureRegion>(0.1f, spear.getRegions());
-	static TextureAtlas spearLV2 = new TextureAtlas(Gdx.files.internal("spearlv2.atlas"));
+	static TextureAtlas spearLV2 = new TextureAtlas(Gdx.files.internal("picture/spearlv2.atlas"));
 	static Animation<TextureRegion> spearLV2Anim = new Animation<TextureRegion>(0.1f, spearLV2.getRegions());
-	static TextureAtlas spearLV3 = new TextureAtlas(Gdx.files.internal("spearlv3.atlas"));
+	static TextureAtlas spearLV3 = new TextureAtlas(Gdx.files.internal("picture/spearlv3.atlas"));
 	static Animation<TextureRegion> spearLV3Anim = new Animation<TextureRegion>(0.1f, spearLV3.getRegions());
 	static Sound spearSound = Gdx.audio.newSound(Gdx.files.internal("audio/spear.ogg"));
 	
-	static TextureAtlas axe = new TextureAtlas(Gdx.files.internal("axe.atlas"));
+	static TextureAtlas axe = new TextureAtlas(Gdx.files.internal("picture/axe.atlas"));
 	static Animation<TextureRegion> axeAnim = new Animation<TextureRegion>(0.1f, axe.getRegions());
-	static TextureAtlas axeLV2 = new TextureAtlas(Gdx.files.internal("axelv2.atlas"));
+	static TextureAtlas axeLV2 = new TextureAtlas(Gdx.files.internal("picture/axelv2.atlas"));
 	static Animation<TextureRegion> axeLV2Anim = new Animation<TextureRegion>(0.1f, axeLV2.getRegions());
-	static TextureAtlas axeLV3 = new TextureAtlas(Gdx.files.internal("axelv3.atlas"));
+	static TextureAtlas axeLV3 = new TextureAtlas(Gdx.files.internal("picture/axelv3.atlas"));
 	static Animation<TextureRegion> axeLV3Anim = new Animation<TextureRegion>(0.1f, axeLV3.getRegions());
 	static Sound axeSound = Gdx.audio.newSound(Gdx.files.internal("audio/axe.ogg"));
 	
-	static TextureAtlas bow = new TextureAtlas(Gdx.files.internal("bow.atlas"));
+	static TextureAtlas bow = new TextureAtlas(Gdx.files.internal("picture/bow.atlas"));
 	static Animation<TextureRegion> bowAnim = new Animation<TextureRegion>(0.1f, bow.getRegions());
-	static TextureAtlas bowLV2 = new TextureAtlas(Gdx.files.internal("bowlv2.atlas"));
+	static TextureAtlas bowLV2 = new TextureAtlas(Gdx.files.internal("picture/bowlv2.atlas"));
 	static Animation<TextureRegion> bowLV2Anim = new Animation<TextureRegion>(0.1f, bowLV2.getRegions());
-	static TextureAtlas bowLV3 = new TextureAtlas(Gdx.files.internal("bowlv3.atlas"));
+	static TextureAtlas bowLV3 = new TextureAtlas(Gdx.files.internal("picture/bowlv3.atlas"));
 	static Animation<TextureRegion> bowLV3Anim = new Animation<TextureRegion>(0.1f, bowLV3.getRegions());
 	static Sound bowSound = Gdx.audio.newSound(Gdx.files.internal("audio/bow.ogg"));
 	// all weapon here
