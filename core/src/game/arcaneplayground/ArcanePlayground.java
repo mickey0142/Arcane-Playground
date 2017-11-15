@@ -183,32 +183,32 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void createInMenuStage()
 	{
-		menuBackground = new UI("whitebox.png", 0, 0, 1350, 750);
-		TextureAtlas temp = new TextureAtlas(Gdx.files.internal("menubackground.atlas"));
+		menuBackground = new UI("picture/whitebox.png", 0, 0, 1350, 750);
+		TextureAtlas temp = new TextureAtlas(Gdx.files.internal("picture/menubackground.atlas"));
 		menuBackground.animation = true;
 		menuBackground.animationLoop = true;
 		menuBackground.setAnimation(temp);
 		menuBackground.currentAnim.setFrameDuration(0.2f);
-		gameName = new UI("whitebox.png", 270, 500, 822, 221);
-		temp = new TextureAtlas(Gdx.files.internal("gamename.atlas"));
+		gameName = new UI("picture/whitebox.png", 270, 500, 822, 221);
+		temp = new TextureAtlas(Gdx.files.internal("picture/gamename.atlas"));
 		gameName.animation = true;
 		gameName.animationLoop = true;
 		gameName.setAnimation(temp);
 		gameName.currentAnim.setFrameDuration(0.3f);
-		menuStart1 = new Texture(Gdx.files.internal("Start_button_1.png"));
-		menuStart2 = new Texture(Gdx.files.internal("Start_button_2.png"));
-		menuSetting1 = new Texture(Gdx.files.internal("Setting_button_1.png"));
-		menuSetting2 = new Texture(Gdx.files.internal("Setting_button_2.png"));
-		menuHowTo1 = new Texture(Gdx.files.internal("HowToPlay_button_1.png"));
-		menuHowTo2 = new Texture(Gdx.files.internal("HowToPlay_button_2.png"));
-		menuExit1 = new Texture(Gdx.files.internal("Exit_button_1.png"));
-		menuExit2 = new Texture(Gdx.files.internal("Exit_button_2.png"));
-		back1 = new Texture(Gdx.files.internal("Back_button1.png"));
-		back2 = new Texture(Gdx.files.internal("Back_button2.png"));
-		menuButtonStart = new UI("Start_button_2.png", 497, 138, 354, 93);
-		menuButtonSetting = new UI("Setting_button_1.png", 497, 30, 354, 93);
-		menuButtonHowto = new UI("HowToPlay_button_1.png", 917, 30, 354, 93);
-		menuButtonExit = new UI("Exit_button_1.png", 70, 30, 354, 93);
+		menuStart1 = new Texture(Gdx.files.internal("picture/Start_button_1.png"));
+		menuStart2 = new Texture(Gdx.files.internal("picture/Start_button_2.png"));
+		menuSetting1 = new Texture(Gdx.files.internal("picture/Setting_button_1.png"));
+		menuSetting2 = new Texture(Gdx.files.internal("picture/Setting_button_2.png"));
+		menuHowTo1 = new Texture(Gdx.files.internal("picture/HowToPlay_button_1.png"));
+		menuHowTo2 = new Texture(Gdx.files.internal("picture/HowToPlay_button_2.png"));
+		menuExit1 = new Texture(Gdx.files.internal("picture/Exit_button_1.png"));
+		menuExit2 = new Texture(Gdx.files.internal("picture/Exit_button_2.png"));
+		back1 = new Texture(Gdx.files.internal("picture/Back_button1.png"));
+		back2 = new Texture(Gdx.files.internal("picture/Back_button2.png"));
+		menuButtonStart = new UI("picture/Start_button_2.png", 497, 138, 354, 93);
+		menuButtonSetting = new UI("picture/Setting_button_1.png", 497, 30, 354, 93);
+		menuButtonHowto = new UI("picture/HowToPlay_button_1.png", 917, 30, 354, 93);
+		menuButtonExit = new UI("picture/Exit_button_1.png", 70, 30, 354, 93);
 
 		menu.addActor(menuBackground);
 		menu.addActor(gameName);
@@ -222,34 +222,34 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void createInCharacterStage()
 	{
-		charSelectButtonStart = new UI("Start_button_1.png", 1175, 670, 165, 60);
-		charSelectButtonBack = new UI("Back_button1.png", 15, 670, 165, 60);
+		charSelectButtonStart = new UI("picture/Start_button_1.png", 1175, 670, 165, 60);
+		charSelectButtonBack = new UI("picture/Back_button1.png", 15, 670, 165, 60);
 		weaponSprite = new UI[4];
-		checkBlock[0] = new GameObject("box3.png", 0, 0, 100, 100);
-		checkBlock[1] = new GameObject("box3.png", 0, 0, 100, 100);
-		checkBlock[2] = new GameObject("box3.png", 0, 0, 100, 100);
-		checkBlock[3] = new GameObject("box3.png", 0, 0, 100, 100);
-		playerHPBar[0] = new UI("heart.png", 100, 690, 150, 40);
-		playerHPBar[1] = new UI("heart.png", 430, 690, 150, 40);
-		playerHPBar[2] = new UI("heart.png", 760, 690, 150, 40);
-		playerHPBar[3] = new UI("heart.png", 1090, 690, 150, 40);
-		playerArmorBar[0] = new UI ("box3.png", 120, 660, 10, 15);
-		playerArmorBar[1] = new UI ("box3.png", 450, 660, 10, 15);
-		playerArmorBar[2] = new UI ("box3.png", 780, 660, 10, 15);
-		playerArmorBar[3] = new UI ("box3.png", 1110, 660, 10, 15);
-		playerChargeBar[0] = new UI("whitebox.png", 0, 0, 60, 10, true);
-		playerChargeBar[1] = new UI("whitebox.png", 0, 0, 60, 10, true);
-		playerChargeBar[2] = new UI("whitebox.png", 0, 0, 60, 10, true);
-		playerChargeBar[3] = new UI("whitebox.png", 0, 0, 60, 10, true);
-		weaponSprite[0] = new UI ("gray.png", 260, 680, 50, 50);
-		weaponSprite[1] = new UI ("gray.png", 590, 680, 50, 50);
-		weaponSprite[2] = new UI ("gray.png", 920, 680, 50, 50);
-		weaponSprite[3] = new UI ("gray.png", 1250, 680, 50, 50);
-		shieldIcon[0] = new UI("shield1.png", 95, 660, 16, 16);
-		shieldIcon[1] = new UI("shield1.png", 425, 660, 16, 16);
-		shieldIcon[2] = new UI("shield1.png", 755, 660, 16, 16);
-		shieldIcon[3] = new UI("shield1.png", 1085, 660, 16, 16);
-		noWeapon = new Texture(Gdx.files.internal("gray.png"));
+		checkBlock[0] = new GameObject("picture/box3.png", 0, 0, 100, 100);
+		checkBlock[1] = new GameObject("picture/box3.png", 0, 0, 100, 100);
+		checkBlock[2] = new GameObject("picture/box3.png", 0, 0, 100, 100);
+		checkBlock[3] = new GameObject("picture/box3.png", 0, 0, 100, 100);
+		playerHPBar[0] = new UI("picture/heart.png", 100, 690, 150, 40);
+		playerHPBar[1] = new UI("picture/heart.png", 430, 690, 150, 40);
+		playerHPBar[2] = new UI("picture/heart.png", 760, 690, 150, 40);
+		playerHPBar[3] = new UI("picture/heart.png", 1090, 690, 150, 40);
+		playerArmorBar[0] = new UI ("picture/box3.png", 120, 660, 10, 15);
+		playerArmorBar[1] = new UI ("picture/box3.png", 450, 660, 10, 15);
+		playerArmorBar[2] = new UI ("picture/box3.png", 780, 660, 10, 15);
+		playerArmorBar[3] = new UI ("picture/box3.png", 1110, 660, 10, 15);
+		playerChargeBar[0] = new UI("picture/whitebox.png", 0, 0, 60, 10, true);
+		playerChargeBar[1] = new UI("picture/whitebox.png", 0, 0, 60, 10, true);
+		playerChargeBar[2] = new UI("picture/whitebox.png", 0, 0, 60, 10, true);
+		playerChargeBar[3] = new UI("picture/whitebox.png", 0, 0, 60, 10, true);
+		weaponSprite[0] = new UI ("picture/gray.png", 260, 680, 50, 50);
+		weaponSprite[1] = new UI ("picture/gray.png", 590, 680, 50, 50);
+		weaponSprite[2] = new UI ("picture/gray.png", 920, 680, 50, 50);
+		weaponSprite[3] = new UI ("picture/gray.png", 1250, 680, 50, 50);
+		shieldIcon[0] = new UI("picture/shield1.png", 95, 660, 16, 16);
+		shieldIcon[1] = new UI("picture/shield1.png", 425, 660, 16, 16);
+		shieldIcon[2] = new UI("picture/shield1.png", 755, 660, 16, 16);
+		shieldIcon[3] = new UI("picture/shield1.png", 1085, 660, 16, 16);
+		noWeapon = new Texture(Gdx.files.internal("picture/gray.png"));
 		player[0] = new PlayerCharacter(50, 50, 60, 60, Keys.W, Keys.S, Keys.A, Keys.D, Keys.F, Keys.Q, playerHPBar[0], playerArmorBar[0], PlayerWeapon.fist, PlayerWeapon.fistAnim);
 		player[1] = new PlayerCharacter(1250, 550, 60, 60, Keys.UP, Keys.DOWN, Keys.LEFT, Keys.RIGHT, Keys.CONTROL_RIGHT, Keys.ALT_RIGHT, playerHPBar[1], playerArmorBar[1], PlayerWeapon.fist, PlayerWeapon.fistAnim);
 		player[2] = new PlayerCharacter(50, 550, 60, 60, Keys.Y, Keys.H, Keys.G, Keys.J, Keys.U, Keys.T, playerHPBar[2], playerArmorBar[2], PlayerWeapon.fist, PlayerWeapon.fistAnim);
@@ -261,10 +261,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 		playerArrow = new Arrow[4];
 		balloon = new Balloon[4];
-		playerShadow[0] = new UI("shadow1.png", -100, 0, 50, 50);
-		playerShadow[1] = new UI("shadow2.png", -100, 0, 50, 50);
-		playerShadow[2] = new UI("shadow3.png", -100, 0, 50, 50);
-		playerShadow[3] = new UI("shadow4.png", -100, 0, 50, 50);
+		playerShadow[0] = new UI("picture/shadow1.png", -100, -100, 50, 50);
+		playerShadow[1] = new UI("picture/shadow2.png", -100, -100, 50, 50);
+		playerShadow[2] = new UI("picture/shadow3.png", -100, -100, 50, 50);
+		playerShadow[3] = new UI("picture/shadow4.png", -100, -100, 50, 50);
 		player[0].setShadow(playerShadow[0]);
 		player[1].setShadow(playerShadow[1]);
 		player[2].setShadow(playerShadow[2]);
@@ -286,19 +286,19 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			balloon[i] = new Balloon(player[i]);
 			player[i].setBalloon(balloon[i]);
 		}
-		char1Info = new Texture(Gdx.files.internal("char1info.png"));
-		char2Info = new Texture(Gdx.files.internal("char2info.png"));
-		char3Info = new Texture(Gdx.files.internal("char3info.png"));
-		char4Info = new Texture(Gdx.files.internal("char4info.png"));
+		char1Info = new Texture(Gdx.files.internal("picture/char1info.png"));
+		char2Info = new Texture(Gdx.files.internal("picture/char2info.png"));
+		char3Info = new Texture(Gdx.files.internal("picture/char3info.png"));
+		char4Info = new Texture(Gdx.files.internal("picture/char4info.png"));
 
 		// ui in stage
-		characterBackground = new UI("characterbackground.png", 0, 0, 1350, 750);
-		selectCharacterTop = new UI("selectcharactertop.png", 372, 655, 606, 90);
+		characterBackground = new UI("picture/characterbackground.png", 0, 0, 1350, 750);
+		selectCharacterTop = new UI("picture/selectcharactertop.png", 372, 655, 606, 90);
 		playerCharacterSelect =  new UI[4];
-		playerCharacterSelect[0] = new UI("char1info.png", 52, 105, 273, 548);
-		playerCharacterSelect[1] = new UI("char1info.png", 377, 105, 273, 548);
-		playerCharacterSelect[2] = new UI("char1info.png", 702, 105, 273, 548);
-		playerCharacterSelect[3] = new UI("char1info.png", 1027, 105, 273, 548);
+		playerCharacterSelect[0] = new UI("picture/char1info.png", 52, 105, 273, 548);
+		playerCharacterSelect[1] = new UI("picture/char1info.png", 377, 105, 273, 548);
+		playerCharacterSelect[2] = new UI("picture/char1info.png", 702, 105, 273, 548);
+		playerCharacterSelect[3] = new UI("picture/char1info.png", 1027, 105, 273, 548);
 
 		character.addActor(characterBackground);
 		character.addActor(charSelectButtonStart);
@@ -316,26 +316,26 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void createInGameStage()
 	{
-		gameBackground = new UI("gamebackground.jpg", 0, 0, 1350, 750, false);
-		playGround = new GameObject("playground.png", 0, 0, 1350, 650);
-		playground1 = new Texture(Gdx.files.internal("mapcastle.png"));
-		playground2 = new Texture(Gdx.files.internal("mapwood.png"));
-		playground3 = new Texture(Gdx.files.internal("mapice.png"));
-		playground4 = new Texture(Gdx.files.internal("maplava.png"));
+		gameBackground = new UI("picture/gamebackground.jpg", 0, 0, 1350, 750, false);
+		playGround = new GameObject("picture/mapcastle.png", 0, 0, 1350, 650);
+		playground1 = new Texture(Gdx.files.internal("picture/mapcastle.png"));
+		playground2 = new Texture(Gdx.files.internal("picture/mapwood.png"));
+		playground3 = new Texture(Gdx.files.internal("picture/mapice.png"));
+		playground4 = new Texture(Gdx.files.internal("picture/maplava.png"));
 		gameMusic  = Gdx.audio.newMusic(Gdx.files.internal("audio/gamemusic.ogg"));
 		gameMusic.setLooping(true);
 
 		playerSprite = new UI[4];
-		playerSprite[0] = new UI("whitebox.png", 30, 660, 60, 60);
+		playerSprite[0] = new UI("picture/whitebox.png", 30, 660, 60, 60);
 		playerSprite[0].animation = true;
 		playerSprite[0].setAnimation(PlayerCharacter.character1, "0001");
-		playerSprite[1] = new UI("whitebox.png", 360, 660, 60, 60);
+		playerSprite[1] = new UI("picture/whitebox.png", 360, 660, 60, 60);
 		playerSprite[1].animation = true;
 		playerSprite[1].setAnimation(PlayerCharacter.character1, "0001");
-		playerSprite[2] = new UI("whitebox.png", 690, 660, 60, 60);
+		playerSprite[2] = new UI("picture/whitebox.png", 690, 660, 60, 60);
 		playerSprite[2].animation = true;
 		playerSprite[2].setAnimation(PlayerCharacter.character1, "0001");
-		playerSprite[3] = new UI("whitebox.png", 1020, 660, 60, 60);
+		playerSprite[3] = new UI("picture/whitebox.png", 1020, 660, 60, 60);
 		playerSprite[3].animation = true;
 		playerSprite[3].setAnimation(PlayerCharacter.character1, "0001");
 
@@ -384,7 +384,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		int boxX = 50;
 		int boxY = 50;
 		for(int i=0;i<=26;i++) {
-			walls[i] = new UnbreakableWall("block.png", posX, posY, boxX, boxY);
+			walls[i] = new UnbreakableWall("picture/blockcastle.png", posX, posY, boxX, boxY);
 			game.addActor(walls[i]);
 			posX += 50;
 		}
@@ -392,7 +392,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		posX = 0;
 		posY = 600;
 		for(int i=27;i<=53;i++) {
-			walls[i] = new UnbreakableWall("block.png", posX, posY, boxX, boxY);
+			walls[i] = new UnbreakableWall("picture/blockcastle.png", posX, posY, boxX, boxY);
 			game.addActor(walls[i]);
 			posX += 50;
 		}
@@ -400,7 +400,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		posX = 0;
 		posY = 50;
 		for(int i=54;i<=64;i++) {
-			walls[i] = new UnbreakableWall("block.png", posX, posY, boxX, boxY);
+			walls[i] = new UnbreakableWall("picture/blockcastle.png", posX, posY, boxX, boxY);
 			game.addActor(walls[i]);
 			posY += 50;
 		}
@@ -408,7 +408,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		posX = 1300;
 		posY = 50;
 		for(int i=65;i<=75;i++) {
-			walls[i] = new UnbreakableWall("block.png", posX, posY, boxX, boxY);
+			walls[i] = new UnbreakableWall("picture/blockcastle.png", posX, posY, boxX, boxY);
 			game.addActor(walls[i]);
 			posY += 50;
 		}
@@ -418,7 +418,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		int num_count = 76;
 		for(int i=0;i<5;i++) {
 			for(int j=0;j<12;j++) {
-				walls[j+num_count] = new UnbreakableWall("block.png", posX, posY, boxX, boxY);
+				walls[j+num_count] = new UnbreakableWall("picture/blockcastle.png", posX, posY, boxX, boxY);
 				game.addActor(walls[j+num_count]);
 				posX += 100;
 			}
@@ -565,7 +565,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		float x2 = 100, y2 = 100;
 		float savePositionX[] = {-1, -1, -1, -1, -1, -1, -1, -1};
 		float savePositionY[] = {-1, -1, -1, -1, -1, -1, -1, -1};
-		GameObject mapChecker = new GameObject("whitebox.png", 100, 100, 40, 40);
+		GameObject mapChecker = new GameObject("picture/whitebox.png", 100, 100, 40, 40);
 		boolean skip = false;
 		while (spikeTrapCount < 4 || waterTrapCount < 4)
 		{
@@ -648,7 +648,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	public void createInEndStage()
 	{
 
-		endBackground = new UI("whitebox.png", 0, 0, 1350, 750);
+		endBackground = new UI("picture/whitebox.png", 0, 0, 1350, 750);
 		//		endBackground.animation = true;
 		//		endBackground.animationLoop = true;
 		//		endBackground.setAnimation(null);
@@ -656,21 +656,21 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		endMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/endmusic.ogg"));
 		endMusic.setLooping(true);
 		endPlayerSprite = new UI[4];
-		endPlayerSprite[0] = new UI("char1lose.png", 250, 240, 60, 60);
-		endPlayerSprite[1] = new UI("char1lose.png", 500, 240, 60, 60);
-		endPlayerSprite[2] = new UI("char1lose.png", 750, 240, 60, 60);
-		endPlayerSprite[3] = new UI("char1lose.png", 1000, 240, 60, 60);
+		endPlayerSprite[0] = new UI("picture/char1lose.png", 250, 240, 60, 60);
+		endPlayerSprite[1] = new UI("picture/char1lose.png", 500, 240, 60, 60);
+		endPlayerSprite[2] = new UI("picture/char1lose.png", 750, 240, 60, 60);
+		endPlayerSprite[3] = new UI("picture/char1lose.png", 1000, 240, 60, 60);
 		endPlayerSprite[0].setVisible(false);
 		endPlayerSprite[1].setVisible(false);
 		endPlayerSprite[2].setVisible(false);
 		endPlayerSprite[3].setVisible(false);
-		platform = new UI("podium.png", 0, 0, 60, 60);
+		platform = new UI("picture/podium.png", 0, 0, 60, 60);
 		winnerBalloon = new Balloon();
 		winnerBalloon.loop = true;
 		winnerBalloon.onPlayer = false;
 		winnerBalloon.setWidth(50);
 		winnerBalloon.setHeight(50);
-		medal = new UI("medal.png", 0, 0, 60, 60);
+		medal = new UI("picture/medal.png", 0, 0, 60, 60);
 
 		end.addActor(endBackground);
 		end.addActor(endPlayerSprite[0]);
@@ -684,8 +684,8 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void createInPauseStage()
 	{
-		pauseBackground = new UI("pausebackground.jpg", 0, 0, 1350, 750);
-		pauseArrow = new UI("pointer.png", 335, 482, 32, 32);
+		pauseBackground = new UI("picture/pausebackground.jpg", 0, 0, 1350, 750);
+		pauseArrow = new UI("picture/pointer.png", 335, 482, 32, 32);
 
 		pause.addActor(pauseBackground);
 		pause.addActor(pauseArrow);
@@ -693,21 +693,21 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void createInSettingStage()
 	{
-		settingBackground = new UI("settingbackground.png", 0, 0, 1350, 750);
-		gray = new Texture(Gdx.files.internal("gray.png"));
+		settingBackground = new UI("picture/settingbackground.png", 0, 0, 1350, 750);
+		gray = new Texture(Gdx.files.internal("picture/gray.png"));
 		playerControlType = new UI[4];
-		playerControlType[0] = new UI("whitebox.png", 303, 450, 230, 60);
-		playerControlType[1] = new UI("whitebox.png", 560, 450, 230, 60);
-		playerControlType[2] = new UI("whitebox.png", 817, 450, 230, 60);
-		playerControlType[3] = new UI("whitebox.png", 1074, 450, 230, 60);
+		playerControlType[0] = new UI("picture/whitebox.png", 303, 450, 230, 60);
+		playerControlType[1] = new UI("picture/whitebox.png", 560, 450, 230, 60);
+		playerControlType[2] = new UI("picture/whitebox.png", 817, 450, 230, 60);
+		playerControlType[3] = new UI("picture/whitebox.png", 1074, 450, 230, 60);
 		playerButtonSetting = new UI[4][6];
-		settingBackButton = new UI("Back_button1.png", 19, 19, 161, 60);
+		settingBackButton = new UI("picture/Back_button1.png", 19, 19, 161, 60);
 		float posX = 303, posY = 394;
 		for (int i = 0; i < 4; i++)
 		{
 			for (int j = 0; j < 6; j++)
 			{
-				playerButtonSetting[i][j] = new UI("whitebox.png", posX, posY, 230, 56);
+				playerButtonSetting[i][j] = new UI("picture/whitebox.png", posX, posY, 230, 56);
 				posY -= 56;
 			}
 			posX += 257;
@@ -720,8 +720,8 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void createInHowToStage()
 	{
-		howToBackground = new UI("howtobackground.png", 0, 0, 1350, 750);
-		howToButtonBack = new UI("Back_button1.png", 19, 19, 160, 60);
+		howToBackground = new UI("picture/howtobackground.png", 0, 0, 1350, 750);
+		howToButtonBack = new UI("picture/Back_button1.png", 19, 19, 160, 60);
 
 		howTo.addActor(howToBackground);
 		howTo.addActor(howToButtonBack);

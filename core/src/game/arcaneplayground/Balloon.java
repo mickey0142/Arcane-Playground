@@ -14,17 +14,17 @@ public class Balloon extends Actor{
 	PlayerCharacter player;
 	Animation<TextureRegion> currentAnim;
 	
-	static TextureAtlas trapBalloon = new TextureAtlas(Gdx.files.internal("trapballoon.atlas"));
+	static TextureAtlas trapBalloon = new TextureAtlas(Gdx.files.internal("picture/trapballoon.atlas"));
 	static Animation<TextureRegion> trapBalloonAnim = new Animation<TextureRegion>(0.3f, trapBalloon.getRegions());
-	static TextureAtlas winnerBalloon = new TextureAtlas(Gdx.files.internal("winnerballoon.atlas"));
+	static TextureAtlas winnerBalloon = new TextureAtlas(Gdx.files.internal("picture/winnerballoon.atlas"));
 	static Animation<TextureRegion> winnerBalloonAnim = new Animation<TextureRegion>(0.8f, winnerBalloon.getRegions());
-	static TextureAtlas skill1Balloon = new TextureAtlas(Gdx.files.internal("skill1balloon.atlas"));
+	static TextureAtlas skill1Balloon = new TextureAtlas(Gdx.files.internal("picture/skill1balloon.atlas"));
 	static Animation<TextureRegion> skill1BalloonAnim = new Animation<TextureRegion>(1f, skill1Balloon.getRegions());
-	static TextureAtlas skill2Balloon = new TextureAtlas(Gdx.files.internal("skill2balloon.atlas"));
+	static TextureAtlas skill2Balloon = new TextureAtlas(Gdx.files.internal("picture/skill2balloon.atlas"));
 	static Animation<TextureRegion> skill2BalloonAnim = new Animation<TextureRegion>(1f, skill2Balloon.getRegions());
-	static TextureAtlas skill3Balloon = new TextureAtlas(Gdx.files.internal("skill3balloon.atlas"));
+	static TextureAtlas skill3Balloon = new TextureAtlas(Gdx.files.internal("picture/skill3balloon.atlas"));
 	static Animation<TextureRegion> skill3BalloonAnim = new Animation<TextureRegion>(1f, skill3Balloon.getRegions());
-	static TextureAtlas skill4Balloon = new TextureAtlas(Gdx.files.internal("skill4balloon.atlas"));
+	static TextureAtlas skill4Balloon = new TextureAtlas(Gdx.files.internal("picture/skill4balloon.atlas"));
 	static Animation<TextureRegion> skill4BalloonAnim = new Animation<TextureRegion>(1f, skill4Balloon.getRegions());
 	public Balloon()
 	{
