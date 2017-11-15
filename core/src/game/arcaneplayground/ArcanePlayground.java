@@ -195,20 +195,20 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		gameName.animationLoop = true;
 		gameName.setAnimation(temp);
 		gameName.currentAnim.setFrameDuration(0.3f);
-		menuStart1 = new Texture(Gdx.files.internal("picture/Start_button_1.png"));
-		menuStart2 = new Texture(Gdx.files.internal("picture/Start_button_2.png"));
-		menuSetting1 = new Texture(Gdx.files.internal("picture/Setting_button_1.png"));
-		menuSetting2 = new Texture(Gdx.files.internal("picture/Setting_button_2.png"));
-		menuHowTo1 = new Texture(Gdx.files.internal("picture/HowToPlay_button_1.png"));
-		menuHowTo2 = new Texture(Gdx.files.internal("picture/HowToPlay_button_2.png"));
-		menuExit1 = new Texture(Gdx.files.internal("picture/Exit_button_1.png"));
-		menuExit2 = new Texture(Gdx.files.internal("picture/Exit_button_2.png"));
-		back1 = new Texture(Gdx.files.internal("picture/Back_button1.png"));
-		back2 = new Texture(Gdx.files.internal("picture/Back_button2.png"));
-		menuButtonStart = new UI("picture/Start_button_2.png", 497, 138, 354, 93);
-		menuButtonSetting = new UI("picture/Setting_button_1.png", 497, 30, 354, 93);
-		menuButtonHowto = new UI("picture/HowToPlay_button_1.png", 917, 30, 354, 93);
-		menuButtonExit = new UI("picture/Exit_button_1.png", 70, 30, 354, 93);
+		menuStart1 = new Texture(Gdx.files.internal("picture/start_button_1.png"));
+		menuStart2 = new Texture(Gdx.files.internal("picture/start_button_2.png"));
+		menuSetting1 = new Texture(Gdx.files.internal("picture/setting_button_1.png"));
+		menuSetting2 = new Texture(Gdx.files.internal("picture/setting_button_2.png"));
+		menuHowTo1 = new Texture(Gdx.files.internal("picture/howtoplay_button_1.png"));
+		menuHowTo2 = new Texture(Gdx.files.internal("picture/howtoplay_button_2.png"));
+		menuExit1 = new Texture(Gdx.files.internal("picture/exit_button_1.png"));
+		menuExit2 = new Texture(Gdx.files.internal("picture/exit_button_2.png"));
+		back1 = new Texture(Gdx.files.internal("picture/back_button1.png"));
+		back2 = new Texture(Gdx.files.internal("picture/back_button2.png"));
+		menuButtonStart = new UI("picture/start_button_2.png", 497, 138, 354, 93);
+		menuButtonSetting = new UI("picture/setting_button_1.png", 497, 30, 354, 93);
+		menuButtonHowto = new UI("picture/howtoplay_button_1.png", 917, 30, 354, 93);
+		menuButtonExit = new UI("picture/exit_button_1.png", 70, 30, 354, 93);
 
 		menu.addActor(menuBackground);
 		menu.addActor(gameName);
@@ -222,8 +222,8 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void createInCharacterStage()
 	{
-		charSelectButtonStart = new UI("picture/Start_button_1.png", 1175, 670, 165, 60);
-		charSelectButtonBack = new UI("picture/Back_button1.png", 15, 670, 165, 60);
+		charSelectButtonStart = new UI("picture/start_button_1.png", 1175, 670, 165, 60);
+		charSelectButtonBack = new UI("picture/back_button1.png", 15, 670, 165, 60);
 		weaponSprite = new UI[4];
 		checkBlock[0] = new GameObject("picture/box3.png", 0, 0, 100, 100);
 		checkBlock[1] = new GameObject("picture/box3.png", 0, 0, 100, 100);
@@ -701,7 +701,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		playerControlType[2] = new UI("picture/whitebox.png", 817, 450, 230, 60);
 		playerControlType[3] = new UI("picture/whitebox.png", 1074, 450, 230, 60);
 		playerButtonSetting = new UI[4][6];
-		settingBackButton = new UI("picture/Back_button1.png", 19, 19, 161, 60);
+		settingBackButton = new UI("picture/back_button1.png", 19, 19, 161, 60);
 		float posX = 303, posY = 394;
 		for (int i = 0; i < 4; i++)
 		{
@@ -721,7 +721,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	public void createInHowToStage()
 	{
 		howToBackground = new UI("picture/howtobackground.png", 0, 0, 1350, 750);
-		howToButtonBack = new UI("picture/Back_button1.png", 19, 19, 160, 60);
+		howToButtonBack = new UI("picture/back_button1.png", 19, 19, 160, 60);
 
 		howTo.addActor(howToBackground);
 		howTo.addActor(howToButtonBack);

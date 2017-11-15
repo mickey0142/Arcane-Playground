@@ -66,7 +66,7 @@ public class PlayerCharacter extends Actor{
 	Sound attackSound;
 	
 	static float moveSpeed = 5;
-	static TextureAtlas heart = new TextureAtlas(Gdx.files.internal("heart.atlas"));
+	static TextureAtlas heart = new TextureAtlas(Gdx.files.internal("picture/heart.atlas"));
 	static Animation<TextureRegion> heart3 = new Animation<TextureRegion>(1f, heart.findRegions("0003"));
 	static Animation<TextureRegion> heart2 = new Animation<TextureRegion>(1f, heart.findRegions("0002"));
 	static Animation<TextureRegion> heart1 = new Animation<TextureRegion>(1f, heart.findRegions("0001"));

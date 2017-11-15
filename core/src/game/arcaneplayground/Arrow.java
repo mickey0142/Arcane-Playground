@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 public class Arrow extends GameObject{
 	float speedX = 0, speedY = 0, maxSpeed = 0;
 	float time = 0;
-	static TextureAtlas arrowTextureAtlas = new TextureAtlas(Gdx.files.internal("arrowweapon.atlas"));
+	static TextureAtlas arrowTextureAtlas = new TextureAtlas(Gdx.files.internal("picture/arrowweapon.atlas"));
 	static Animation<TextureRegion> arrowAnim = new Animation<TextureRegion>(0.2f, arrowTextureAtlas.getRegions());
 	static Sound arrowHit = Gdx.audio.newSound(Gdx.files.internal("audio/arrowhit.ogg"));
 	public Arrow()
