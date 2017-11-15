@@ -79,7 +79,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	SpikeTrap spikeTrap[];
 	WaterTrap waterTrap[];
 	Balloon balloon[];
-	Texture playground1, playground2;
+	Texture playground1, playground2, playground3, playground4;
 
 	Stage howTo;
 	UI howToBackground;
@@ -318,8 +318,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	{
 		gameBackground = new UI("gamebackground.jpg", 0, 0, 1350, 750, false);
 		playGround = new GameObject("playground.png", 0, 0, 1350, 650);
-		playground1 = new Texture(Gdx.files.internal("playground.png"));
-		playground2 = new Texture(Gdx.files.internal("mapwood.png"));// insert new picture here
+		playground1 = new Texture(Gdx.files.internal("mapcastle.png"));
+		playground2 = new Texture(Gdx.files.internal("mapwood.png"));
+		playground3 = new Texture(Gdx.files.internal("mapice.png"));
+		playground4 = new Texture(Gdx.files.internal("maplava.png"));
 		gameMusic  = Gdx.audio.newMusic(Gdx.files.internal("audio/gamemusic.ogg"));
 		gameMusic.setLooping(true);
 
@@ -471,10 +473,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	public void createMap()
 	{
 		// set textureatlas for block here change wall1 to input
-		int num = (int)(Math.random()*2);
+		int num = (int)(Math.random()*4);
 		if (num == 0)
 		{
-			NormalWall.wallTexture = NormalWall.wall1;// insert new picture here
+			NormalWall.wallTexture = NormalWall.wall1;
 			playGround.img = playground1;
 			unbreakWall = UnbreakableWall.wall1;
 			NormalWall.currentBreakSound = NormalWall.wallBreakSound;
@@ -482,11 +484,27 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		}
 		else if (num == 1)
 		{
-			NormalWall.wallTexture = NormalWall.wall1;
+			NormalWall.wallTexture = NormalWall.wall2;
 			playGround.img = playground2;
 			unbreakWall = UnbreakableWall.wall2;
 			NormalWall.currentBreakSound = NormalWall.wallBreakSound2;
 			WaterTrap.currentAnim = WaterTrap.waterAnim2;
+		}
+		else if (num == 2)
+		{
+			NormalWall.wallTexture = NormalWall.wall3;
+			playGround.img = playground3;
+			unbreakWall = UnbreakableWall.wall3;
+			NormalWall.currentBreakSound = NormalWall.wallBreakSound3;
+			WaterTrap.currentAnim = WaterTrap.waterAnim3;
+		}
+		else if (num == 3)
+		{
+			NormalWall.wallTexture = NormalWall.wall4;
+			playGround.img = playground4;
+			unbreakWall = UnbreakableWall.wall4;
+			NormalWall.currentBreakSound = NormalWall.wallBreakSound4;
+			WaterTrap.currentAnim = WaterTrap.waterAnim4;
 		}
 		NormalWall.hp3 = NormalWall.wallTexture.findRegion("0001");
 		NormalWall.hp2 = NormalWall.wallTexture.findRegion("0002");
@@ -1013,6 +1031,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 				if (checkCollision(allPlayer, trap))
 				{
+					if (allPlayer.slowTime <= 0)
+					{
+						WaterTrap.waterTrapSound.play(0.5f);
+					}
 					allPlayer.slowTime = 2;
 					allPlayer.balloon.runAnimation("trap");
 				}
@@ -1058,7 +1080,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				// check collision between arrow
 				for (GameObject arrow : playerArrow)
 				{
-					if (arrow == allPlayer.arrow)
+					if (arrow == allPlayer.arrow || !arrow.isVisible())
 					{
 						arrowCount2 += 1;
 						continue;
@@ -1066,10 +1088,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 					if (checkCollision(allPlayer.arrow, arrow))// attack effect bug may happen here because of arrowcount arrowcount2 loopcount three of these is confusing 
 					{
 						PlayerWeapon.fistSound.play();
-						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
-						allPlayer.arrow.setVisible(false);
-						((Arrow)arrow).setArrow(player[arrowCount2].getX()+25, player[arrowCount2].getY()+20, player[arrowCount2].direction, player[arrowCount2].weaponLV);
-						((Arrow)arrow).setVisible(false);
 						arrowCharged[arrowCount] = false;
 						arrowCharged[arrowCount2] = false;
 						if (allPlayer.arrow.speedX != 0)attackEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
@@ -1080,6 +1098,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 						else attackEffectRenderer[arrowCount].setValue(((Arrow)arrow).hitbox.getX(), ((Arrow)arrow).hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
 						attackEffectRenderer[arrowCount].check = true;
 						attackEffectRenderer[arrowCount].time = 0;
+						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
+						allPlayer.arrow.setVisible(false);
+						((Arrow)arrow).setArrow(player[arrowCount2].getX()+25, player[arrowCount2].getY()+20, player[arrowCount2].direction, player[arrowCount2].weaponLV);
+						((Arrow)arrow).setVisible(false);
 					}
 					arrowCount2 += 1;
 				}
@@ -1155,7 +1177,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 					{
 						allPlayer.attackEffectAnim = EffectRenderer.spearAnimation;
 						characterSkill(allPlayer, otherPlayer, arrowCharged[arrowCount]);
-						PlayerWeapon.fistSound.play();
+						Arrow.arrowHit.play(0.5f);
 						otherPlayer.regenDelay = 5f;
 						if (otherPlayer.armor <= 0)
 						{
@@ -2631,7 +2653,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		int arrowCount = 0;
 		for (Arrow arrow : playerArrow)
 		{
-			if (checkCollision(playerAttack, arrow, "attack"))
+			if (checkCollision(playerAttack, arrow, "attack") && arrow.isVisible())
 			{
 				parryArrowSound.play();
 				if (((Arrow)arrow).speedX != 0)attackEffectRenderer[arrowCount].setValue(((Arrow)arrow).hitbox.getX(), ((Arrow)arrow).hitbox.getY()-15, player[arrowCount].attackHitbox.getWidth(), player[arrowCount].attackHitbox.getHeight(), player[arrowCount].direction);

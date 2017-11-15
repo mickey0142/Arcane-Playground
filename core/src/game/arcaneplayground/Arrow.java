@@ -1,6 +1,7 @@
 package game.arcaneplayground;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -12,6 +13,7 @@ public class Arrow extends GameObject{
 	float time = 0;
 	static TextureAtlas arrowTextureAtlas = new TextureAtlas(Gdx.files.internal("arrowweapon.atlas"));
 	static Animation<TextureRegion> arrowAnim = new Animation<TextureRegion>(0.2f, arrowTextureAtlas.getRegions());
+	static Sound arrowHit = Gdx.audio.newSound(Gdx.files.internal("audio/arrowhit.ogg"));
 	public Arrow()
 	{
 		this.setVisible(false);

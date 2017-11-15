@@ -19,8 +19,12 @@ public class NormalWall extends GameObject{
 	static Sound currentBreakSound;
 	static TextureAtlas wall1 = new TextureAtlas("normalwall.atlas");
 	static Sound wallBreakSound = Gdx.audio.newSound(Gdx.files.internal("audio/wallbreak.ogg"));
-//	static TextureAtlas wall2 = new TextureAtlas("normalwall.atlas");
+	static TextureAtlas wall2 = new TextureAtlas("normalwall2.atlas");
 	static Sound wallBreakSound2 = Gdx.audio.newSound(Gdx.files.internal("audio/grassbreak.ogg"));
+	static TextureAtlas wall3 = new TextureAtlas("normalwall3.atlas");
+	static Sound wallBreakSound3 = Gdx.audio.newSound(Gdx.files.internal("audio/icebreak.ogg"));
+	static TextureAtlas wall4 = new TextureAtlas("normalwall4.atlas");
+	static Sound wallBreakSound4 = Gdx.audio.newSound(Gdx.files.internal("audio/grassbreak.ogg"));
 
 	public NormalWall()
 	{

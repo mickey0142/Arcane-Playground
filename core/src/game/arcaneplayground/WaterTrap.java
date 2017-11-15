@@ -1,6 +1,7 @@
 package game.arcaneplayground;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -13,7 +14,12 @@ public class WaterTrap extends GameObject{
 	static TextureAtlas waterTexture = new TextureAtlas(Gdx.files.internal("watertrap.atlas"));
 	static Animation<TextureRegion> waterAnim = new Animation<TextureRegion>(0.5f, waterTexture.getRegions());
 	static TextureAtlas waterTexture2 = new TextureAtlas(Gdx.files.internal("watertrap.atlas"));
-	static Animation<TextureRegion> waterAnim2 = new Animation<TextureRegion>(0.5f, waterTexture.getRegions());
+	static Animation<TextureRegion> waterAnim2 = new Animation<TextureRegion>(0.5f, waterTexture2.getRegions());
+	static TextureAtlas waterTexture3 = new TextureAtlas(Gdx.files.internal("watertrap.atlas"));
+	static Animation<TextureRegion> waterAnim3 = new Animation<TextureRegion>(0.5f, waterTexture3.getRegions());
+	static TextureAtlas waterTexture4 = new TextureAtlas(Gdx.files.internal("watertrap.atlas"));
+	static Animation<TextureRegion> waterAnim4 = new Animation<TextureRegion>(0.5f, waterTexture4.getRegions());
+	static Sound waterTrapSound = Gdx.audio.newSound(Gdx.files.internal("audio/slow.ogg"));
 	public WaterTrap()
 	{
 		

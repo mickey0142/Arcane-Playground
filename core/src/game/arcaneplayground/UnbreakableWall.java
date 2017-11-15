@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class UnbreakableWall extends GameObject{
-	static Texture wall1 = new Texture(Gdx.files.internal("block.png"));
+	static Texture wall1 = new Texture(Gdx.files.internal("blockcastle.png"));
 	static Texture wall2 = new Texture(Gdx.files.internal("blockwood.png"));
+	static Texture wall3 = new Texture(Gdx.files.internal("blockice.png"));
+	static Texture wall4 = new Texture(Gdx.files.internal("blocklava.png"));
 	public UnbreakableWall()
 	{
 		
