@@ -40,17 +40,17 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	UI gameName;
 	int cursorPosition = 1;
 	UI menuBackground;
-	UI menuButtonStart;
-	UI menuButtonSetting;
-	UI menuButtonHowto;
-	UI menuButtonExit;
+	UI menuStartButton;
+	UI menuSettingButton;
+	UI menuHowToButton;
+	UI menuExitButton;
 
 	Stage character;
-	int characterIndex[] = new int[4];// change 4 to number of character texture here
+	int characterIndex[] = new int[4];
 	UI characterBackground;
 	UI playerCharacterSelect[];
 	UI selectCharacterTop;
-	UI charSelectButtonStart, charSelectButtonBack;
+	UI charSelectStartButton, charSelectBackButton;
 	Texture char1Info, char2Info, char3Info, char4Info;
 
 	Stage game;
@@ -69,7 +69,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	UI playerHPBar[] = new UI[4];
 	UI playerArmorBar[] = new UI[4];
 	UI playerShadow[] = new UI[4];
-	UI shieldIcon[] = new UI[4];
 	Arrow playerArrow[];
 	boolean arrowCharged[] = {false, false, false, false};
 	UI playerSprite[];
@@ -84,7 +83,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	Stage howTo;
 	UI howToBackground;
-	UI howToButtonBack;
+	UI howToBackButton;
 
 	Stage end;
 	UI endPlayerSprite[];
@@ -124,6 +123,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	public void create () {
 		batch = new SpriteBatch();
 
+		//create all stage
 		menu = new Stage(new FitViewport(1350, 750));
 		character = new Stage(new FitViewport(1350, 750));
 		game = new Stage(new FitViewport(1350, 750));
@@ -132,8 +132,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		setting = new Stage(new FitViewport(1350, 750));
 		howTo = new Stage(new FitViewport(1350, 750));
 
+		// set current screen to menu
 		screen = "menu";
 
+		// load sound
 		damagedSound = Gdx.audio.newSound(Gdx.files.internal("audio/damaged.ogg"));
 		hpDownSound = Gdx.audio.newSound(Gdx.files.internal("audio/hpdown.ogg"));
 		deadSound = Gdx.audio.newSound(Gdx.files.internal("audio/dead.ogg"));
@@ -150,6 +152,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		skill3Sound = Gdx.audio.newSound(Gdx.files.internal("audio/skill3.ogg"));
 		skill4Sound = Gdx.audio.newSound(Gdx.files.internal("audio/skill4.ogg"));
 
+		// create font
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/font.ttf"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 		parameter.size = 32;
@@ -180,12 +183,14 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		createInSettingStage();
 		createInHowToStage();
 
+		// set listener to get input from this class
 		Gdx.input.setInputProcessor(this);
 		Controllers.addListener(this);
 	}
 
 	public void createInMenuStage()
 	{
+		// load and set everything in menu stage
 		menuBackground = new UI("picture/whitebox.png", 0, 0, 1350, 750);
 		TextureAtlas temp = new TextureAtlas(Gdx.files.internal("picture/menubackground.atlas"));
 		menuBackground.animation = true;
@@ -208,25 +213,27 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		menuExit2 = new Texture(Gdx.files.internal("picture/exit_button_2.png"));
 		back1 = new Texture(Gdx.files.internal("picture/back_button1.png"));
 		back2 = new Texture(Gdx.files.internal("picture/back_button2.png"));
-		menuButtonStart = new UI("picture/start_button_2.png", 497, 138, 354, 93);
-		menuButtonSetting = new UI("picture/setting_button_1.png", 497, 30, 354, 93);
-		menuButtonHowto = new UI("picture/howtoplay_button_1.png", 917, 30, 354, 93);
-		menuButtonExit = new UI("picture/exit_button_1.png", 70, 30, 354, 93);
+		menuStartButton = new UI("picture/start_button_2.png", 497, 138, 354, 93);
+		menuSettingButton = new UI("picture/setting_button_1.png", 497, 30, 354, 93);
+		menuHowToButton = new UI("picture/howtoplay_button_1.png", 917, 30, 354, 93);
+		menuExitButton = new UI("picture/exit_button_1.png", 70, 30, 354, 93);
 
+		// add actor to menu stage
 		menu.addActor(menuBackground);
 		menu.addActor(gameName);
-		menu.addActor(menuButtonStart);
-		menu.addActor(menuButtonSetting);
-		menu.addActor(menuButtonHowto);
-		menu.addActor(menuButtonExit);
+		menu.addActor(menuStartButton);
+		menu.addActor(menuSettingButton);
+		menu.addActor(menuHowToButton);
+		menu.addActor(menuExitButton);
 		menuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/menumusic.ogg"));
 		menuMusic.setLooping(true);
 	}
 
 	public void createInCharacterStage()
 	{
-		charSelectButtonStart = new UI("picture/start_button_1.png", 1175, 670, 165, 60);
-		charSelectButtonBack = new UI("picture/back_button1.png", 15, 670, 165, 60);
+		// load and set everything in character stage and something for each character
+		charSelectStartButton = new UI("picture/start_button_1.png", 1175, 670, 165, 60);
+		charSelectBackButton = new UI("picture/back_button1.png", 15, 670, 165, 60);
 		weaponSprite = new UI[4];
 		checkBlock[0] = new GameObject("picture/box3.png", 0, 0, 100, 100);
 		checkBlock[1] = new GameObject("picture/box3.png", 0, 0, 100, 100);
@@ -248,10 +255,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		weaponSprite[1] = new UI ("picture/gray.png", 590, 685, 50, 50);
 		weaponSprite[2] = new UI ("picture/gray.png", 920, 685, 50, 50);
 		weaponSprite[3] = new UI ("picture/gray.png", 1250, 685, 50, 50);
-//		shieldIcon[0] = new UI("picture/shield1.png", 95, 665, 16, 16);
-//		shieldIcon[1] = new UI("picture/shield1.png", 425, 665, 16, 16);
-//		shieldIcon[2] = new UI("picture/shield1.png", 755, 665, 16, 16);
-//		shieldIcon[3] = new UI("picture/shield1.png", 1085, 665, 16, 16);
 		armorBar = new UI[4];
 		armorBar[0] = new UI("picture/armor_bar.png", 95, 665, 160, 24);
 		armorBar[1] = new UI("picture/armor_bar.png", 425, 665, 160, 24);
@@ -263,10 +266,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		player[2] = new PlayerCharacter(50, 550, 60, 60, Keys.Y, Keys.H, Keys.G, Keys.J, Keys.U, Keys.T, playerHPBar[2], playerArmorBar[2], PlayerWeapon.fist, PlayerWeapon.fistAnim);
 		player[3] = new PlayerCharacter(1250, 50, 60, 60, Keys.O, Keys.L, Keys.K, Keys.SEMICOLON, Keys.P, Keys.I, playerHPBar[3], playerArmorBar[3], PlayerWeapon.fist, PlayerWeapon.fistAnim);
 
-		//temppppp 
-		//player[0].weaponName = "axe";
-		//player[1].weaponName = "spear";
-
 		playerArrow = new Arrow[4];
 		balloon = new Balloon[4];
 		playerShadow[0] = new UI("picture/shadow1.png", -100, -100, 50, 50);
@@ -277,6 +276,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		player[1].setShadow(playerShadow[1]);
 		player[2].setShadow(playerShadow[2]);
 		player[3].setShadow(playerShadow[3]);
+		// set everything for each player
 		for (int i = 0; i < 4; i++)
 		{
 			attackEffectRenderer[i] = new EffectRenderer(player[i]);
@@ -299,7 +299,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		char3Info = new Texture(Gdx.files.internal("picture/char3info.png"));
 		char4Info = new Texture(Gdx.files.internal("picture/char4info.png"));
 
-		// ui in stage
+		// ui in character stage
 		characterBackground = new UI("picture/characterbackground.png", 0, 0, 1350, 750);
 		selectCharacterTop = new UI("picture/selectcharactertop.png", 372, 655, 606, 90);
 		playerCharacterSelect =  new UI[4];
@@ -308,9 +308,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		playerCharacterSelect[2] = new UI("picture/char1info.png", 702, 105, 273, 548);
 		playerCharacterSelect[3] = new UI("picture/char1info.png", 1027, 105, 273, 548);
 
+		// add actor to character stage
 		character.addActor(characterBackground);
-		character.addActor(charSelectButtonStart);
-		character.addActor(charSelectButtonBack);
+		character.addActor(charSelectStartButton);
+		character.addActor(charSelectBackButton);
 		character.addActor(selectCharacterTop);
 		character.addActor(playerCharacterSelect[0]);
 		playerCharacterSelect[0].setVisible(false);
@@ -324,6 +325,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void createInGameStage()
 	{
+		// load and set everything in game stage
 		gameBackground = new UI("picture/status_back.png", 0, 650, 1350, 100, false);
 		playGround = new GameObject("picture/mapcastle.png", 0, 0, 1350, 650);
 		playground1 = new Texture(Gdx.files.internal("picture/mapcastle.png"));
@@ -386,6 +388,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		game.addActor(waterTrap[2]);
 		game.addActor(waterTrap[3]);
 
+		// create unbreakable wall
 		walls = new UnbreakableWall[136];
 		int posX = 0;
 		int posY = 0;
@@ -439,7 +442,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			game.addActor(item);
 		}
 
-		//change this to loop later
 		game.addActor(playerShadow[0]);
 		game.addActor(playerShadow[1]);
 		game.addActor(playerShadow[2]);
@@ -468,10 +470,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		game.addActor(balloon[2]);
 		game.addActor(balloon[3]);
 
-		//temp remove this latertemp remove this latertemp remove this latertemp remove this latertemp remove this latertemp remove this latertemp remove this later
-		//game.addActor(checkBlock[0]);
-		//game.addActor(checkBlock[1]);
-
 		game.addActor(attackEffectRenderer[0]);
 		game.addActor(attackEffectRenderer[1]);
 		game.addActor(attackEffectRenderer[2]);
@@ -480,7 +478,8 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void createMap()
 	{
-		// set textureatlas for block here change wall1 to input
+		// set trap and normal wall position
+		// random map type
 		int num = (int)(Math.random()*4);
 		if (num == 0)
 		{
@@ -522,6 +521,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		{
 			wall.img = unbreakWall;
 		}
+		// random normal wall position
 		int normalWallCount = 0;
 		float[] possibleY1 = {50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550};
 		float[] possibleY2 = {50, 150, 250, 350, 450, 550};
@@ -567,7 +567,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			}
 			x += 50;
 		}
-		// set spiketrap position
+		// random spiketrap and watertrap position
 		int spikeTrapCount = 0;
 		int waterTrapCount = 0;
 		float x2 = 100, y2 = 100;
@@ -655,6 +655,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void createInEndStage()
 	{
+		// load and set everything in end stage
 		TextureAtlas temp = new TextureAtlas(Gdx.files.internal("picture/endbackground.atlas"));
 		endBackground = new UI("picture/whitebox.png", 0, 0, 1350, 750);
 		endBackground.animation = true;
@@ -686,6 +687,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		winnerBalloon.setHeight(50);
 		medal = new UI("picture/medal.png", -100, -100, 60, 60);
 
+		// add actor to end stage
 		end.addActor(endBackground);
 		end.addActor(endPlayerSprite[0]);
 		end.addActor(endPlayerSprite[1]);
@@ -699,6 +701,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void createInPauseStage()
 	{
+		// load and set everything in pause stage
 		pauseBackground = new UI("picture/pausebackground.png", 0, 0, 1350, 750);
 		pauseResumeButton = new UI("picture/resume_button2.png", 450, 500, 460, 100);
 		pauseSettingButton = new UI("picture/setting_button1.png", 450, 350, 460, 100);
@@ -711,6 +714,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		pauseBack1 = new Texture(Gdx.files.internal("picture/backtomenu_button1.png"));
 		pauseBack2 = new Texture(Gdx.files.internal("picture/backtomenu_button2.png"));
 
+		// add actor in pause stage
 		pause.addActor(pauseBackground);
 		pause.addActor(pauseResumeButton);
 		pause.addActor(pauseSettingButton);
@@ -719,6 +723,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void createInSettingStage()
 	{
+		// load and set everything in setting stage
 		settingBackground = new UI("picture/settingbackground.png", 0, 0, 1350, 750);
 		gray = new Texture(Gdx.files.internal("picture/gray.png"));
 		playerControlType = new UI[4];
@@ -728,6 +733,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		playerControlType[3] = new UI("picture/whitebox.png", 1074, 450, 230, 60);
 		playerButtonSetting = new UI[4][6];
 		settingBackButton = new UI("picture/back_button1.png", 19, 19, 161, 60);
+		// set button position for each control
 		float posX = 303, posY = 394;
 		for (int i = 0; i < 4; i++)
 		{
@@ -740,23 +746,28 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			posY = 394;
 		}
 
+		// add actor in setting stage
 		setting.addActor(settingBackground);
 		setting.addActor(settingBackButton);
 	}
 
 	public void createInHowToStage()
 	{
+		// load everything in howto stage
 		howToBackground = new UI("picture/howtobackground.png", 0, 0, 1350, 750);
-		howToButtonBack = new UI("picture/back_button1.png", 19, 19, 160, 60);
+		howToBackButton = new UI("picture/back_button1.png", 19, 19, 160, 60);
 
+		// add actor in howto stage
 		howTo.addActor(howToBackground);
-		howTo.addActor(howToButtonBack);
+		howTo.addActor(howToBackButton);
 	}
 
 	@Override
 	public void render() {
+		// clear screen
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		// set each stage size to current screen size
 		game.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 		menu.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 		character.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
@@ -764,6 +775,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		setting.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 		pause.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 		howTo.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+		// render current stage
 		if (screen.equals("menu"))
 		{
 			if (!menuMusic.isPlaying())
@@ -790,14 +802,17 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			endMusic.stop();
 			gameStageRender();
 			batch.begin();
+			// render font
 			if(player[0].isVisible())font24.draw(batch, "LV." + player[0].weaponLV, weaponSprite[0].getX(), weaponSprite[0].getY()-12);
 			if(player[1].isVisible())font24.draw(batch, "LV." + player[1].weaponLV, weaponSprite[1].getX(), weaponSprite[1].getY()-12);
 			if(player[2].isVisible())font24.draw(batch, "LV." + player[2].weaponLV, weaponSprite[2].getX(), weaponSprite[2].getY()-12);
 			if(player[3].isVisible())font24.draw(batch, "LV." + player[3].weaponLV, weaponSprite[3].getX(), weaponSprite[3].getY()-12);
+			// if game is over start countdown to go to end stage
 			if (playerCount <= 1)
 			{
 				delay -= Gdx.graphics.getDeltaTime();
 			}
+			// render font at the start of the game
 			if (startDelay > 0)
 			{
 				batch.draw(gray, 0, 0, 1350, 750);
@@ -808,6 +823,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				startDelay -= Gdx.graphics.getDeltaTime();
 			}
 			batch.end();
+			// after game is over and countdown is zero set everything that is needed in end stage 
 			if (delay <= 0)
 			{
 				screen = "end";
@@ -1424,6 +1440,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	@Override
 	public void dispose () {
+		// clear memory when game is closed
 		batch.dispose();
 		menu.dispose();
 		character.dispose();
@@ -1436,6 +1453,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	@Override
 	public boolean keyDown(int keycode) {
+		// handle input for current stage
 		if (screen.equals("menu"))
 		{
 			keyDownInMenuStage(keycode);
@@ -1469,6 +1487,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void keyDownInMenuStage(int keycode)
 	{
+		// handle enter input
 		if (keycode == Keys.ENTER)
 		{
 			confirmSound.play();
@@ -1490,6 +1509,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				Gdx.app.exit();
 			}
 		}
+		// handle input for each player control
 		for (PlayerCharacter allPlayer : player)
 		{
 			if (keycode == allPlayer.controlRight)
@@ -1606,38 +1626,40 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				}
 			}
 		}
+		// set img of each button
 		if (cursorPosition == 1)
 		{
-			menuButtonStart.img = menuStart2;
-			menuButtonHowto.img = menuHowTo1;
-			menuButtonSetting.img = menuSetting1;
-			menuButtonExit.img = menuExit1;
+			menuStartButton.img = menuStart2;
+			menuHowToButton.img = menuHowTo1;
+			menuSettingButton.img = menuSetting1;
+			menuExitButton.img = menuExit1;
 		}
 		else if (cursorPosition == 2)
 		{
-			menuButtonStart.img = menuStart1;
-			menuButtonHowto.img = menuHowTo1;
-			menuButtonSetting.img = menuSetting2;
-			menuButtonExit.img = menuExit1;
+			menuStartButton.img = menuStart1;
+			menuHowToButton.img = menuHowTo1;
+			menuSettingButton.img = menuSetting2;
+			menuExitButton.img = menuExit1;
 		}
 		else if (cursorPosition == 3)
 		{
-			menuButtonStart.img = menuStart1;
-			menuButtonHowto.img = menuHowTo2;
-			menuButtonSetting.img = menuSetting1;
-			menuButtonExit.img = menuExit1;
+			menuStartButton.img = menuStart1;
+			menuHowToButton.img = menuHowTo2;
+			menuSettingButton.img = menuSetting1;
+			menuExitButton.img = menuExit1;
 		}
 		else if (cursorPosition == 4)
 		{
-			menuButtonStart.img = menuStart1;
-			menuButtonHowto.img = menuHowTo1;
-			menuButtonSetting.img = menuSetting1;
-			menuButtonExit.img = menuExit2;
+			menuStartButton.img = menuStart1;
+			menuHowToButton.img = menuHowTo1;
+			menuSettingButton.img = menuSetting1;
+			menuExitButton.img = menuExit2;
 		}
 	}
 
 	public void keyDownInCharacterStage(int keycode)
 	{
+		// handle enter input, go to game stage if there is enough player
 		if (keycode == Keys.ENTER && playerCount >= 2)
 		{
 			createMap();
@@ -1663,12 +1685,14 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				}
 			}
 		}
+		// return to menu stage
 		else if (keycode == Keys.ESCAPE)
 		{
 			screen = "menu";
 			cancelSound.play();
 			resetVariableInCharacterStage();
 		}
+		// handle input for each player control
 		for (int i = 0; i<4; i++)
 		{
 			if (!player[i].controlType.equals("keyboard"))
@@ -1749,11 +1773,13 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void keyDownInGameStage(int keycode)
 	{
+		// pause game
 		if (keycode == Keys.ESCAPE)
 		{
 			screen = "pause";
 			cancelSound.play();
 		}
+		// handle control for each player
 		for (PlayerCharacter allPlayer : player) {
 			//			if (allPlayer.charging)
 			//			{
@@ -1811,7 +1837,8 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void keyDownInEndStage(int keycode)
 	{
-		if (keycode == Keys.ENTER)
+		// return to menu
+		if (keycode == Keys.ENTER || keycode == Keys.ESCAPE)
 		{
 			screen = "menu";
 			resetVariableInCharacterStage();
@@ -1821,6 +1848,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void keyDownInPauseStage(int keycode)
 	{
+		// continue game
 		if (keycode == Keys.ESCAPE)
 		{
 			cancelSound.play();
@@ -1844,6 +1872,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				allPlayer.rightPressed = false;
 			}
 		}
+		// handle enter input
 		else if (keycode == Keys.ENTER)
 		{
 			confirmSound.play();
@@ -1882,6 +1911,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				resetVariableInGameStage();
 			}
 		}
+		// handle input for each player
 		for (PlayerCharacter allPlayer : player)
 		{
 			if (keycode == allPlayer.controlBack)
@@ -1964,6 +1994,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				}
 			}
 		}
+		// set button img according to current select button
 		if (pauseCursorPosition == 1)
 		{
 			pauseResumeButton.img = pauseResume2;
@@ -1986,6 +2017,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void keyDownInSettingStage(int keycode)
 	{
+		// if changing control change button value in that player
 		if (changeControl)
 		{
 			if (keycode == Keys.ESCAPE)
@@ -2023,6 +2055,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				changeControl = false;
 			}
 		}
+		// if not changing control
 		else
 		{
 			if (keycode == Keys.ESCAPE)
@@ -2061,6 +2094,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void keyUpInGameStage(int keycode)
 	{
+		// handle control for each player
 		for (PlayerCharacter allPlayer : player) {
 			if (keycode == allPlayer.controlLeft)
 			{
@@ -2147,12 +2181,13 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	@Override
 	public boolean keyTyped(char character) {
+		// temporary debug command
 		if (character == 'z')
 		{
 			player[0].dead = true;
-//			player[2].dead = true;
-//			player[1].dead = true;
-//			player[3].dead = true;
+			//			player[2].dead = true;
+			//			player[1].dead = true;
+			//			player[3].dead = true;
 			playerCount = 1;
 		}
 		else if (character == 'x')
@@ -2180,6 +2215,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		mousePositionScreen.x = screenX;
 		mousePositionScreen.y = screenY;
+		// convert y axis from screen coordinate to stage coordinate
 		mousePositionStage = menu.screenToStageCoordinates(mousePositionScreen);
 		System.out.println(mousePositionStage.x + " " + mousePositionStage.y);
 		if (screen.equals("menu"))
@@ -2207,42 +2243,47 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void touchDownInMenuStage(Vector2 mousePosition, int button)
 	{
-		if (mousePosition.x >= menuButtonStart.getX() && mousePosition.x <= menuButtonStart.getX()+menuButtonStart.getWidth())
+		// check for clicking button
+		if (button == Buttons.LEFT)
 		{
-			if (mousePosition.y >= menuButtonStart.getY() && mousePosition.y <= menuButtonStart.getY()+menuButtonStart.getHeight())
+			if (mousePosition.x >= menuStartButton.getX() && mousePosition.x <= menuStartButton.getX()+menuStartButton.getWidth())
 			{
-				screen = "character";
-				confirmSound.play();
+				if (mousePosition.y >= menuStartButton.getY() && mousePosition.y <= menuStartButton.getY()+menuStartButton.getHeight())
+				{
+					screen = "character";
+					confirmSound.play();
+				}
 			}
-		}
-		if (mousePosition.x >= menuButtonSetting.getX() && mousePosition.x <= menuButtonSetting.getX()+menuButtonSetting.getWidth())
-		{
-			if (mousePosition.y >= menuButtonSetting.getY() && mousePosition.y <= menuButtonSetting.getY()+menuButtonSetting.getHeight())
+			if (mousePosition.x >= menuSettingButton.getX() && mousePosition.x <= menuSettingButton.getX()+menuSettingButton.getWidth())
 			{
-				screen = "setting";
-				back = "menu";
-				confirmSound.play();
+				if (mousePosition.y >= menuSettingButton.getY() && mousePosition.y <= menuSettingButton.getY()+menuSettingButton.getHeight())
+				{
+					screen = "setting";
+					back = "menu";
+					confirmSound.play();
+				}
 			}
-		}
-		if (mousePosition.x >= menuButtonHowto.getX() && mousePosition.x <= menuButtonHowto.getX()+menuButtonHowto.getWidth())
-		{
-			if (mousePosition.y >= menuButtonHowto.getY() && mousePosition.y <= menuButtonHowto.getY()+menuButtonHowto.getHeight())
+			if (mousePosition.x >= menuHowToButton.getX() && mousePosition.x <= menuHowToButton.getX()+menuHowToButton.getWidth())
 			{
-				screen = "howto";
-				confirmSound.play();
+				if (mousePosition.y >= menuHowToButton.getY() && mousePosition.y <= menuHowToButton.getY()+menuHowToButton.getHeight())
+				{
+					screen = "howto";
+					confirmSound.play();
+				}
 			}
-		}
-		if (mousePosition.x >= menuButtonExit.getX() && mousePosition.x <= menuButtonExit.getX()+menuButtonExit.getWidth())
-		{
-			if (mousePosition.y >= menuButtonExit.getY() && mousePosition.y <= menuButtonExit.getY()+menuButtonExit.getHeight())
+			if (mousePosition.x >= menuExitButton.getX() && mousePosition.x <= menuExitButton.getX()+menuExitButton.getWidth())
 			{
-				Gdx.app.exit();
+				if (mousePosition.y >= menuExitButton.getY() && mousePosition.y <= menuExitButton.getY()+menuExitButton.getHeight())
+				{
+					Gdx.app.exit();
+				}
 			}
 		}
 	}
 
 	public void touchDownInSettingStage(Vector2 mousePosition, int button)
 	{
+		// check for clicking button
 		if (button == Buttons.LEFT && !changeControl)
 		{
 			for(int i = 0; i < 4; i++)
@@ -2335,11 +2376,12 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void touchDownInCharacterStage(Vector2 mousePosition, int button)
 	{
+		// check for clicking button
 		if (button == Buttons.LEFT)
 		{
-			if (mousePositionStage.x >= charSelectButtonStart.getX() && mousePositionStage.x <= charSelectButtonStart.getX()+charSelectButtonStart.getWidth())
+			if (mousePositionStage.x >= charSelectStartButton.getX() && mousePositionStage.x <= charSelectStartButton.getX()+charSelectStartButton.getWidth())
 			{
-				if (mousePositionStage.y >= charSelectButtonStart.getY() && mousePositionStage.y <= charSelectButtonStart.getY()+charSelectButtonStart.getHeight())
+				if (mousePositionStage.y >= charSelectStartButton.getY() && mousePositionStage.y <= charSelectStartButton.getY()+charSelectStartButton.getHeight())
 				{
 					if (playerCount >= 2)
 					{
@@ -2353,7 +2395,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 								playerSprite[i].setVisible(false);
 								weaponSprite[i].setVisible(false);
 								endPlayerSprite[i].setVisible(false);
-								shieldIcon[i].setVisible(false);
 								continue;
 							}
 							else
@@ -2362,15 +2403,14 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 								playerSprite[i].setAnimation(player[i].walkingAtlas, "0001");
 								weaponSprite[i].setVisible(true);
 								endPlayerSprite[i].setVisible(true);
-								shieldIcon[i].setVisible(true);
 							}
 						}
 					}
 				}
 			}
-			if (mousePositionStage.x >= charSelectButtonBack.getX() && mousePositionStage.x <= charSelectButtonBack.getX()+charSelectButtonBack.getWidth())
+			if (mousePositionStage.x >= charSelectBackButton.getX() && mousePositionStage.x <= charSelectBackButton.getX()+charSelectBackButton.getWidth())
 			{
-				if (mousePositionStage.y >= charSelectButtonBack.getY() && mousePositionStage.y <= charSelectButtonBack.getY()+charSelectButtonBack.getHeight())
+				if (mousePositionStage.y >= charSelectBackButton.getY() && mousePositionStage.y <= charSelectBackButton.getY()+charSelectBackButton.getHeight())
 				{
 					screen = "menu";
 					cancelSound.play();
@@ -2382,11 +2422,12 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void touchDownInHowToStage(Vector2 mousePosition, int button)
 	{
+		// check for clicking button
 		if (button == Buttons.LEFT)
 		{
-			if (mousePosition.x >= howToButtonBack.getX() && mousePosition.x <= howToButtonBack.getX()+howToButtonBack.getWidth())
+			if (mousePosition.x >= howToBackButton.getX() && mousePosition.x <= howToBackButton.getX()+howToBackButton.getWidth())
 			{
-				if (mousePosition.y >= howToButtonBack.getY() && mousePosition.y <= howToButtonBack.getY()+howToButtonBack.getHeight())
+				if (mousePosition.y >= howToBackButton.getY() && mousePosition.y <= howToBackButton.getY()+howToBackButton.getHeight())
 				{
 					screen = "menu";
 					cancelSound.play();
@@ -2397,6 +2438,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void touchDownInPauseStage(Vector2 mousePosition, int button)
 	{
+		// check for clicking button
 		if (button == Buttons.LEFT)
 		{
 			if (mousePosition.x >= pauseResumeButton.getX() && mousePosition.x <= pauseResumeButton.getX()+pauseResumeButton.getWidth())
@@ -2492,112 +2534,115 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void mouseMovedInMenuStage(Vector2 mousePosition)
 	{
-		if (mousePositionStage.x >= menuButtonStart.getX() && mousePositionStage.x <= menuButtonStart.getX()+menuButtonStart.getWidth())
+		// check for mouse moved to button
+		if (mousePositionStage.x >= menuStartButton.getX() && mousePositionStage.x <= menuStartButton.getX()+menuStartButton.getWidth())
 		{
-			if (mousePositionStage.y >= menuButtonStart.getY() && mousePositionStage.y <= menuButtonStart.getY()+menuButtonStart.getHeight())
+			if (mousePositionStage.y >= menuStartButton.getY() && mousePositionStage.y <= menuStartButton.getY()+menuStartButton.getHeight())
 			{
 				if (cursorPosition != 1)
 				{
 					cursorSound.play();
 				}
 				cursorPosition = 1;
-				menuButtonStart.img = menuStart2;
-				menuButtonHowto.img = menuHowTo1;
-				menuButtonSetting.img = menuSetting1;
-				menuButtonExit.img = menuExit1;
+				menuStartButton.img = menuStart2;
+				menuHowToButton.img = menuHowTo1;
+				menuSettingButton.img = menuSetting1;
+				menuExitButton.img = menuExit1;
 			}
 		}
-		if (mousePositionStage.x >= menuButtonSetting.getX() && mousePositionStage.x <= menuButtonSetting.getX()+menuButtonSetting.getWidth())
+		if (mousePositionStage.x >= menuSettingButton.getX() && mousePositionStage.x <= menuSettingButton.getX()+menuSettingButton.getWidth())
 		{
-			if (mousePositionStage.y >= menuButtonSetting.getY() && mousePositionStage.y <= menuButtonSetting.getY()+menuButtonSetting.getHeight())
+			if (mousePositionStage.y >= menuSettingButton.getY() && mousePositionStage.y <= menuSettingButton.getY()+menuSettingButton.getHeight())
 			{
 				if (cursorPosition != 2)
 				{
 					cursorSound.play();
 				}
 				cursorPosition = 2;
-				menuButtonStart.img = menuStart1;
-				menuButtonHowto.img = menuHowTo1;
-				menuButtonSetting.img = menuSetting2;
-				menuButtonExit.img = menuExit1;
+				menuStartButton.img = menuStart1;
+				menuHowToButton.img = menuHowTo1;
+				menuSettingButton.img = menuSetting2;
+				menuExitButton.img = menuExit1;
 			}
 		}
-		if (mousePositionStage.x >= menuButtonHowto.getX() && mousePositionStage.x <= menuButtonHowto.getX()+menuButtonHowto.getWidth())
+		if (mousePositionStage.x >= menuHowToButton.getX() && mousePositionStage.x <= menuHowToButton.getX()+menuHowToButton.getWidth())
 		{
-			if (mousePositionStage.y >= menuButtonHowto.getY() && mousePositionStage.y <= menuButtonHowto.getY()+menuButtonHowto.getHeight())
+			if (mousePositionStage.y >= menuHowToButton.getY() && mousePositionStage.y <= menuHowToButton.getY()+menuHowToButton.getHeight())
 			{
 				if (cursorPosition != 3)
 				{
 					cursorSound.play();
 				}
 				cursorPosition = 3;
-				menuButtonStart.img = menuStart1;
-				menuButtonHowto.img = menuHowTo2;
-				menuButtonSetting.img = menuSetting1;
-				menuButtonExit.img = menuExit1;
+				menuStartButton.img = menuStart1;
+				menuHowToButton.img = menuHowTo2;
+				menuSettingButton.img = menuSetting1;
+				menuExitButton.img = menuExit1;
 			}
 		}
-		if (mousePositionStage.x >= menuButtonExit.getX() && mousePositionStage.x <= menuButtonExit.getX()+menuButtonExit.getWidth())
+		if (mousePositionStage.x >= menuExitButton.getX() && mousePositionStage.x <= menuExitButton.getX()+menuExitButton.getWidth())
 		{
-			if (mousePositionStage.y >= menuButtonExit.getY() && mousePositionStage.y <= menuButtonExit.getY()+menuButtonExit.getHeight())
+			if (mousePositionStage.y >= menuExitButton.getY() && mousePositionStage.y <= menuExitButton.getY()+menuExitButton.getHeight())
 			{
 				if (cursorPosition != 4)
 				{
 					cursorSound.play();
 				}
 				cursorPosition = 4;
-				menuButtonStart.img = menuStart1;
-				menuButtonHowto.img = menuHowTo1;
-				menuButtonSetting.img = menuSetting1;
-				menuButtonExit.img = menuExit2;
+				menuStartButton.img = menuStart1;
+				menuHowToButton.img = menuHowTo1;
+				menuSettingButton.img = menuSetting1;
+				menuExitButton.img = menuExit2;
 			}
 		}
 	}
 	
 	public void mouseMovedInCharacterStage(Vector2 mousePosition)
 	{
-		if (mousePositionStage.x >= charSelectButtonBack.getX() && mousePositionStage.x <= charSelectButtonBack.getX()+charSelectButtonBack.getWidth())
+		// check for mouse moved to button
+		if (mousePositionStage.x >= charSelectBackButton.getX() && mousePositionStage.x <= charSelectBackButton.getX()+charSelectBackButton.getWidth())
 		{
-			if (mousePositionStage.y >= charSelectButtonBack.getY() && mousePositionStage.y <= charSelectButtonBack.getY()+charSelectButtonBack.getHeight())
+			if (mousePositionStage.y >= charSelectBackButton.getY() && mousePositionStage.y <= charSelectBackButton.getY()+charSelectBackButton.getHeight())
 			{
-				if (charSelectButtonBack.img == back1)
+				if (charSelectBackButton.img == back1)
 				{
 					cursorSound.play();
-					charSelectButtonBack.img = back2;
+					charSelectBackButton.img = back2;
 				}
 			}
 			else
 			{
-				charSelectButtonBack.img = back1;
+				charSelectBackButton.img = back1;
 			}
 		}
 		else
 		{
-			charSelectButtonBack.img = back1;
+			charSelectBackButton.img = back1;
 		}
-		if (mousePositionStage.x >= charSelectButtonStart.getX() && mousePositionStage.x <= charSelectButtonStart.getX()+charSelectButtonStart.getWidth())
+		if (mousePositionStage.x >= charSelectStartButton.getX() && mousePositionStage.x <= charSelectStartButton.getX()+charSelectStartButton.getWidth())
 		{
-			if (mousePositionStage.y >= charSelectButtonStart.getY() && mousePositionStage.y <= charSelectButtonStart.getY()+charSelectButtonStart.getHeight())
+			if (mousePositionStage.y >= charSelectStartButton.getY() && mousePositionStage.y <= charSelectStartButton.getY()+charSelectStartButton.getHeight())
 			{
-				if (charSelectButtonStart.img == menuStart1)
+				if (charSelectStartButton.img == menuStart1)
 				{
 					cursorSound.play();
-					charSelectButtonStart.img = menuStart2;
+					charSelectStartButton.img = menuStart2;
 				}
 			}
 			else
 			{
-				charSelectButtonStart.img = menuStart1;
+				charSelectStartButton.img = menuStart1;
 			}
 		}
 		else
 		{
-			charSelectButtonStart.img = menuStart1;
+			charSelectStartButton.img = menuStart1;
 		}
 	}
 
 	public void mouseMovedInPauseStage(Vector2 mousePosition)
 	{
+		// check for mouse moved to button
 		if (mousePositionStage.x >= pauseResumeButton.getX() && mousePositionStage.x <= pauseResumeButton.getX()+pauseResumeButton.getWidth())
 		{
 			if (mousePositionStage.y >= pauseResumeButton.getY() && mousePositionStage.y <= pauseResumeButton.getY()+pauseResumeButton.getHeight())
@@ -2644,6 +2689,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void mouseMovedInSettingStage(Vector2 mousePosition)
 	{
+		// check for mouse moved to button
 		if (mousePositionStage.x >= settingBackButton.getX() && mousePositionStage.x <= settingBackButton.getX()+settingBackButton.getWidth())
 		{
 			if (mousePositionStage.y >= settingBackButton.getY() && mousePositionStage.y <= settingBackButton.getY()+settingBackButton.getHeight())
@@ -2667,24 +2713,25 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	
 	public void mouseMovedInHowToStage(Vector2 mousePosition)
 	{
-		if (mousePositionStage.x >= howToButtonBack.getX() && mousePositionStage.x <= howToButtonBack.getX()+howToButtonBack.getWidth())
+		// check for mouse moved to button
+		if (mousePositionStage.x >= howToBackButton.getX() && mousePositionStage.x <= howToBackButton.getX()+howToBackButton.getWidth())
 		{
-			if (mousePositionStage.y >= howToButtonBack.getY() && mousePositionStage.y <= howToButtonBack.getY()+howToButtonBack.getHeight())
+			if (mousePositionStage.y >= howToBackButton.getY() && mousePositionStage.y <= howToBackButton.getY()+howToBackButton.getHeight())
 			{
-				if (howToButtonBack.img == back1)
+				if (howToBackButton.img == back1)
 				{
 					cursorSound.play();
-					howToButtonBack.img = back2;
+					howToBackButton.img = back2;
 				}
 			}
 			else
 			{
-				howToButtonBack.img = back1;
+				howToBackButton.img = back1;
 			}
 		}
 		else
 		{
-			howToButtonBack.img = back1;
+			howToBackButton.img = back1;
 		}
 	}
 	
@@ -2693,6 +2740,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		return false;
 	}
 
+	// check collision for each type of object
 	public boolean checkCollision(PlayerCharacter player, GameObject object)
 	{
 		return player.hitbox.overlaps(object.hitbox);
@@ -2730,7 +2778,9 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void checkPlayerAttack(PlayerCharacter playerAttack)
 	{
+		// check if attack hit something and calculated result
 		playerAttack.attackSound.play(0.4f);
+		// check if attack hit any normal wall
 		for (GameObject wall : normalWalls) {
 			if (checkCollision(playerAttack, wall, "attack"))
 			{
@@ -2754,6 +2804,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				}
 			}
 		}
+		// check if attack hit any item drop
 		for (ItemDrop item : itemDrop)
 		{
 			if (checkCollision(playerAttack, item, "attack"))
@@ -2766,6 +2817,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				item.hitbox.setY(-1000);
 			}
 		}
+		// check if attack hit any other player
 		for (PlayerCharacter allPlayer : player) {
 			if (allPlayer == playerAttack || !allPlayer.isVisible() || allPlayer.dead)
 			{
@@ -2807,6 +2859,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			}
 		}
 		int arrowCount = 0;
+		// check if attack hit any other arrow 
 		for (Arrow arrow : playerArrow)
 		{
 			if (checkCollision(playerAttack, arrow, "attack") && arrow.isVisible())
@@ -2827,6 +2880,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void characterSkill(PlayerCharacter playerAttack, PlayerCharacter playerDamaged, boolean arrowCharged)
 	{
+		// random skill activation and calculate skill 
 		if (playerAttack.chargeMax || arrowCharged)
 		{
 			int num = (int)(Math.random()*100);
@@ -3041,6 +3095,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void buttonDownInSettingStage(Controller controller, int buttonCode)
 	{
+		// handle button input for controller
 		if (changeControl && (player[playerNumber].controlType.equals("controller1") || player[playerNumber].controlType.equals("controller2")))
 		{
 			if (controller == Controllers.getControllers().get(player[playerNumber].controllerCount))
@@ -3077,6 +3132,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void buttonDownInMenuStage(Controller controller, int buttonCode)
 	{
+		// handle button input for controller
 		for (int i = 0; i < 4; i++)
 		{
 			if (player[i].controlType.equals("keyboard"))
@@ -3200,31 +3256,31 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				}
 				if (cursorPosition == 1)
 				{
-					menuButtonStart.img = menuStart2;
-					menuButtonHowto.img = menuHowTo1;
-					menuButtonSetting.img = menuSetting1;
-					menuButtonExit.img = menuExit1;
+					menuStartButton.img = menuStart2;
+					menuHowToButton.img = menuHowTo1;
+					menuSettingButton.img = menuSetting1;
+					menuExitButton.img = menuExit1;
 				}
 				else if (cursorPosition == 2)
 				{
-					menuButtonStart.img = menuStart1;
-					menuButtonHowto.img = menuHowTo1;
-					menuButtonSetting.img = menuSetting2;
-					menuButtonExit.img = menuExit1;
+					menuStartButton.img = menuStart1;
+					menuHowToButton.img = menuHowTo1;
+					menuSettingButton.img = menuSetting2;
+					menuExitButton.img = menuExit1;
 				}
 				else if (cursorPosition == 3)
 				{
-					menuButtonStart.img = menuStart1;
-					menuButtonHowto.img = menuHowTo2;
-					menuButtonSetting.img = menuSetting1;
-					menuButtonExit.img = menuExit1;
+					menuStartButton.img = menuStart1;
+					menuHowToButton.img = menuHowTo2;
+					menuSettingButton.img = menuSetting1;
+					menuExitButton.img = menuExit1;
 				}
 				else if (cursorPosition == 4)
 				{
-					menuButtonStart.img = menuStart1;
-					menuButtonHowto.img = menuHowTo1;
-					menuButtonSetting.img = menuSetting1;
-					menuButtonExit.img = menuExit2;
+					menuStartButton.img = menuStart1;
+					menuHowToButton.img = menuHowTo1;
+					menuSettingButton.img = menuSetting1;
+					menuExitButton.img = menuExit2;
 				}
 			}
 		}
@@ -3232,6 +3288,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void buttonDownInCharacterStage(Controller controller, int buttonCode)
 	{
+		// handle button input for controller
 		for (int i = 0; i < 4; i++)
 		{
 			if (player[i].controlType.equals("keyboard"))
@@ -3316,6 +3373,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void buttonDownInGameStage(Controller controller, int buttonCode)
 	{
+		// handle button input for controller
 		for (int i = 0; i < 4; i++)
 		{
 			if (player[i].controlType.equals("keyboard"))
@@ -3378,11 +3436,28 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void buttonDownInEndStage(Controller controller, int buttonCode)
 	{
-
+		// handle button input for controller
+		for (int i = 0; i < 4; i++)
+		{
+			if (player[i].controlType.equals("keyboard"))
+			{
+				continue;
+			}
+			if (Controllers.getControllers().get(player[i].controllerCount) == controller)
+			{
+				if (buttonCode == player[i].controlAttack || buttonCode == player[i].controlBack)
+				{
+					screen = "menu";
+					resetVariableInCharacterStage();
+					resetVariableInGameStage();
+				}
+			}
+		}
 	}
 
 	public void buttonDownInPauseStage(Controller controller, int buttonCode)
 	{
+		// handle button input for controller
 		for (int i = 0; i < 4; i++)
 		{
 			if (player[i].controlType.equals("keyboard"))
@@ -3495,6 +3570,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void buttonDownInHowToStage(Controller controller, int buttonCode)
 	{
+		// handle button input for controller
 		for (int i = 0; i < 4; i++)
 		{
 			if (player[i].controlType.equals("keyboard"))
@@ -3523,6 +3599,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void buttonUpInGameStage(Controller controller, int buttonCode)
 	{
+		// handle button input for controller
 		for (int i = 0; i < 4; i++)
 		{
 			if (player[i].controlType.equals("keyboard"))
@@ -3636,6 +3713,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void axisInGameStage(Controller controller, int axisCode, float value)
 	{
+		// handle analog stick input for controller
 		for (int i = 0; i < 4; i++)
 		{
 			if (player[i].controlType.equals("keyboard"))
@@ -3702,6 +3780,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void axisInMenuStage(Controller controller, int axisCode, float value)
 	{
+		// handle analog stick input for controller
 		for (int i = 0; i < 4; i++)
 		{
 			if (player[i].controlType.equals("keyboard"))
@@ -3772,31 +3851,31 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 					}
 					if (cursorPosition == 1)
 					{
-						menuButtonStart.img = menuStart2;
-						menuButtonHowto.img = menuHowTo1;
-						menuButtonSetting.img = menuSetting1;
-						menuButtonExit.img = menuExit1;
+						menuStartButton.img = menuStart2;
+						menuHowToButton.img = menuHowTo1;
+						menuSettingButton.img = menuSetting1;
+						menuExitButton.img = menuExit1;
 					}
 					else if (cursorPosition == 2)
 					{
-						menuButtonStart.img = menuStart1;
-						menuButtonHowto.img = menuHowTo1;
-						menuButtonSetting.img = menuSetting2;
-						menuButtonExit.img = menuExit1;
+						menuStartButton.img = menuStart1;
+						menuHowToButton.img = menuHowTo1;
+						menuSettingButton.img = menuSetting2;
+						menuExitButton.img = menuExit1;
 					}
 					else if (cursorPosition == 3)
 					{
-						menuButtonStart.img = menuStart1;
-						menuButtonHowto.img = menuHowTo2;
-						menuButtonSetting.img = menuSetting1;
-						menuButtonExit.img = menuExit1;
+						menuStartButton.img = menuStart1;
+						menuHowToButton.img = menuHowTo2;
+						menuSettingButton.img = menuSetting1;
+						menuExitButton.img = menuExit1;
 					}
 					else if (cursorPosition == 4)
 					{
-						menuButtonStart.img = menuStart1;
-						menuButtonHowto.img = menuHowTo1;
-						menuButtonSetting.img = menuSetting1;
-						menuButtonExit.img = menuExit2;
+						menuStartButton.img = menuStart1;
+						menuHowToButton.img = menuHowTo1;
+						menuSettingButton.img = menuSetting1;
+						menuExitButton.img = menuExit2;
 					}
 				}
 				else if (axisCode%2 == 1) 
@@ -3857,31 +3936,31 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 					}
 					if (cursorPosition == 1)
 					{
-						menuButtonStart.img = menuStart2;
-						menuButtonHowto.img = menuHowTo1;
-						menuButtonSetting.img = menuSetting1;
-						menuButtonExit.img = menuExit1;
+						menuStartButton.img = menuStart2;
+						menuHowToButton.img = menuHowTo1;
+						menuSettingButton.img = menuSetting1;
+						menuExitButton.img = menuExit1;
 					}
 					else if (cursorPosition == 2)
 					{
-						menuButtonStart.img = menuStart1;
-						menuButtonHowto.img = menuHowTo1;
-						menuButtonSetting.img = menuSetting2;
-						menuButtonExit.img = menuExit1;
+						menuStartButton.img = menuStart1;
+						menuHowToButton.img = menuHowTo1;
+						menuSettingButton.img = menuSetting2;
+						menuExitButton.img = menuExit1;
 					}
 					else if (cursorPosition == 3)
 					{
-						menuButtonStart.img = menuStart1;
-						menuButtonHowto.img = menuHowTo2;
-						menuButtonSetting.img = menuSetting1;
-						menuButtonExit.img = menuExit1;
+						menuStartButton.img = menuStart1;
+						menuHowToButton.img = menuHowTo2;
+						menuSettingButton.img = menuSetting1;
+						menuExitButton.img = menuExit1;
 					}
 					else if (cursorPosition == 4)
 					{
-						menuButtonStart.img = menuStart1;
-						menuButtonHowto.img = menuHowTo1;
-						menuButtonSetting.img = menuSetting1;
-						menuButtonExit.img = menuExit2;
+						menuStartButton.img = menuStart1;
+						menuHowToButton.img = menuHowTo1;
+						menuSettingButton.img = menuSetting1;
+						menuExitButton.img = menuExit2;
 					}
 				}
 			}
@@ -3890,6 +3969,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void axisInCharacterStage(Controller controller, int axisCode, float value)
 	{
+		// handle analog stick input for controller
 		for (int i = 0; i < 4; i++)
 		{
 			if (player[i].controlType.equals("keyboard"))
@@ -3953,6 +4033,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	
 	public void axisInPauseStage(Controller controller, int axisCode, float value)
 	{
+		// handle analog stick input for controller
 		for (int i = 0; i < 4; i++)
 		{
 			if (player[i].controlType.equals("keyboard"))
@@ -4038,6 +4119,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void povInMenuStage(Controller controller, PovDirection value)
 	{
+		// handle d-pad input for controller
 		for (int i = 0; i < 4; i++)
 		{
 			if (player[i].controlType.equals("keyboard"))
@@ -4140,31 +4222,31 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				}
 				if (cursorPosition == 1)
 				{
-					menuButtonStart.img = menuStart2;
-					menuButtonHowto.img = menuHowTo1;
-					menuButtonSetting.img = menuSetting1;
-					menuButtonExit.img = menuExit1;
+					menuStartButton.img = menuStart2;
+					menuHowToButton.img = menuHowTo1;
+					menuSettingButton.img = menuSetting1;
+					menuExitButton.img = menuExit1;
 				}
 				else if (cursorPosition == 2)
 				{
-					menuButtonStart.img = menuStart1;
-					menuButtonHowto.img = menuHowTo1;
-					menuButtonSetting.img = menuSetting2;
-					menuButtonExit.img = menuExit1;
+					menuStartButton.img = menuStart1;
+					menuHowToButton.img = menuHowTo1;
+					menuSettingButton.img = menuSetting2;
+					menuExitButton.img = menuExit1;
 				}
 				else if (cursorPosition == 3)
 				{
-					menuButtonStart.img = menuStart1;
-					menuButtonHowto.img = menuHowTo2;
-					menuButtonSetting.img = menuSetting1;
-					menuButtonExit.img = menuExit1;
+					menuStartButton.img = menuStart1;
+					menuHowToButton.img = menuHowTo2;
+					menuSettingButton.img = menuSetting1;
+					menuExitButton.img = menuExit1;
 				}
 				else if (cursorPosition == 4)
 				{
-					menuButtonStart.img = menuStart1;
-					menuButtonHowto.img = menuHowTo1;
-					menuButtonSetting.img = menuSetting1;
-					menuButtonExit.img = menuExit2;
+					menuStartButton.img = menuStart1;
+					menuHowToButton.img = menuHowTo1;
+					menuSettingButton.img = menuSetting1;
+					menuExitButton.img = menuExit2;
 				}
 			}
 		}
@@ -4172,6 +4254,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void povInCharacterStage(Controller controller, PovDirection value)
 	{
+		// handle d-pad input for controller
 		for (int i = 0; i < 4; i++)
 		{
 			if (player[i].controlType.equals("keyboard"))
@@ -4229,6 +4312,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void povInPauseStage(Controller controller, PovDirection value)
 	{
+		// handle d-pad input for controller
 		for (int i = 0; i < 4; i++)
 		{
 			if (player[i].controlType.equals("keyboard"))
@@ -4280,6 +4364,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 
 	public void povInGameStage(Controller controller, PovDirection value)
 	{
+		// handle d-pad input for controller
 		for (int i = 0; i < 4; i++)
 		{
 			if (player[i].controlType.equals("keyboard"))

@@ -21,7 +21,7 @@ public class PlayerCharacter extends Actor{
 	float playerMoveSpeed = moveSpeed;
 	Rectangle hitbox, attackHitbox;
 	float attackWidth = 40, attackHeight = 40;
-	int hp = 3;//, hpMax = 100;// use hpmax if character have different hp
+	int hp = 3;
 	float armor = 100;
 	float speed_x;
 	float speed_y;
@@ -87,11 +87,6 @@ public class PlayerCharacter extends Actor{
 	static Texture character2Win = new Texture(Gdx.files.internal("picture/char2win.png"));
 	static Texture character3Win = new Texture(Gdx.files.internal("picture/char3win.png"));
 	static Texture character4Win = new Texture(Gdx.files.internal("picture/char4win.png"));
-	// new textureatlas and animation for dead animation for each character here
-	
-	// temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp
-	Texture temp;
-	Texture temp2;
 	
 	public PlayerCharacter()
 	{
@@ -117,20 +112,18 @@ public class PlayerCharacter extends Actor{
 		this.weaponAtlas = weaponAtlas;
 		this.weaponAnim = weaponAnim;
 		attackSound = PlayerWeapon.fistSound;
-		
-		// temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp temp
-		temp = new Texture(Gdx.files.internal("picture/box.png"));
-		temp2 = new Texture(Gdx.files.internal("picture/box2.png"));
 	}
 	
 	public void draw(Batch batch, float alpha)
 	{
 		time += Gdx.graphics.getDeltaTime();
 		Animation<TextureRegion> currentAnim;
+		// calculate cooldown
 		if (currentAttackCooldown > 0)
 		{
 			currentAttackCooldown -= Gdx.graphics.getDeltaTime();
 		}
+		// calculate charging time
 		if (charging && currentChargeTime <= attackChargeTime)
 		{
 			currentChargeTime += Gdx.graphics.getDeltaTime();
@@ -143,7 +136,8 @@ public class PlayerCharacter extends Actor{
 		{
 			currentChargeTime -= Gdx.graphics.getDeltaTime();
 		}
-		if (armor < 100 && !dead)// change max armor here
+		// calculate armor
+		if (armor < 100 && !dead)
 		{
 			if (regenDelay > 0)
 			{
@@ -155,14 +149,17 @@ public class PlayerCharacter extends Actor{
 			}
 		}
 		if (armor > 100)armor = 100;
+		// calculate trap delay
 		if (trapDelay > 0)
 		{
 			trapDelay -= Gdx.graphics.getDeltaTime();
 		}
+		// calculate speed boost time
 		if (speedBoostTime > 0)
 		{
 			speedBoostTime -= Gdx.graphics.getDeltaTime();
 		}
+		// calculate slow time
 		if (slowTime > 0)
 		{
 			slowTime -= Gdx.graphics.getDeltaTime();
@@ -178,6 +175,7 @@ public class PlayerCharacter extends Actor{
 		updateHitbox();
 		updateAttackHitbox();
 		updateShadow();
+		// set character face direction
 		if (speed_x > 0)
 		{
 			faceLeft = false;
@@ -186,7 +184,7 @@ public class PlayerCharacter extends Actor{
 		{
 			faceLeft = true;
 		}
-		if (speed_x == 0 && speed_y == 0)//change this later improve if condition to change animation between stand walk attack block hurt
+		if (speed_x == 0 && speed_y == 0)
 		{
 			currentAnim = standingAnim;
 		}
@@ -194,6 +192,7 @@ public class PlayerCharacter extends Actor{
 		{
 			currentAnim = walkingAnim;
 		}
+		// make player invisible if dead
 		if (dead)
 		{
 			currentAnim = deadAnim;
@@ -206,6 +205,7 @@ public class PlayerCharacter extends Actor{
 				this.setVisible(false);
 			}
 		}
+		// make character blink when hp is down
 		if (hurt)
 		{
 			currentBlinkTime += Gdx.graphics.getDeltaTime();
@@ -233,13 +233,6 @@ public class PlayerCharacter extends Actor{
 		{
 			batch.draw(currentAnim.getKeyFrame(time, true), (faceLeft ? this.getX()+this.getWidth() : this.getX()), this.getY(), (faceLeft ? -this.getWidth() : this.getWidth()), this.getHeight());
 		}
-		//batch.draw(temp2, attackHitbox.getX(), attackHitbox.getY(), attackHitbox.getWidth(), attackHitbox.getHeight());
-		//if(currentChargeTime > 0)
-		{
-			//batch.draw(temp, hitbox.getX(), hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
-		}
-		
-		//updateCheckBlockPosition(hitbox.getX(), hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
 	}
 	
 	public void setNewRect()
