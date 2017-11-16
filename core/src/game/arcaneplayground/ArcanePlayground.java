@@ -923,6 +923,12 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				weaponCount += 1;
 				continue;
 			}
+			// if player is moving set regen cooldown to 1
+			if (allPlayer.regenDelay < 1)
+			{
+				allPlayer.regenDelay = 1;
+			}
+			// if player is at its destination stop moving
 			if (allPlayer.speed_x < 0)
 			{
 				if (allPlayer.hitbox.getX() <= allPlayer.checkBlock.hitbox.getX() && allPlayer.hitbox.getY() == allPlayer.checkBlock.hitbox.getY())
@@ -983,6 +989,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 					allPlayer.updateHitbox();
 				}
 			}
+			// check player picking up item
 			for (ItemDrop item : itemDrop)
 			{
 				if (item.isVisible())
