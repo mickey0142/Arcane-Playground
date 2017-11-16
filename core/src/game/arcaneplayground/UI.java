@@ -20,10 +20,12 @@ public class UI extends Actor{
 	float green;
 	float blue;
 	float time;
+
 	public UI()
 	{
-		
+
 	}
+
 	public UI(String path, float x, float y, float width, float height)
 	{
 		img = new Texture(Gdx.files.internal(path));
@@ -33,6 +35,7 @@ public class UI extends Actor{
 		this.setHeight(height);
 		setColor = false;
 	}
+
 	public UI(String path, float x, float y, float width, float height, boolean setColor)
 	{
 		img = new Texture(Gdx.files.internal(path));
@@ -42,6 +45,7 @@ public class UI extends Actor{
 		this.setHeight(height);
 		this.setColor = setColor;
 	}
+
 	public void draw(Batch batch, float alpha)
 	{
 		if (setColor)
@@ -66,10 +70,12 @@ public class UI extends Actor{
 		}
 		batch.setColor(Color.WHITE);
 	}
+
 	public void setAnimation(TextureAtlas textureatlas)
 	{
 		currentAnim = new Animation<TextureRegion>(0.5f, textureatlas.getRegions());
 	}
+
 	public void setAnimation(TextureAtlas textureatlas, String regionName)
 	{
 		currentAnim = new Animation<TextureRegion>(0.5f, textureatlas.findRegions(regionName));

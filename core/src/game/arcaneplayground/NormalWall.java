@@ -30,6 +30,7 @@ public class NormalWall extends GameObject{
 	{
 
 	}
+
 	public NormalWall(float x, float y, float width, float height)
 	{
 		this.setX(x);
@@ -38,6 +39,7 @@ public class NormalWall extends GameObject{
 		this.setHeight(height);
 		hitbox = new Rectangle(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 	}
+
 	public void draw(Batch batch, float alpha)
 	{
 		if (hp <= 0)
@@ -56,7 +58,7 @@ public class NormalWall extends GameObject{
 			{
 				this.setX(-1000);
 				this.setY(-1000);
-				
+
 				delay = 2;
 			}
 		}
@@ -74,6 +76,7 @@ public class NormalWall extends GameObject{
 		}
 		batch.draw(currentRegion, this.getX(), this.getY(), this.getWidth(), this.getHeight());
 	}
+
 	public void spawnItem(ItemDrop itemdrop[])
 	{
 		if (itemdrop[ItemDrop.dropCount].dropped)

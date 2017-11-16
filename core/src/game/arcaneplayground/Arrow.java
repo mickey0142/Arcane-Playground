@@ -11,13 +11,16 @@ import com.badlogic.gdx.math.Rectangle;
 public class Arrow extends GameObject{
 	float speedX = 0, speedY = 0, maxSpeed = 0;
 	float time = 0;
+
 	static TextureAtlas arrowTextureAtlas = new TextureAtlas(Gdx.files.internal("picture/arrowweapon.atlas"));
 	static Animation<TextureRegion> arrowAnim = new Animation<TextureRegion>(0.2f, arrowTextureAtlas.getRegions());
 	static Sound arrowHit = Gdx.audio.newSound(Gdx.files.internal("audio/arrowhit.ogg"));
+
 	public Arrow()
 	{
 		this.setVisible(false);
 	}
+
 	public Arrow(float x, float y)
 	{
 		this.setX(x);
@@ -27,6 +30,7 @@ public class Arrow extends GameObject{
 		this.setVisible(false);
 		this.hitbox = new Rectangle(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 	}
+
 	public void draw(Batch batch, float alpha)
 	{
 		time += Gdx.graphics.getDeltaTime();
@@ -51,6 +55,7 @@ public class Arrow extends GameObject{
 			batch.draw(arrowAnim.getKeyFrame(time, true), this.getX(), this.getY(), this.getWidth()/2, this.getHeight()/2, this.getWidth(), this.getHeight(), 1, 1, 0);
 		}
 	}
+
 	public void setArrow(float x, float y, String direction, int weaponLV)
 	{
 		this.setX(x);
@@ -71,7 +76,7 @@ public class Arrow extends GameObject{
 		{
 			speedX = 0;
 			speedY = maxSpeed;
-			
+
 		}
 		else if (direction.equals("down"))
 		{
@@ -90,7 +95,7 @@ public class Arrow extends GameObject{
 		}
 		updateHitbox();
 	}
-	
+
 	public void updateHitbox()
 	{
 		hitbox.setX(this.getX());

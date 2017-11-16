@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class WaterTrap extends GameObject{
 	float time = 0;
+	
 	static Animation<TextureRegion> currentAnim;
 	static TextureAtlas waterTexture = new TextureAtlas(Gdx.files.internal("picture/watertrap.atlas"));
 	static Animation<TextureRegion> waterAnim = new Animation<TextureRegion>(0.5f, waterTexture.getRegions());
@@ -20,10 +21,12 @@ public class WaterTrap extends GameObject{
 	static TextureAtlas waterTexture4 = new TextureAtlas(Gdx.files.internal("picture/watertrap4.atlas"));
 	static Animation<TextureRegion> waterAnim4 = new Animation<TextureRegion>(0.5f, waterTexture4.getRegions());
 	static Sound waterTrapSound = Gdx.audio.newSound(Gdx.files.internal("audio/slow.ogg"));
+	
 	public WaterTrap()
 	{
 		
 	}
+	
 	public WaterTrap(float x, float y)
 	{
 		this.setX(x);
@@ -32,6 +35,7 @@ public class WaterTrap extends GameObject{
 		this.setHeight(50);
 		hitbox = new Rectangle(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 	}
+	
 	public void draw(Batch batch, float alpha)
 	{
 		time += Gdx.graphics.getDeltaTime();

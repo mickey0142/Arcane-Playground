@@ -10,10 +10,12 @@ public class UnbreakableWall extends GameObject{
 	static Texture wall2 = new Texture(Gdx.files.internal("picture/blockwood.png"));
 	static Texture wall3 = new Texture(Gdx.files.internal("picture/blockice.png"));
 	static Texture wall4 = new Texture(Gdx.files.internal("picture/blocklava.png"));
+	
 	public UnbreakableWall()
 	{
 		
 	}
+	
 	public UnbreakableWall(String path, float x, float y, float width, float height)
 	{
 		img = new Texture(Gdx.files.internal(path));
@@ -23,6 +25,7 @@ public class UnbreakableWall extends GameObject{
 		this.setHeight(height);
 		hitbox = new Rectangle(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 	}
+	
 	public void draw(Batch batch, float alpha)
 	{
 		batch.draw(img, this.getX(), this.getY(), this.getWidth(), this.getHeight());

@@ -84,6 +84,7 @@ public class ItemDrop extends GameObject{
 		this.setHeight(30);
 		hitbox = new Rectangle(-1000, -1000, 30, 30);
 	}
+	
 	public void draw(Batch batch, float alpha)
 	{
 		batch.draw(img, this.getX(), this.getY(), this.getWidth(), this.getHeight());
@@ -92,6 +93,7 @@ public class ItemDrop extends GameObject{
 			this.setVisible(dropped);
 		}
 	}
+	
 	public void setValue(float locationX, float locationY)
 	{
 		// set x y width height attackhitbox value here and set dropped and visible to true +1 dropcount here -1 dropcount when pick item

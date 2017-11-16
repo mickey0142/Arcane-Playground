@@ -9,10 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class GameObject extends Actor{
 	Texture img;
 	Rectangle hitbox;
+	
 	public GameObject() 
 	{
 		
 	}
+	
 	public GameObject(String path, float x, float y, float width, float height)
 	{
 		img = new Texture(Gdx.files.internal(path));
@@ -22,14 +24,12 @@ public class GameObject extends Actor{
 		this.setHeight(height);
 		hitbox = new Rectangle(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 	}
+	
 	public void draw(Batch batch, float alpha)
 	{
 		batch.draw(img, this.getX(), this.getY(), this.getWidth(), this.getHeight());
 	}
-	public void dispose()
-	{
-		img.dispose();
-	}
+
 	public void updateHitbox()
 	{
 		hitbox.setX(this.getX());

@@ -26,6 +26,7 @@ public class Balloon extends Actor{
 	static Animation<TextureRegion> skill3BalloonAnim = new Animation<TextureRegion>(1f, skill3Balloon.getRegions());
 	static TextureAtlas skill4Balloon = new TextureAtlas(Gdx.files.internal("picture/skill4balloon.atlas"));
 	static Animation<TextureRegion> skill4BalloonAnim = new Animation<TextureRegion>(1f, skill4Balloon.getRegions());
+	
 	public Balloon()
 	{
 		this.setX(-100);
@@ -34,6 +35,7 @@ public class Balloon extends Actor{
 		this.setHeight(30);
 		this.setVisible(false);
 	}
+	
 	public Balloon(PlayerCharacter player)
 	{
 		this.player = player;
@@ -43,6 +45,7 @@ public class Balloon extends Actor{
 		this.setHeight(30);
 		this.setVisible(false);
 	}
+	
 	public void draw(Batch batch, float alpha)
 	{
 		if (onPlayer)
@@ -65,6 +68,7 @@ public class Balloon extends Actor{
 			}
 		}
 	}
+	
 	public void runAnimation(String animationName)
 	{
 		if (animationName.equals("trap"))

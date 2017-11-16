@@ -15,7 +15,6 @@ public class PlayerWeapon extends Actor{
 	float time;
 	float originX, originY, moveX, moveY;
 	
-	// all weapon here
 	static TextureAtlas fist = new TextureAtlas(Gdx.files.internal("picture/fist.atlas"));
 	static Animation<TextureRegion> fistAnim = new Animation<TextureRegion>(0.1f, fist.getRegions());
 	static Sound fistSound = Gdx.audio.newSound(Gdx.files.internal("audio/fist.ogg"));
@@ -51,12 +50,12 @@ public class PlayerWeapon extends Actor{
 	static TextureAtlas bowLV3 = new TextureAtlas(Gdx.files.internal("picture/bowlv3.atlas"));
 	static Animation<TextureRegion> bowLV3Anim = new Animation<TextureRegion>(0.1f, bowLV3.getRegions());
 	static Sound bowSound = Gdx.audio.newSound(Gdx.files.internal("audio/bow.ogg"));
-	// all weapon here
 	
 	public PlayerWeapon()
 	{
 		
 	}
+	
 	public PlayerWeapon(PlayerCharacter player)
 	{
 		this.player = player;
@@ -71,6 +70,7 @@ public class PlayerWeapon extends Actor{
 		attackingAnim = new Animation<TextureRegion>(0.1f, textureAtlas.findRegions("attack"));
 		currentAnim = normalAnim;
 	}
+	
 	public void draw(Batch batch, float alpha)
 	{
 		updateWeaponPosition();
@@ -92,8 +92,73 @@ public class PlayerWeapon extends Actor{
 			currentAnim = animation;
 			time = 0;
 		}
-		//batch.draw(currentAnim.getKeyFrame(time), this.getX(), this.getY(), 40, 20);// make weapon rotate according to direction and move weapon to where it should be here
-		// set rotate origin in hereeeee
+		float shiftX = 0;
+		float shiftY = 0;
+		if (player.direction.equals("up"))
+		{
+			shiftX = 0;
+			shiftY = 0;
+			if (player.faceLeft && this.getHeight() > 0)
+			{
+				shiftX = originX;
+				this.setHeight(-1*this.getHeight());
+				if (player.weaponName.equals("axe") && player.weaponLV == 2)this.setX(this.getX()-55);
+				else if (player.weaponName.equals("axe") && player.weaponLV == 3)this.setX(this.getX()-65);
+				else if(player.weaponName.equals("axe"))this.setX(this.getX()-15);
+				else if(player.weaponName.equals("spear"))this.setX(this.getX()-15);
+				else if (player.weaponName.equals("sword") && player.weaponLV == 3)this.setX(this.getX()-35);
+				else if(player.weaponName.equals("sword"))this.setX(this.getX()-25);
+				else if (player.weaponName.equals("fist"))this.setX(this.getX()-35);
+				else if (player.weaponName.equals("bow"))this.setX(this.getX()-100);
+			}
+			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX+shiftX, this.getY()+moveY+shiftY, originX, originY, this.getWidth(), this.getHeight(), 1, 1, 90);
+			
+		}
+		else if (player.direction.equals("down"))
+		{
+			shiftX = 0;
+			shiftY = originX;
+			if (player.faceLeft && this.getHeight() > 0)
+			{
+				shiftX = originX;
+				this.setHeight(-1*this.getHeight());
+				if (player.weaponName.equals("axe") && player.weaponLV == 2)this.setX(this.getX()-55);
+				else if (player.weaponName.equals("axe") && player.weaponLV == 3)this.setX(this.getX()-65);
+				else if(player.weaponName.equals("axe"))this.setX(this.getX()-15);
+				else if(player.weaponName.equals("spear"))this.setX(this.getX()-15);
+				else if (player.weaponName.equals("sword") && player.weaponLV == 3)this.setX(this.getX()-35);
+				else if(player.weaponName.equals("sword"))this.setX(this.getX()-25);
+				else if (player.weaponName.equals("fist"))this.setX(this.getX()-35);
+				else if (player.weaponName.equals("bow"))this.setX(this.getX()-100);
+			}
+			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX+shiftX, this.getY()+moveY+shiftY, originX, originY, -this.getWidth(), this.getHeight(), 1, 1, 90);
+			
+		}
+		else if (player.direction.equals("left"))
+		{
+			shiftX = originX;
+			shiftY = 0;
+			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX+shiftX, this.getY()+moveY+shiftY, originX, originY, -this.getWidth(), this.getHeight(), 1, 1, 0);
+		}
+		else if (player.direction.equals("right"))
+		{
+			shiftX = 0;
+			shiftY = 0;
+			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX+shiftX, this.getY()+moveY+shiftY, originX, originY, this.getWidth(), this.getHeight(), 1, 1, 0);
+		}
+		if (currentAnim == animation)
+		{
+			if (currentAnim.isAnimationFinished(time))
+			{
+				currentAnim = normalAnim;
+			}
+		}
+	}
+	
+	public void updateWeaponPosition()
+	{
+		this.setX(player.getX());
+		this.setY(player.getY());
 		if (player.weaponName.equals("fist"))
 		{
 			originX = 10;
@@ -159,73 +224,8 @@ public class PlayerWeapon extends Actor{
 			this.setWidth(50);
 			this.setHeight(70);
 		}
-		float shiftX = 0;
-		float shiftY = 0;
-		if (player.direction.equals("up"))
-		{
-			shiftX = 0;
-			shiftY = 0;
-			if (player.faceLeft && this.getHeight() > 0)
-			{
-				shiftX = originX;
-				this.setHeight(-1*this.getHeight());
-				if (player.weaponName.equals("axe") && player.weaponLV == 2)this.setX(this.getX()-55);
-				else if (player.weaponName.equals("axe") && player.weaponLV == 3)this.setX(this.getX()-65);
-				else if(player.weaponName.equals("axe"))this.setX(this.getX()-15);
-				else if(player.weaponName.equals("spear"))this.setX(this.getX()-15);
-				else if (player.weaponName.equals("sword") && player.weaponLV == 3)this.setX(this.getX()-35);
-				else if(player.weaponName.equals("sword"))this.setX(this.getX()-25);
-				else if (player.weaponName.equals("fist"))this.setX(this.getX()-35);
-				else if (player.weaponName.equals("bow"))this.setX(this.getX()-100);
-			}
-			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX+shiftX, this.getY()+moveY+shiftY, originX, originY, this.getWidth(), this.getHeight(), 1, 1, 90);
-			
-		}
-		else if (player.direction.equals("down"))
-		{
-			shiftX = 0;
-			shiftY = originX;
-			if (player.faceLeft && this.getHeight() > 0)
-			{
-				shiftX = originX;
-				this.setHeight(-1*this.getHeight());
-				if (player.weaponName.equals("axe") && player.weaponLV == 2)this.setX(this.getX()-55);
-				else if (player.weaponName.equals("axe") && player.weaponLV == 3)this.setX(this.getX()-65);
-				else if(player.weaponName.equals("axe"))this.setX(this.getX()-15);
-				else if(player.weaponName.equals("spear"))this.setX(this.getX()-15);
-				else if (player.weaponName.equals("sword") && player.weaponLV == 3)this.setX(this.getX()-35);
-				else if(player.weaponName.equals("sword"))this.setX(this.getX()-25);
-				else if (player.weaponName.equals("fist"))this.setX(this.getX()-35);
-				else if (player.weaponName.equals("bow"))this.setX(this.getX()-100);
-			}
-			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX+shiftX, this.getY()+moveY+shiftY, originX, originY, -this.getWidth(), this.getHeight(), 1, 1, 90);
-			
-		}
-		else if (player.direction.equals("left"))
-		{
-			shiftX = originX;
-			shiftY = 0;
-			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX+shiftX, this.getY()+moveY+shiftY, originX, originY, -this.getWidth(), this.getHeight(), 1, 1, 0);
-		}
-		else if (player.direction.equals("right"))
-		{
-			shiftX = 0;
-			shiftY = 0;
-			batch.draw(currentAnim.getKeyFrame(time), this.getX()+moveX+shiftX, this.getY()+moveY+shiftY, originX, originY, this.getWidth(), this.getHeight(), 1, 1, 0);
-		}
-		if (currentAnim == animation)
-		{
-			if (currentAnim.isAnimationFinished(time))
-			{
-				currentAnim = normalAnim;
-			}
-		}
 	}
-	public void updateWeaponPosition()
-	{
-		this.setX(player.getX());// change weapon position later
-		this.setY(player.getY());
-	}
+	
 	public void updateWeaponAnimation()
 	{
 		// change texture of weapon

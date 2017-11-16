@@ -76,6 +76,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	Texture noWeapon;
 	Texture unbreakWall;
 	BitmapFont font24;
+	BitmapFont font32y;
 	SpikeTrap spikeTrap[];
 	WaterTrap waterTrap[];
 	Balloon balloon[];
@@ -93,6 +94,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	UI endRibbon;
 	Balloon winnerBalloon;
 	String winner;
+	UI endBackButton;
 
 	Stage pause;
 	int pauseCursorPosition = 1;
@@ -163,6 +165,9 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		parameter.size = 128;
 		parameter.color = Color.YELLOW;
 		font128 = generator.generateFont(parameter);
+		parameter.size = 32;
+		parameter.color = Color.WHITE;
+		font32y = generator.generateFont(parameter);
 		generator.dispose();
 
 		itemDrop = new ItemDrop[126];
@@ -686,6 +691,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		winnerBalloon.setWidth(50);
 		winnerBalloon.setHeight(50);
 		medal = new UI("picture/medal.png", -100, -100, 60, 60);
+		endBackButton = new UI("picture/back_button1.png", 50, 30, 161, 60);
 
 		// add actor to end stage
 		end.addActor(endBackground);
@@ -697,6 +703,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		end.addActor(winnerBalloon);
 		end.addActor(medal);
 		end.addActor(endRibbon);
+		end.addActor(endBackButton);
 	}
 
 	public void createInPauseStage()
@@ -820,6 +827,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				if (numString.length() >= 4)
 					numString = new String(numString.substring(0, 4));
 				font128.draw(batch, "Get Ready " + numString, 300, 500);
+				if(player[0].isVisible())font32y.draw(batch, "Player1", player[0].getX()-20, player[0].getY()+90);
+				if(player[1].isVisible())font32y.draw(batch, "Player2", player[1].getX()-20, player[1].getY()+90);
+				if(player[2].isVisible())font32y.draw(batch, "Player3", player[2].getX()-20, player[2].getY()+90);
+				if(player[3].isVisible())font32y.draw(batch, "Player4", player[3].getX()-20, player[3].getY()+90);
 				startDelay -= Gdx.graphics.getDeltaTime();
 			}
 			batch.end();
@@ -2224,7 +2235,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		mousePositionScreen.y = screenY;
 		// convert y axis from screen coordinate to stage coordinate
 		mousePositionStage = menu.screenToStageCoordinates(mousePositionScreen);
-		System.out.println(mousePositionStage.x + " " + mousePositionStage.y);
+//		System.out.println(mousePositionStage.x + " " + mousePositionStage.y);
 		if (screen.equals("menu"))
 		{
 			touchDownInMenuStage(mousePositionStage, button);
@@ -2244,6 +2255,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		else if (screen.equals("pause"))
 		{
 			touchDownInPauseStage(mousePositionStage, button);
+		}
+		else if (screen.equals("end"))
+		{
+			touchDownInEndStage(mousePositionStage, button);
 		}
 		return false;
 	}
@@ -2497,6 +2512,22 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		}
 	}
 	
+	public void touchDownInEndStage(Vector2 mousePosition, int button)
+	{
+		// check for clicking button
+		if (button == Buttons.LEFT)
+		{
+			if (mousePosition.x >= endBackButton.getX() && mousePosition.x <= endBackButton.getX()+endBackButton.getWidth())
+			{
+				if (mousePosition.y >= endBackButton.getY() && mousePosition.y <= endBackButton.getY()+endBackButton.getHeight())
+				{
+					screen = "menu";
+					cancelSound.play();
+				}
+			}
+		}
+	}
+	
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		mousePositionScreen.x = screenX;
@@ -2536,15 +2567,19 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		{
 			mouseMovedInHowToStage(mousePositionStage);
 		}
+		else if (screen.equals("end"))
+		{
+			mouseMovedInEndStage(mousePositionStage);
+		}
 		return false;
 	}
 
 	public void mouseMovedInMenuStage(Vector2 mousePosition)
 	{
 		// check for mouse moved to button
-		if (mousePositionStage.x >= menuStartButton.getX() && mousePositionStage.x <= menuStartButton.getX()+menuStartButton.getWidth())
+		if (mousePosition.x >= menuStartButton.getX() && mousePosition.x <= menuStartButton.getX()+menuStartButton.getWidth())
 		{
-			if (mousePositionStage.y >= menuStartButton.getY() && mousePositionStage.y <= menuStartButton.getY()+menuStartButton.getHeight())
+			if (mousePosition.y >= menuStartButton.getY() && mousePosition.y <= menuStartButton.getY()+menuStartButton.getHeight())
 			{
 				if (cursorPosition != 1)
 				{
@@ -2557,9 +2592,9 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				menuExitButton.img = menuExit1;
 			}
 		}
-		if (mousePositionStage.x >= menuSettingButton.getX() && mousePositionStage.x <= menuSettingButton.getX()+menuSettingButton.getWidth())
+		if (mousePosition.x >= menuSettingButton.getX() && mousePosition.x <= menuSettingButton.getX()+menuSettingButton.getWidth())
 		{
-			if (mousePositionStage.y >= menuSettingButton.getY() && mousePositionStage.y <= menuSettingButton.getY()+menuSettingButton.getHeight())
+			if (mousePosition.y >= menuSettingButton.getY() && mousePosition.y <= menuSettingButton.getY()+menuSettingButton.getHeight())
 			{
 				if (cursorPosition != 2)
 				{
@@ -2572,9 +2607,9 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				menuExitButton.img = menuExit1;
 			}
 		}
-		if (mousePositionStage.x >= menuHowToButton.getX() && mousePositionStage.x <= menuHowToButton.getX()+menuHowToButton.getWidth())
+		if (mousePosition.x >= menuHowToButton.getX() && mousePosition.x <= menuHowToButton.getX()+menuHowToButton.getWidth())
 		{
-			if (mousePositionStage.y >= menuHowToButton.getY() && mousePositionStage.y <= menuHowToButton.getY()+menuHowToButton.getHeight())
+			if (mousePosition.y >= menuHowToButton.getY() && mousePosition.y <= menuHowToButton.getY()+menuHowToButton.getHeight())
 			{
 				if (cursorPosition != 3)
 				{
@@ -2587,9 +2622,9 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				menuExitButton.img = menuExit1;
 			}
 		}
-		if (mousePositionStage.x >= menuExitButton.getX() && mousePositionStage.x <= menuExitButton.getX()+menuExitButton.getWidth())
+		if (mousePosition.x >= menuExitButton.getX() && mousePosition.x <= menuExitButton.getX()+menuExitButton.getWidth())
 		{
-			if (mousePositionStage.y >= menuExitButton.getY() && mousePositionStage.y <= menuExitButton.getY()+menuExitButton.getHeight())
+			if (mousePosition.y >= menuExitButton.getY() && mousePosition.y <= menuExitButton.getY()+menuExitButton.getHeight())
 			{
 				if (cursorPosition != 4)
 				{
@@ -2607,9 +2642,9 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	public void mouseMovedInCharacterStage(Vector2 mousePosition)
 	{
 		// check for mouse moved to button
-		if (mousePositionStage.x >= charSelectBackButton.getX() && mousePositionStage.x <= charSelectBackButton.getX()+charSelectBackButton.getWidth())
+		if (mousePosition.x >= charSelectBackButton.getX() && mousePosition.x <= charSelectBackButton.getX()+charSelectBackButton.getWidth())
 		{
-			if (mousePositionStage.y >= charSelectBackButton.getY() && mousePositionStage.y <= charSelectBackButton.getY()+charSelectBackButton.getHeight())
+			if (mousePosition.y >= charSelectBackButton.getY() && mousePosition.y <= charSelectBackButton.getY()+charSelectBackButton.getHeight())
 			{
 				if (charSelectBackButton.img == back1)
 				{
@@ -2626,9 +2661,9 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		{
 			charSelectBackButton.img = back1;
 		}
-		if (mousePositionStage.x >= charSelectStartButton.getX() && mousePositionStage.x <= charSelectStartButton.getX()+charSelectStartButton.getWidth())
+		if (mousePosition.x >= charSelectStartButton.getX() && mousePosition.x <= charSelectStartButton.getX()+charSelectStartButton.getWidth())
 		{
-			if (mousePositionStage.y >= charSelectStartButton.getY() && mousePositionStage.y <= charSelectStartButton.getY()+charSelectStartButton.getHeight())
+			if (mousePosition.y >= charSelectStartButton.getY() && mousePosition.y <= charSelectStartButton.getY()+charSelectStartButton.getHeight())
 			{
 				if (charSelectStartButton.img == menuStart1)
 				{
@@ -2650,9 +2685,9 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	public void mouseMovedInPauseStage(Vector2 mousePosition)
 	{
 		// check for mouse moved to button
-		if (mousePositionStage.x >= pauseResumeButton.getX() && mousePositionStage.x <= pauseResumeButton.getX()+pauseResumeButton.getWidth())
+		if (mousePosition.x >= pauseResumeButton.getX() && mousePosition.x <= pauseResumeButton.getX()+pauseResumeButton.getWidth())
 		{
-			if (mousePositionStage.y >= pauseResumeButton.getY() && mousePositionStage.y <= pauseResumeButton.getY()+pauseResumeButton.getHeight())
+			if (mousePosition.y >= pauseResumeButton.getY() && mousePosition.y <= pauseResumeButton.getY()+pauseResumeButton.getHeight())
 			{
 				if (pauseCursorPosition != 1)
 				{
@@ -2664,9 +2699,9 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				pauseBackButton.img = pauseBack1;
 			}
 		}
-		if (mousePositionStage.x >= pauseSettingButton.getX() && mousePositionStage.x <= pauseSettingButton.getX()+pauseSettingButton.getWidth())
+		if (mousePosition.x >= pauseSettingButton.getX() && mousePosition.x <= pauseSettingButton.getX()+pauseSettingButton.getWidth())
 		{
-			if (mousePositionStage.y >= pauseSettingButton.getY() && mousePositionStage.y <= pauseSettingButton.getY()+pauseSettingButton.getHeight())
+			if (mousePosition.y >= pauseSettingButton.getY() && mousePosition.y <= pauseSettingButton.getY()+pauseSettingButton.getHeight())
 			{
 				if (pauseCursorPosition != 2)
 				{
@@ -2678,9 +2713,9 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 				pauseBackButton.img = pauseBack1;
 			}
 		}
-		if (mousePositionStage.x >= pauseBackButton.getX() && mousePositionStage.x <= pauseBackButton.getX()+pauseBackButton.getWidth())
+		if (mousePosition.x >= pauseBackButton.getX() && mousePosition.x <= pauseBackButton.getX()+pauseBackButton.getWidth())
 		{
-			if (mousePositionStage.y >= pauseBackButton.getY() && mousePositionStage.y <= pauseBackButton.getY()+pauseBackButton.getHeight())
+			if (mousePosition.y >= pauseBackButton.getY() && mousePosition.y <= pauseBackButton.getY()+pauseBackButton.getHeight())
 			{
 				if (pauseCursorPosition != 3)
 				{
@@ -2697,9 +2732,9 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	public void mouseMovedInSettingStage(Vector2 mousePosition)
 	{
 		// check for mouse moved to button
-		if (mousePositionStage.x >= settingBackButton.getX() && mousePositionStage.x <= settingBackButton.getX()+settingBackButton.getWidth())
+		if (mousePosition.x >= settingBackButton.getX() && mousePosition.x <= settingBackButton.getX()+settingBackButton.getWidth())
 		{
-			if (mousePositionStage.y >= settingBackButton.getY() && mousePositionStage.y <= settingBackButton.getY()+settingBackButton.getHeight())
+			if (mousePosition.y >= settingBackButton.getY() && mousePosition.y <= settingBackButton.getY()+settingBackButton.getHeight())
 			{
 				if (settingBackButton.img == back1)
 				{
@@ -2721,9 +2756,9 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	public void mouseMovedInHowToStage(Vector2 mousePosition)
 	{
 		// check for mouse moved to button
-		if (mousePositionStage.x >= howToBackButton.getX() && mousePositionStage.x <= howToBackButton.getX()+howToBackButton.getWidth())
+		if (mousePosition.x >= howToBackButton.getX() && mousePosition.x <= howToBackButton.getX()+howToBackButton.getWidth())
 		{
-			if (mousePositionStage.y >= howToBackButton.getY() && mousePositionStage.y <= howToBackButton.getY()+howToBackButton.getHeight())
+			if (mousePosition.y >= howToBackButton.getY() && mousePosition.y <= howToBackButton.getY()+howToBackButton.getHeight())
 			{
 				if (howToBackButton.img == back1)
 				{
@@ -2739,6 +2774,30 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		else
 		{
 			howToBackButton.img = back1;
+		}
+	}
+	
+	public void mouseMovedInEndStage(Vector2 mousePosition)
+	{
+		// check for mouse moved to button
+		if (mousePosition.x >= endBackButton.getX() && mousePosition.x <= endBackButton.getX()+endBackButton.getWidth())
+		{
+			if (mousePosition.y >= endBackButton.getY() && mousePosition.y <= endBackButton.getY()+endBackButton.getHeight())
+			{
+				if (endBackButton.img == back1)
+				{
+					cursorSound.play();
+					endBackButton.img = back2;
+				}
+			}
+			else
+			{
+				endBackButton.img = back1;
+			}
+		}
+		else
+		{
+			endBackButton.img = back1;
 		}
 	}
 	
