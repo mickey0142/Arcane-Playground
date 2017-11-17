@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 public class Arrow extends GameObject{
 	float speedX = 0, speedY = 0, maxSpeed = 0;
 	float time = 0;
+	String arrowDirection;
 
 	static TextureAtlas arrowTextureAtlas = new TextureAtlas(Gdx.files.internal("picture/arrowweapon.atlas"));
 	static Animation<TextureRegion> arrowAnim = new Animation<TextureRegion>(0.2f, arrowTextureAtlas.getRegions());
@@ -76,22 +77,25 @@ public class Arrow extends GameObject{
 		{
 			speedX = 0;
 			speedY = maxSpeed;
-
+			arrowDirection = "up";
 		}
 		else if (direction.equals("down"))
 		{
 			speedX = 0;
 			speedY = -maxSpeed;
+			arrowDirection = "down";
 		}
 		else if (direction.equals("left"))
 		{
 			speedX = -maxSpeed;
 			speedY = 0;
+			arrowDirection = "left";
 		}
 		else if (direction.equals("right"))
 		{
 			speedX = maxSpeed;
 			speedY = 0;
+			arrowDirection = "right";
 		}
 		updateHitbox();
 	}

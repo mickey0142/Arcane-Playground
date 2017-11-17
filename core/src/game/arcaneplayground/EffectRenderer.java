@@ -12,6 +12,7 @@ public class EffectRenderer extends Actor{
 	boolean check = false;
 	float time;
 	String direction;
+	Animation<TextureRegion> currentAnim;
 
 	static TextureAtlas punchAtlas = new TextureAtlas(Gdx.files.internal("picture/punch.atlas"));
 	static Animation<TextureRegion> punchAnimation = new Animation<TextureRegion>(0.2f, punchAtlas.getRegions());
@@ -42,7 +43,7 @@ public class EffectRenderer extends Actor{
 					this.setWidth(-1*this.getWidth());
 					this.setX(this.getX() - this.getWidth());
 				}
-				batch.draw(player.attackEffectAnim.getKeyFrame(time), this.getX()+this.getWidth(), this.getY(), 0, 0, this.getHeight(), this.getWidth(), 1, 1, 90);
+				batch.draw(currentAnim.getKeyFrame(time), this.getX()+this.getWidth(), this.getY(), 0, 0, this.getHeight(), this.getWidth(), 1, 1, 90);
 			}
 			else if (direction.equals("down"))
 			{
@@ -51,17 +52,17 @@ public class EffectRenderer extends Actor{
 					this.setWidth(-1*this.getWidth());
 					this.setX(this.getX() - this.getWidth());
 				}
-				batch.draw(player.attackEffectAnim.getKeyFrame(time), this.getX()+this.getWidth(), this.getY()+this.getHeight(), 0, 0, -this.getHeight(), this.getWidth(), 1, 1, 90);
+				batch.draw(currentAnim.getKeyFrame(time), this.getX()+this.getWidth(), this.getY()+this.getHeight(), 0, 0, -this.getHeight(), this.getWidth(), 1, 1, 90);
 			}
 			else if (direction.equals("left"))
 			{
-				batch.draw(player.attackEffectAnim.getKeyFrame(time), this.getX()+this.getWidth(), this.getY(), 0, 0, -this.getWidth(), this.getHeight(), 1, 1, 0);
+				batch.draw(currentAnim.getKeyFrame(time), this.getX()+this.getWidth(), this.getY(), 0, 0, -this.getWidth(), this.getHeight(), 1, 1, 0);
 			}
 			else if (direction.equals("right"))
 			{
-				batch.draw(player.attackEffectAnim.getKeyFrame(time), this.getX(), this.getY(), 0, 0, this.getWidth(), this.getHeight(), 1, 1, 0);
+				batch.draw(currentAnim.getKeyFrame(time), this.getX(), this.getY(), 0, 0, this.getWidth(), this.getHeight(), 1, 1, 0);
 			}
-			if (player.attackEffectAnim.isAnimationFinished(time))
+			if (currentAnim.isAnimationFinished(time))
 			{
 				check = false;
 			}
@@ -75,5 +76,10 @@ public class EffectRenderer extends Actor{
 		this.setWidth(width);
 		this.setHeight(height);
 		this.direction = direction;
+	}
+	
+	public void updateCurrentAnim(Animation<TextureRegion> anim)
+	{
+		this.currentAnim = anim;
 	}
 }

@@ -59,6 +59,7 @@ public class PlayerCharacter extends Actor{
 	UI armorBar;
 	UI shadow;
 	EffectRenderer attackEffect;
+	EffectRenderer arrowEffect;
 	PlayerWeapon weapon;
 	GameObject checkBlock;
 	Arrow arrow;
@@ -300,6 +301,11 @@ public class PlayerCharacter extends Actor{
 		this.attackEffect = effect;
 	}
 	
+	public void setPlayerArrowEffectRenderer(EffectRenderer effect)
+	{
+		this.arrowEffect = effect;
+	}
+	
 	public void updateNewWeapon(ItemDrop item)
 	{
 		if (weaponName.equals(item.weaponName))
@@ -317,6 +323,7 @@ public class PlayerCharacter extends Actor{
 				weaponLV = 2;
 				weapon.updateWeaponAnimation();
 				attackSound = item.weaponSound;
+				attackEffect.updateCurrentAnim(item.effectAnimation);
 			}
 			else if (weaponLV == 2)
 			{
@@ -331,6 +338,7 @@ public class PlayerCharacter extends Actor{
 				weaponLV = 3;
 				weapon.updateWeaponAnimation();
 				attackSound = item.weaponSound;
+				attackEffect.updateCurrentAnim(item.effectAnimation);
 			}
 		}
 		else
@@ -347,6 +355,7 @@ public class PlayerCharacter extends Actor{
 			weaponAnim = item.weaponAnimation;
 			weapon.updateWeaponAnimation();
 			attackSound = item.weaponSound;
+			attackEffect.updateCurrentAnim(item.effectAnimation);
 		}
 	}
 	

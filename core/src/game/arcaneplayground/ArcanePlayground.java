@@ -62,6 +62,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	UnbreakableWall walls[];
 	NormalWall normalWalls[];
 	EffectRenderer attackEffectRenderer[] = new EffectRenderer[4];
+	EffectRenderer arrowEffectRenderer[] = new EffectRenderer[4];
 	PlayerWeapon playerWeaponRenderer[] = new PlayerWeapon[4];
 	GameObject checkBlock[] = new GameObject[4];
 	ItemDrop itemDrop[];
@@ -285,10 +286,14 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		for (int i = 0; i < 4; i++)
 		{
 			attackEffectRenderer[i] = new EffectRenderer(player[i]);
+			arrowEffectRenderer[i] = new EffectRenderer(player[i]);
 			attackEffectRenderer[i].setValue(player[i].attackHitbox.getX(), player[i].attackHitbox.getY(), player[i].attackHitbox.getWidth(), player[i].attackHitbox.getHeight(), player[i].direction);
 			playerWeaponRenderer[i] = new PlayerWeapon(player[i]);
 			player[i].setPlayerAttackEffectRenderer(attackEffectRenderer[i]);
 			player[i].setPlayerWeaponRenderer(playerWeaponRenderer[i]);
+			player[i].setPlayerArrowEffectRenderer(arrowEffectRenderer[i]);
+			player[i].attackEffect.updateCurrentAnim(EffectRenderer.punchAnimation);
+			player[i].arrowEffect.updateCurrentAnim(EffectRenderer.punchAnimation);
 			player[i].setChargeBar(playerChargeBar[i]);
 			player[i].setCheckBlockObject(checkBlock[i]);
 			player[i].updateHitbox();
@@ -479,6 +484,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		game.addActor(attackEffectRenderer[1]);
 		game.addActor(attackEffectRenderer[2]);
 		game.addActor(attackEffectRenderer[3]);
+		game.addActor(arrowEffectRenderer[0]);
+		game.addActor(arrowEffectRenderer[1]);
+		game.addActor(arrowEffectRenderer[2]);
+		game.addActor(arrowEffectRenderer[3]);
 	}
 
 	public void createMap()
@@ -792,6 +801,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			}
 			gameMusic.stop();
 			endMusic.stop();
+			victorySound.stop();
 			menuStageRender();
 		}
 		else if (screen.equals("character"))
@@ -810,10 +820,10 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			gameStageRender();
 			batch.begin();
 			// render font
-			if(player[0].isVisible())font24.draw(batch, "LV." + player[0].weaponLV, weaponSprite[0].getX(), weaponSprite[0].getY()-12);
-			if(player[1].isVisible())font24.draw(batch, "LV." + player[1].weaponLV, weaponSprite[1].getX(), weaponSprite[1].getY()-12);
-			if(player[2].isVisible())font24.draw(batch, "LV." + player[2].weaponLV, weaponSprite[2].getX(), weaponSprite[2].getY()-12);
-			if(player[3].isVisible())font24.draw(batch, "LV." + player[3].weaponLV, weaponSprite[3].getX(), weaponSprite[3].getY()-12);
+			if(playerSprite[0].isVisible())font24.draw(batch, "LV." + player[0].weaponLV, weaponSprite[0].getX(), weaponSprite[0].getY()-12);
+			if(playerSprite[1].isVisible())font24.draw(batch, "LV." + player[1].weaponLV, weaponSprite[1].getX(), weaponSprite[1].getY()-12);
+			if(playerSprite[2].isVisible())font24.draw(batch, "LV." + player[2].weaponLV, weaponSprite[2].getX(), weaponSprite[2].getY()-12);
+			if(playerSprite[3].isVisible())font24.draw(batch, "LV." + player[3].weaponLV, weaponSprite[3].getX(), weaponSprite[3].getY()-12);
 			// if game is over start countdown to go to end stage
 			if (playerCount <= 1)
 			{
@@ -855,7 +865,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 							platform.setX(endPlayerSprite[numPlayerWin].getX()-60);
 							platform.setY(endPlayerSprite[numPlayerWin].getY());
 							winnerBalloon.setX(endPlayerSprite[numPlayerWin].getX()+60);
-							winnerBalloon.setY(endPlayerSprite[numPlayerWin].getY()+120);
+							winnerBalloon.setY(endPlayerSprite[numPlayerWin].getY()+140);
 							winnerBalloon.runAnimation("winner");
 							medal.setX(platform.getX()+70);
 							medal.setY(endPlayerSprite[numPlayerWin].getY()+170);
@@ -925,7 +935,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	public void gameStageRender()
 	{
 		game.draw();
-		int loopCount = 0;
 		int weaponCount = 0;
 		for (PlayerCharacter allPlayer : player) 
 		{
@@ -1101,10 +1110,13 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			}
 		}
 		int arrowCount = 0;
+		int loopCount = 0;
 		for (PlayerCharacter allPlayer : player) 
 		{
 			if (!allPlayer.isVisible() || allPlayer.dead)
 			{
+				loopCount += 1;
+				arrowCount += 1;
 				continue;
 			}
 			if (allPlayer.attacking)
@@ -1136,7 +1148,6 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			if (allPlayer.arrow.isVisible())
 			{
 				int arrowCount2 = 0;
-				allPlayer.attackEffectAnim = EffectRenderer.punchAnimation;
 				// check collision between arrow
 				for (GameObject arrow : playerArrow)
 				{
@@ -1150,14 +1161,17 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 						PlayerWeapon.fistSound.play();
 						arrowCharged[arrowCount] = false;
 						arrowCharged[arrowCount2] = false;
-						if (allPlayer.arrow.speedX != 0)attackEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						else attackEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						attackEffectRenderer[arrowCount].check = true;
-						attackEffectRenderer[arrowCount].time = 0;
-						if (((Arrow)arrow).speedX != 0)attackEffectRenderer[arrowCount].setValue(((Arrow)arrow).hitbox.getX(), ((Arrow)arrow).hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						else attackEffectRenderer[arrowCount].setValue(((Arrow)arrow).hitbox.getX(), ((Arrow)arrow).hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						attackEffectRenderer[arrowCount].check = true;
-						attackEffectRenderer[arrowCount].time = 0;
+						arrowEffectRenderer[arrowCount].updateCurrentAnim(EffectRenderer.punchAnimation);
+						arrowEffectRenderer[arrowCount2].updateCurrentAnim(EffectRenderer.punchAnimation);
+						if (allPlayer.arrow.speedX != 0)arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						else arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						arrowEffectRenderer[arrowCount].direction = allPlayer.arrow.arrowDirection;
+						arrowEffectRenderer[arrowCount].check = true;
+						arrowEffectRenderer[arrowCount].time = 0;
+//						if (((Arrow)arrow).speedX != 0)arrowEffectRenderer[arrowCount].setValue(((Arrow)arrow).hitbox.getX(), ((Arrow)arrow).hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+//						else arrowEffectRenderer[arrowCount2].setValue(((Arrow)arrow).hitbox.getX(), ((Arrow)arrow).hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+//						arrowEffectRenderer[arrowCount2].check = true;
+//						arrowEffectRenderer[arrowCount2].time = 0;
 						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
 						allPlayer.arrow.setVisible(false);
 						((Arrow)arrow).setArrow(player[arrowCount2].getX()+25, player[arrowCount2].getY()+20, player[arrowCount2].direction, player[arrowCount2].weaponLV);
@@ -1165,25 +1179,27 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 					}
 					arrowCount2 += 1;
 				}
-				//checkcollision between arrow and unbreakable wall
+				//check collision between arrow and unbreakable wall
 				for (GameObject wall : walls)
 				{
-					if (checkCollision(allPlayer.arrow, wall))
+					if (checkCollision(allPlayer.arrow, wall) && allPlayer.arrow.isVisible())
 					{
 						PlayerWeapon.fistSound.play();
-						if (allPlayer.arrow.speedX != 0)attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						else attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						attackEffectRenderer[loopCount].check = true;
-						attackEffectRenderer[loopCount].time = 0;
+						arrowEffectRenderer[arrowCount].updateCurrentAnim(EffectRenderer.punchAnimation);
+						if (allPlayer.arrow.speedX != 0)arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						else arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						arrowEffectRenderer[arrowCount].direction = allPlayer.arrow.arrowDirection;
+						arrowEffectRenderer[arrowCount].check = true;
+						arrowEffectRenderer[arrowCount].time = 0;
 						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
 						allPlayer.arrow.setVisible(false);
 						arrowCharged[arrowCount] = false;
 					}
 				}
-				//checkcollision between arrow and normal wall
+				//check collision between arrow and normal wall
 				for (GameObject wall : normalWalls)
 				{
-					if (checkCollision(allPlayer.arrow, wall))
+					if (checkCollision(allPlayer.arrow, wall) && allPlayer.arrow.isVisible())
 					{
 						if (wall instanceof NormalWall)
 						{
@@ -1197,19 +1213,22 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 								((NormalWall) wall).hp -= 2;
 							}
 						}
-						if (allPlayer.arrow.speedX != 0)attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						else attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						attackEffectRenderer[loopCount].check = true;
-						attackEffectRenderer[loopCount].time = 0;
+						arrowEffectRenderer[arrowCount].updateCurrentAnim(EffectRenderer.punchAnimation);
+						if (allPlayer.arrow.speedX != 0)arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						else arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						arrowEffectRenderer[arrowCount].direction = allPlayer.arrow.arrowDirection;
+						arrowEffectRenderer[arrowCount].check = true;
+						arrowEffectRenderer[arrowCount].time = 0;
 						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
 						allPlayer.arrow.setVisible(false);
 						arrowCharged[arrowCount] = false;
+						break;
 					}
 				}
 				// checkcollision between arrow and itemdrop
 				for (ItemDrop item : itemDrop)
 				{
-					if (checkCollision(allPlayer.arrow, item))
+					if (checkCollision(allPlayer.arrow, item) && allPlayer.arrow.isVisible())
 					{
 						PlayerWeapon.fistSound.play();
 						item.dropped = false;
@@ -1217,10 +1236,12 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 						ItemDrop.dropCount -= 1;
 						item.hitbox.setX(-1000);
 						item.hitbox.setY(-1000);
-						if (allPlayer.arrow.speedX != 0)attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						else attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						attackEffectRenderer[loopCount].check = true;
-						attackEffectRenderer[loopCount].time = 0;
+						arrowEffectRenderer[arrowCount].updateCurrentAnim(EffectRenderer.punchAnimation);
+						if (allPlayer.arrow.speedX != 0)arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						else arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						arrowEffectRenderer[arrowCount].direction = allPlayer.arrow.arrowDirection;
+						arrowEffectRenderer[arrowCount].check = true;
+						arrowEffectRenderer[arrowCount].time = 0;
 						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
 						allPlayer.arrow.setVisible(false);
 						arrowCharged[arrowCount] = false;
@@ -1233,9 +1254,9 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 					{
 						continue;
 					}
-					if (checkCollision(otherPlayer, allPlayer.arrow) && !otherPlayer.hurt)
+					if (checkCollision(otherPlayer, allPlayer.arrow) && !otherPlayer.hurt && allPlayer.arrow.isVisible())
 					{
-						allPlayer.attackEffectAnim = EffectRenderer.spearAnimation;
+						arrowEffectRenderer[arrowCount].updateCurrentAnim(EffectRenderer.spearAnimation);
 						characterSkill(allPlayer, otherPlayer, arrowCharged[arrowCount]);
 						Arrow.arrowHit.play(0.5f);
 						otherPlayer.regenDelay = 5f;
@@ -1266,10 +1287,11 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 								otherPlayer.armor = 0;
 							}
 						}
-						if (allPlayer.arrow.speedX != 0)attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						else attackEffectRenderer[loopCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						attackEffectRenderer[loopCount].check = true;
-						attackEffectRenderer[loopCount].time = 0;
+						if (allPlayer.arrow.speedX != 0)arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						else arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+						arrowEffectRenderer[arrowCount].direction = allPlayer.arrow.arrowDirection;
+						arrowEffectRenderer[arrowCount].check = true;
+						arrowEffectRenderer[arrowCount].time = 0;
 						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
 						allPlayer.arrow.setVisible(false);
 						arrowCharged[arrowCount] = false;
@@ -2200,15 +2222,15 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	@Override
 	public boolean keyTyped(char character) {
 		// temporary debug command
-		if (character == 'z')
+		if (character == 'å')
 		{
-			player[0].dead = true;
-			//			player[2].dead = true;
-			//			player[1].dead = true;
-			//			player[3].dead = true;
+			//player[0].dead = true;
+			player[1].dead = true;
+			player[2].dead = true;
+			player[3].dead = true;
 			playerCount = 1;
 		}
-		else if (character == 'x')
+		else if (character == 'ñ')
 		{
 			player[0].armor -= 5;
 			if (player[0].armor <= 0)
@@ -2217,7 +2239,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			}
 			player[0].regenDelay = 2;
 		}
-		else if (character == 'c')
+		else if (character == 'ò')
 		{
 			player[0].armor -= 1;
 			if (player[0].armor <= 0)
@@ -3090,6 +3112,8 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			allPlayer.speedBoostTime = 0;
 			allPlayer.slowTime = 0;
 			allPlayer.fadeTime = 2;
+			allPlayer.attackEffect.updateCurrentAnim(EffectRenderer.punchAnimation);
+			allPlayer.arrowEffect.updateCurrentAnim(EffectRenderer.punchAnimation);
 			if (allPlayer == player[0])
 			{
 				allPlayer.setX(50);
