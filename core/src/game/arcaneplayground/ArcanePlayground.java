@@ -108,7 +108,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	Texture gray;
 	int playerNumber = -1;
 	String controlName = "";
-	BitmapFont font32, font128;
+	BitmapFont font32, font128, font128r;
 	UI playerControlType[];
 	UI playerButtonSetting[][];
 	UI settingBackButton;
@@ -166,6 +166,8 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		parameter.size = 128;
 		parameter.color = Color.YELLOW;
 		font128 = generator.generateFont(parameter);
+		parameter.color = Color.RED;
+		font128r = generator.generateFont(parameter);
 		parameter.size = 32;
 		parameter.color = Color.WHITE;
 		font32y = generator.generateFont(parameter);
@@ -1148,155 +1150,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			if (allPlayer.arrow.isVisible())
 			{
 				int arrowCount2 = 0;
-				// check collision between arrow
-				for (GameObject arrow : playerArrow)
-				{
-					if (arrow == allPlayer.arrow || !arrow.isVisible())
-					{
-						arrowCount2 += 1;
-						continue;
-					}
-					if (checkCollision(allPlayer.arrow, arrow))// attack effect bug may happen here because of arrowcount arrowcount2 loopcount three of these is confusing 
-					{
-						PlayerWeapon.fistSound.play();
-						arrowCharged[arrowCount] = false;
-						arrowCharged[arrowCount2] = false;
-						arrowEffectRenderer[arrowCount].updateCurrentAnim(EffectRenderer.punchAnimation);
-						arrowEffectRenderer[arrowCount2].updateCurrentAnim(EffectRenderer.punchAnimation);
-						if (allPlayer.arrow.speedX != 0)arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						else arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						arrowEffectRenderer[arrowCount].direction = allPlayer.arrow.arrowDirection;
-						arrowEffectRenderer[arrowCount].check = true;
-						arrowEffectRenderer[arrowCount].time = 0;
-//						if (((Arrow)arrow).speedX != 0)arrowEffectRenderer[arrowCount].setValue(((Arrow)arrow).hitbox.getX(), ((Arrow)arrow).hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-//						else arrowEffectRenderer[arrowCount2].setValue(((Arrow)arrow).hitbox.getX(), ((Arrow)arrow).hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-//						arrowEffectRenderer[arrowCount2].check = true;
-//						arrowEffectRenderer[arrowCount2].time = 0;
-						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
-						allPlayer.arrow.setVisible(false);
-						((Arrow)arrow).setArrow(player[arrowCount2].getX()+25, player[arrowCount2].getY()+20, player[arrowCount2].direction, player[arrowCount2].weaponLV);
-						((Arrow)arrow).setVisible(false);
-					}
-					arrowCount2 += 1;
-				}
-				//check collision between arrow and unbreakable wall
-				for (GameObject wall : walls)
-				{
-					if (checkCollision(allPlayer.arrow, wall) && allPlayer.arrow.isVisible())
-					{
-						PlayerWeapon.fistSound.play();
-						arrowEffectRenderer[arrowCount].updateCurrentAnim(EffectRenderer.punchAnimation);
-						if (allPlayer.arrow.speedX != 0)arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						else arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						arrowEffectRenderer[arrowCount].direction = allPlayer.arrow.arrowDirection;
-						arrowEffectRenderer[arrowCount].check = true;
-						arrowEffectRenderer[arrowCount].time = 0;
-						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
-						allPlayer.arrow.setVisible(false);
-						arrowCharged[arrowCount] = false;
-					}
-				}
-				//check collision between arrow and normal wall
-				for (GameObject wall : normalWalls)
-				{
-					if (checkCollision(allPlayer.arrow, wall) && allPlayer.arrow.isVisible())
-					{
-						if (wall instanceof NormalWall)
-						{
-							PlayerWeapon.fistSound.play();
-							if (arrowCharged[arrowCount])
-							{
-								((NormalWall) wall).hp -= 3;
-							}
-							else
-							{
-								((NormalWall) wall).hp -= 2;
-							}
-						}
-						arrowEffectRenderer[arrowCount].updateCurrentAnim(EffectRenderer.punchAnimation);
-						if (allPlayer.arrow.speedX != 0)arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						else arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						arrowEffectRenderer[arrowCount].direction = allPlayer.arrow.arrowDirection;
-						arrowEffectRenderer[arrowCount].check = true;
-						arrowEffectRenderer[arrowCount].time = 0;
-						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
-						allPlayer.arrow.setVisible(false);
-						arrowCharged[arrowCount] = false;
-						break;
-					}
-				}
-				// checkcollision between arrow and itemdrop
-				for (ItemDrop item : itemDrop)
-				{
-					if (checkCollision(allPlayer.arrow, item) && allPlayer.arrow.isVisible())
-					{
-						PlayerWeapon.fistSound.play();
-						item.dropped = false;
-						item.setVisible(item.dropped);
-						ItemDrop.dropCount -= 1;
-						item.hitbox.setX(-1000);
-						item.hitbox.setY(-1000);
-						arrowEffectRenderer[arrowCount].updateCurrentAnim(EffectRenderer.punchAnimation);
-						if (allPlayer.arrow.speedX != 0)arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						else arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						arrowEffectRenderer[arrowCount].direction = allPlayer.arrow.arrowDirection;
-						arrowEffectRenderer[arrowCount].check = true;
-						arrowEffectRenderer[arrowCount].time = 0;
-						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
-						allPlayer.arrow.setVisible(false);
-						arrowCharged[arrowCount] = false;
-					}
-				}
-				//checkcollision between arrow and player
-				for (PlayerCharacter otherPlayer : player)
-				{
-					if (allPlayer == otherPlayer || !otherPlayer.isVisible() || otherPlayer.dead)
-					{
-						continue;
-					}
-					if (checkCollision(otherPlayer, allPlayer.arrow) && !otherPlayer.hurt && allPlayer.arrow.isVisible())
-					{
-						arrowEffectRenderer[arrowCount].updateCurrentAnim(EffectRenderer.spearAnimation);
-						characterSkill(allPlayer, otherPlayer, arrowCharged[arrowCount]);
-						Arrow.arrowHit.play(0.5f);
-						otherPlayer.regenDelay = 5f;
-						if (otherPlayer.armor <= 0)
-						{
-							otherPlayer.hp -= 1;
-							otherPlayer.hurt = true;
-							otherPlayer.armor += 10;
-							if (otherPlayer.hp <= 0)
-							{
-								otherPlayer.dead = true;
-								playerCount -= 1;
-								deadSound.play();
-							}
-						}
-						else
-						{
-							if (arrowCharged[arrowCount])
-							{
-								otherPlayer.armor -= allPlayer.attack*2;						
-							}
-							else
-							{
-								otherPlayer.armor -= allPlayer.attack;
-							}
-							if (otherPlayer.armor < 0)
-							{
-								otherPlayer.armor = 0;
-							}
-						}
-						if (allPlayer.arrow.speedX != 0)arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						else arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
-						arrowEffectRenderer[arrowCount].direction = allPlayer.arrow.arrowDirection;
-						arrowEffectRenderer[arrowCount].check = true;
-						arrowEffectRenderer[arrowCount].time = 0;
-						allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
-						allPlayer.arrow.setVisible(false);
-						arrowCharged[arrowCount] = false;
-					}
-				}
+				checkArrowAttack(allPlayer, arrowCount, arrowCount2);
 			}
 			arrowCount += 1;
 			loopCount += 1;
@@ -1468,7 +1322,29 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		if(changeControl)
 		{
 			batch.draw(gray, 0, 0, 1350, 750);
-			font128.draw(batch, "press button to change\nor press esc to cancel", 50, 600);
+			font128.draw(batch, "press button to change\n" + "\nor press esc to cancel", 50, 600);
+			float locationX;
+			if (controlName.equals("right"))
+			{
+				locationX = 90;
+			}
+			else if (controlName.equals("down"))
+			{
+				locationX = 80;
+			}
+			else if (controlName.equals("attack"))
+			{
+				locationX = 50;
+			}
+			else if (controlName.equals("back"))
+			{
+				locationX = 110;
+			}
+			else
+			{
+				locationX = 150-(controlName.length()*8);
+			}
+			font128r.draw(batch, "Player " + (playerNumber+1) + " " + controlName + " control", locationX, 430);
 		}
 		batch.end();
 	}
@@ -2966,6 +2842,159 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		playerAttack.chargeMax = false;
 	}
 
+	public void checkArrowAttack(PlayerCharacter allPlayer, int arrowCount, int arrowCount2)
+	{
+		// check collision between arrow
+		for (GameObject arrow : playerArrow)
+		{
+			if (arrow == allPlayer.arrow || !arrow.isVisible())
+			{
+				arrowCount2 += 1;
+				continue;
+			}
+			if (checkCollision(allPlayer.arrow, arrow))// attack effect bug may happen here because of arrowcount arrowcount2 loopcount three of these is confusing 
+			{
+				PlayerWeapon.fistSound.play(0.5f);
+				arrowCharged[arrowCount] = false;
+				arrowCharged[arrowCount2] = false;
+				arrowEffectRenderer[arrowCount].updateCurrentAnim(EffectRenderer.punchAnimation);
+				arrowEffectRenderer[arrowCount2].updateCurrentAnim(EffectRenderer.punchAnimation);
+				if (allPlayer.arrow.speedX != 0)arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+				else arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+				arrowEffectRenderer[arrowCount].direction = allPlayer.arrow.arrowDirection;
+				arrowEffectRenderer[arrowCount].check = true;
+				arrowEffectRenderer[arrowCount].time = 0;
+//				if (((Arrow)arrow).speedX != 0)arrowEffectRenderer[arrowCount].setValue(((Arrow)arrow).hitbox.getX(), ((Arrow)arrow).hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+//				else arrowEffectRenderer[arrowCount2].setValue(((Arrow)arrow).hitbox.getX(), ((Arrow)arrow).hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+//				arrowEffectRenderer[arrowCount2].check = true;
+//				arrowEffectRenderer[arrowCount2].time = 0;
+				allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
+				allPlayer.arrow.setVisible(false);
+				((Arrow)arrow).setArrow(player[arrowCount2].getX()+25, player[arrowCount2].getY()+20, player[arrowCount2].direction, player[arrowCount2].weaponLV);
+				((Arrow)arrow).setVisible(false);
+			}
+			arrowCount2 += 1;
+		}
+		//check collision between arrow and unbreakable wall
+		for (GameObject wall : walls)
+		{
+			if (checkCollision(allPlayer.arrow, wall) && allPlayer.arrow.isVisible())
+			{
+				PlayerWeapon.fistSound.play(0.5f);
+				arrowEffectRenderer[arrowCount].updateCurrentAnim(EffectRenderer.punchAnimation);
+				if (allPlayer.arrow.speedX != 0)arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+				else arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+				arrowEffectRenderer[arrowCount].direction = allPlayer.arrow.arrowDirection;
+				arrowEffectRenderer[arrowCount].check = true;
+				arrowEffectRenderer[arrowCount].time = 0;
+				allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
+				allPlayer.arrow.setVisible(false);
+				arrowCharged[arrowCount] = false;
+			}
+		}
+		//check collision between arrow and normal wall
+		for (GameObject wall : normalWalls)
+		{
+			if (checkCollision(allPlayer.arrow, wall) && allPlayer.arrow.isVisible())
+			{
+				if (wall instanceof NormalWall)
+				{
+					PlayerWeapon.fistSound.play(0.5f);
+					if (arrowCharged[arrowCount])
+					{
+						((NormalWall) wall).hp -= 3;
+					}
+					else
+					{
+						((NormalWall) wall).hp -= 2;
+					}
+				}
+				arrowEffectRenderer[arrowCount].updateCurrentAnim(EffectRenderer.punchAnimation);
+				if (allPlayer.arrow.speedX != 0)arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+				else arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+				arrowEffectRenderer[arrowCount].direction = allPlayer.arrow.arrowDirection;
+				arrowEffectRenderer[arrowCount].check = true;
+				arrowEffectRenderer[arrowCount].time = 0;
+				allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
+				allPlayer.arrow.setVisible(false);
+				arrowCharged[arrowCount] = false;
+				break;
+			}
+		}
+		// checkcollision between arrow and itemdrop
+		for (ItemDrop item : itemDrop)
+		{
+			if (checkCollision(allPlayer.arrow, item) && allPlayer.arrow.isVisible())
+			{
+				PlayerWeapon.fistSound.play(0.5f);
+				item.dropped = false;
+				item.setVisible(item.dropped);
+				ItemDrop.dropCount -= 1;
+				item.hitbox.setX(-1000);
+				item.hitbox.setY(-1000);
+				arrowEffectRenderer[arrowCount].updateCurrentAnim(EffectRenderer.punchAnimation);
+				if (allPlayer.arrow.speedX != 0)arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+				else arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+				arrowEffectRenderer[arrowCount].direction = allPlayer.arrow.arrowDirection;
+				arrowEffectRenderer[arrowCount].check = true;
+				arrowEffectRenderer[arrowCount].time = 0;
+				allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
+				allPlayer.arrow.setVisible(false);
+				arrowCharged[arrowCount] = false;
+			}
+		}
+		//checkcollision between arrow and player
+		for (PlayerCharacter otherPlayer : player)
+		{
+			if (allPlayer == otherPlayer || !otherPlayer.isVisible() || otherPlayer.dead)
+			{
+				continue;
+			}
+			if (checkCollision(otherPlayer, allPlayer.arrow) && !otherPlayer.hurt && allPlayer.arrow.isVisible())
+			{
+				arrowEffectRenderer[arrowCount].updateCurrentAnim(EffectRenderer.spearAnimation);
+				characterSkill(allPlayer, otherPlayer, arrowCharged[arrowCount]);
+				Arrow.arrowHit.play(0.7f);
+				otherPlayer.regenDelay = 5f;
+				if (otherPlayer.armor <= 0)
+				{
+					otherPlayer.hp -= 1;
+					otherPlayer.hurt = true;
+					otherPlayer.armor += 10;
+					if (otherPlayer.hp <= 0)
+					{
+						otherPlayer.dead = true;
+						playerCount -= 1;
+						deadSound.play();
+					}
+				}
+				else
+				{
+					if (arrowCharged[arrowCount])
+					{
+						otherPlayer.armor -= allPlayer.attack*2;						
+					}
+					else
+					{
+						otherPlayer.armor -= allPlayer.attack;
+					}
+					if (otherPlayer.armor < 0)
+					{
+						otherPlayer.armor = 0;
+					}
+				}
+				if (allPlayer.arrow.speedX != 0)arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY()-15, allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+				else arrowEffectRenderer[arrowCount].setValue(allPlayer.arrow.hitbox.getX(), allPlayer.arrow.hitbox.getY(), allPlayer.attackHitbox.getWidth(), allPlayer.attackHitbox.getHeight(), allPlayer.direction);
+				arrowEffectRenderer[arrowCount].direction = allPlayer.arrow.arrowDirection;
+				arrowEffectRenderer[arrowCount].check = true;
+				arrowEffectRenderer[arrowCount].time = 0;
+				allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
+				allPlayer.arrow.setVisible(false);
+				arrowCharged[arrowCount] = false;
+			}
+		}
+	}
+	
 	public void characterSkill(PlayerCharacter playerAttack, PlayerCharacter playerDamaged, boolean arrowCharged)
 	{
 		// random skill activation and calculate skill 
