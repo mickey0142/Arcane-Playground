@@ -2184,28 +2184,28 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			debugItem.weaponName = "sword";
 			debugItem.dropType = "weapon";
 			//lv1
-			debugItem.attackWidth[0] = ItemDrop.AXE_ATTACK_WIDTH;
-			debugItem.attackHeight[0] = ItemDrop.AXE_ATTACK_HEIGHT;
-			debugItem.attackChargeTime[0] = ItemDrop.AXE_CHARGE_TIME;
-			debugItem.attack[0] = ItemDrop.AXE_ATTACK;
+			debugItem.attackWidth[0] = ItemDrop.SWORD_ATTACK_WIDTH;
+			debugItem.attackHeight[0] = ItemDrop.SWORD_ATTACK_HEIGHT;
+			debugItem.attackChargeTime[0] = ItemDrop.SWORD_CHARGE_TIME;
+			debugItem.attack[0] = ItemDrop.SWORD_ATTACK;
 			debugItem.effectAtlas = EffectRenderer.swordEffectAtlas;
 			debugItem.effectAnimation = EffectRenderer.swordAnimation;
 			debugItem.weaponAtlas[0] = PlayerWeapon.sword;
 			debugItem.weaponAnimation = PlayerWeapon.swordAnim;
 			//lv2
-			debugItem.attackWidth[1] = ItemDrop.AXELV2_ATTACK_WIDTH;
-			debugItem.attackHeight[1] = ItemDrop.AXELV2_ATTACK_HEIGHT;
-			debugItem.attackChargeTime[1] = ItemDrop.AXELV2_CHARGE_TIME;
-			debugItem.attack[1] = ItemDrop.AXELV2_ATTACK;
+			debugItem.attackWidth[1] = ItemDrop.SWORDLV2_ATTACK_WIDTH;
+			debugItem.attackHeight[1] = ItemDrop.SWORDLV2_ATTACK_HEIGHT;
+			debugItem.attackChargeTime[1] = ItemDrop.SWORDLV2_CHARGE_TIME;
+			debugItem.attack[1] = ItemDrop.SWORDLV2_ATTACK;
 			debugItem.effectAtlas = EffectRenderer.swordEffectAtlas;
 			debugItem.effectAnimation = EffectRenderer.swordAnimation;
 			debugItem.weaponAtlas[1] = PlayerWeapon.swordLV2;
 			debugItem.weaponLV2Animation = PlayerWeapon.swordLV2Anim;
 			//lv3
-			debugItem.attackWidth[2] = ItemDrop.AXELV3_ATTACK_WIDTH;
-			debugItem.attackHeight[2] = ItemDrop.AXELV3_ATTACK_HEIGHT;
-			debugItem.attackChargeTime[2] = ItemDrop.AXELV3_CHARGE_TIME;
-			debugItem.attack[2] = ItemDrop.AXELV3_ATTACK;
+			debugItem.attackWidth[2] = ItemDrop.SWORDLV3_ATTACK_WIDTH;
+			debugItem.attackHeight[2] = ItemDrop.SWORDLV3_ATTACK_HEIGHT;
+			debugItem.attackChargeTime[2] = ItemDrop.SWORDLV3_CHARGE_TIME;
+			debugItem.attack[2] = ItemDrop.SWORDLV3_ATTACK;
 			debugItem.effectAtlas = EffectRenderer.swordEffectAtlas;
 			debugItem.effectAnimation = EffectRenderer.swordAnimation;
 			debugItem.weaponAtlas[2] = PlayerWeapon.swordLV3;
@@ -2304,28 +2304,28 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			debugItem.weaponName = "bow";
 			debugItem.dropType = "weapon";
 			//lv1
-			debugItem.attackWidth[0] = ItemDrop.AXE_ATTACK_WIDTH;
-			debugItem.attackHeight[0] = ItemDrop.AXE_ATTACK_HEIGHT;
-			debugItem.attackChargeTime[0] = ItemDrop.AXE_CHARGE_TIME;
-			debugItem.attack[0] = ItemDrop.AXE_ATTACK;
+			debugItem.attackWidth[0] = ItemDrop.BOW_ATTACK_WIDTH;
+			debugItem.attackHeight[0] = ItemDrop.BOW_ATTACK_HEIGHT;
+			debugItem.attackChargeTime[0] = ItemDrop.BOW_CHARGE_TIME;
+			debugItem.attack[0] = ItemDrop.BOW_ATTACK;
 			debugItem.effectAtlas = EffectRenderer.punchAtlas;
 			debugItem.effectAnimation = EffectRenderer.punchAnimation;
 			debugItem.weaponAtlas[0] = PlayerWeapon.bow;
 			debugItem.weaponAnimation = PlayerWeapon.bowAnim;
 			//lv2
-			debugItem.attackWidth[1] = ItemDrop.AXELV2_ATTACK_WIDTH;
-			debugItem.attackHeight[1] = ItemDrop.AXELV2_ATTACK_HEIGHT;
-			debugItem.attackChargeTime[1] = ItemDrop.AXELV2_CHARGE_TIME;
-			debugItem.attack[1] = ItemDrop.AXELV2_ATTACK;
+			debugItem.attackWidth[1] = ItemDrop.BOWLV2_ATTACK_WIDTH;
+			debugItem.attackHeight[1] = ItemDrop.BOWLV2_ATTACK_HEIGHT;
+			debugItem.attackChargeTime[1] = ItemDrop.BOWLV2_CHARGE_TIME;
+			debugItem.attack[1] = ItemDrop.BOWLV2_ATTACK;
 			debugItem.effectAtlas = EffectRenderer.punchAtlas;
 			debugItem.effectAnimation = EffectRenderer.punchAnimation;
 			debugItem.weaponAtlas[1] = PlayerWeapon.bowLV2;
 			debugItem.weaponLV2Animation = PlayerWeapon.bowLV2Anim;
 			//lv3
-			debugItem.attackWidth[2] = ItemDrop.AXELV3_ATTACK_WIDTH;
-			debugItem.attackHeight[2] = ItemDrop.AXELV3_ATTACK_HEIGHT;
-			debugItem.attackChargeTime[2] = ItemDrop.AXELV3_CHARGE_TIME;
-			debugItem.attack[2] = ItemDrop.AXELV3_ATTACK;
+			debugItem.attackWidth[2] = ItemDrop.BOWLV3_ATTACK_WIDTH;
+			debugItem.attackHeight[2] = ItemDrop.BOWLV3_ATTACK_HEIGHT;
+			debugItem.attackChargeTime[2] = ItemDrop.BOWLV3_CHARGE_TIME;
+			debugItem.attack[2] = ItemDrop.BOWLV3_ATTACK;
 			debugItem.effectAtlas = EffectRenderer.punchAtlas;
 			debugItem.effectAnimation = EffectRenderer.punchAnimation;
 			debugItem.weaponAtlas[2] = PlayerWeapon.bowLV3;
