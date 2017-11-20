@@ -113,6 +113,9 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	UI playerButtonSetting[][];
 	UI settingBackButton;
 	int playerCount;
+	
+	// debug item drop
+	ItemDrop debugItem;
 
 	boolean axisMove = false;
 	Texture menuStart1, menuStart2, menuSetting1, menuSetting2, menuHowTo1, menuHowTo2, menuExit1, menuExit2, back1, back2;
@@ -155,6 +158,8 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		skill3Sound = Gdx.audio.newSound(Gdx.files.internal("audio/skill3.ogg"));
 		skill4Sound = Gdx.audio.newSound(Gdx.files.internal("audio/skill4.ogg"));
 
+		debugItem = new ItemDrop();
+		
 		// create font
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/font.ttf"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
@@ -453,6 +458,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		for (ItemDrop item : itemDrop) {
 			game.addActor(item);
 		}
+		game.addActor(debugItem);
 
 		game.addActor(playerShadow[0]);
 		game.addActor(playerShadow[1]);
@@ -1011,6 +1017,40 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 					allPlayer.updateHitbox();
 				}
 			}
+			// check for player picking up debug item
+			if (checkCollision(allPlayer, debugItem))
+			{
+				collectSound.play();
+				debugItem.setVisible(false);
+				if (debugItem.dropType.equals("weapon"))
+				{
+					//set all variable about weapon here
+					allPlayer.updateNewWeapon(debugItem);
+					debugItem.hitbox.setX(-1000);
+					debugItem.hitbox.setY(-1000);
+					weaponSprite[weaponCount].img = debugItem.img;
+					if (allPlayer.currentChargeTime > allPlayer.attackChargeTime)
+					{
+						allPlayer.currentChargeTime = allPlayer.attackChargeTime;
+					}
+				}
+				else if (debugItem.dropType.equals("powerup"))
+				{
+					if (debugItem.powerUpName.equals("life"))
+					{
+						if (allPlayer.hp < 3)
+						{
+							allPlayer.hp += 1;
+						}
+					}
+					else if (debugItem.powerUpName.equals("shoe"))
+					{
+						allPlayer.speedBoostTime = 3f;
+					}
+					debugItem.hitbox.setX(-1000);
+					debugItem.hitbox.setY(-1000);
+				}
+			}
 			// check player picking up item
 			for (ItemDrop item : itemDrop)
 			{
@@ -1285,6 +1325,16 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			else if (player[i].controllerCount == 1)
 			{
 				controlType = "Controller2";
+				centerShift = controlType.length()*7;
+			}
+			else if (player[i].controllerCount == 2)
+			{
+				controlType = "Controller3";
+				centerShift = controlType.length()*7;
+			}
+			else if (player[i].controllerCount == 3)
+			{
+				controlType = "Controller4";
 				centerShift = controlType.length()*7;
 			}
 			font32.draw(batch, controlType, playerControlType[i].getX()+playerControlType[i].getWidth()/2-centerShift, playerControlType[i].getY()+playerControlType[i].getHeight()/2);
@@ -1760,6 +1810,19 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			resetVariableInCharacterStage();
 			resetVariableInGameStage();
 		}
+		for (int i = 0; i<4; i++)
+		{
+			if (!player[i].controlType.equals("keyboard"))
+			{
+				continue;
+			}
+			if (keycode == player[i].controlBack || keycode == player[i].controlAttack)
+			{
+				screen = "menu";
+				resetVariableInCharacterStage();
+				resetVariableInGameStage();
+			}
+		}
 	}
 
 	public void keyDownInPauseStage(int keycode)
@@ -2117,12 +2180,198 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		}
 		else if (character == 'ò')
 		{
-			player[0].armor -= 1;
-			if (player[0].armor <= 0)
-			{
-				player[0].hp -=1;
+			debugItem.img = ItemDrop.swordDropTexture;
+			debugItem.weaponName = "sword";
+			debugItem.dropType = "weapon";
+			//lv1
+			debugItem.attackWidth[0] = ItemDrop.AXE_ATTACK_WIDTH;
+			debugItem.attackHeight[0] = ItemDrop.AXE_ATTACK_HEIGHT;
+			debugItem.attackChargeTime[0] = ItemDrop.AXE_CHARGE_TIME;
+			debugItem.attack[0] = ItemDrop.AXE_ATTACK;
+			debugItem.effectAtlas = EffectRenderer.swordEffectAtlas;
+			debugItem.effectAnimation = EffectRenderer.swordAnimation;
+			debugItem.weaponAtlas[0] = PlayerWeapon.sword;
+			debugItem.weaponAnimation = PlayerWeapon.swordAnim;
+			//lv2
+			debugItem.attackWidth[1] = ItemDrop.AXELV2_ATTACK_WIDTH;
+			debugItem.attackHeight[1] = ItemDrop.AXELV2_ATTACK_HEIGHT;
+			debugItem.attackChargeTime[1] = ItemDrop.AXELV2_CHARGE_TIME;
+			debugItem.attack[1] = ItemDrop.AXELV2_ATTACK;
+			debugItem.effectAtlas = EffectRenderer.swordEffectAtlas;
+			debugItem.effectAnimation = EffectRenderer.swordAnimation;
+			debugItem.weaponAtlas[1] = PlayerWeapon.swordLV2;
+			debugItem.weaponLV2Animation = PlayerWeapon.swordLV2Anim;
+			//lv3
+			debugItem.attackWidth[2] = ItemDrop.AXELV3_ATTACK_WIDTH;
+			debugItem.attackHeight[2] = ItemDrop.AXELV3_ATTACK_HEIGHT;
+			debugItem.attackChargeTime[2] = ItemDrop.AXELV3_CHARGE_TIME;
+			debugItem.attack[2] = ItemDrop.AXELV3_ATTACK;
+			debugItem.effectAtlas = EffectRenderer.swordEffectAtlas;
+			debugItem.effectAnimation = EffectRenderer.swordAnimation;
+			debugItem.weaponAtlas[2] = PlayerWeapon.swordLV3;
+			debugItem.weaponLV3Animation = PlayerWeapon.swordLV3Anim;
+			debugItem.weaponSound = PlayerWeapon.swordSound;
+			debugItem.setX(60);
+			debugItem.setY(60);
+			debugItem.hitbox.setX(debugItem.getX());
+			debugItem.hitbox.setY(debugItem.getY());
+			debugItem.dropped = true;
+			debugItem.setVisible(true);
+		}
+		else if (character == 'ó')
+		{
+			debugItem.img = ItemDrop.spearDropTexture;
+			debugItem.weaponName = "spear";
+			debugItem.dropType = "weapon";
+			//lv1
+			debugItem.attackWidth[0] = ItemDrop.SPEAR_ATTACK_WIDTH;
+			debugItem.attackHeight[0] = ItemDrop.SPEAR_ATTACK_HEIGHT;
+			debugItem.attackChargeTime[0] = ItemDrop.SPEAR_CHARGE_TIME;
+			debugItem.attack[0] = ItemDrop.SPEAR_ATTACK;
+			debugItem.effectAtlas = EffectRenderer.spearEffectAtlas;
+			debugItem.effectAnimation = EffectRenderer.spearAnimation;
+			debugItem.weaponAtlas[0] = PlayerWeapon.spear;
+			debugItem.weaponAnimation = PlayerWeapon.spearAnim;
+			//lv2
+			debugItem.attackWidth[1] = ItemDrop.SPEARLV2_ATTACK_WIDTH;
+			debugItem.attackHeight[1] = ItemDrop.SPEARLV2_ATTACK_HEIGHT;
+			debugItem.attackChargeTime[1] = ItemDrop.SPEARLV2_CHARGE_TIME;
+			debugItem.attack[1] = ItemDrop.SPEARLV2_ATTACK;
+			debugItem.effectAtlas = EffectRenderer.spearEffectAtlas;
+			debugItem.effectAnimation = EffectRenderer.spearAnimation;
+			debugItem.weaponAtlas[1] = PlayerWeapon.spearLV2;
+			debugItem.weaponLV2Animation = PlayerWeapon.spearLV2Anim;
+			//lv3
+			debugItem.attackWidth[2] = ItemDrop.SPEARLV3_ATTACK_WIDTH;
+			debugItem.attackHeight[2] = ItemDrop.SPEARLV3_ATTACK_HEIGHT;
+			debugItem.attackChargeTime[2] = ItemDrop.SPEARLV3_CHARGE_TIME;
+			debugItem.attack[2] = ItemDrop.SPEARLV3_ATTACK;
+			debugItem.effectAtlas = EffectRenderer.spearEffectAtlas;
+			debugItem.effectAnimation = EffectRenderer.spearAnimation;
+			debugItem.weaponAtlas[2] = PlayerWeapon.spearLV3;
+			debugItem.weaponLV3Animation = PlayerWeapon.spearLV3Anim;
+			debugItem.weaponSound = PlayerWeapon.spearSound;
+			debugItem.setX(60);
+			debugItem.setY(60);
+			debugItem.hitbox.setX(debugItem.getX());
+			debugItem.hitbox.setY(debugItem.getY());
+			debugItem.dropped = true;
+			debugItem.setVisible(true);
+		}
+		else if (character == 'ô')
+		{
+			debugItem.img = ItemDrop.axeDropTexture;
+			debugItem.weaponName = "axe";
+			debugItem.dropType = "weapon";
+			//lv1
+			debugItem.attackWidth[0] = ItemDrop.AXE_ATTACK_WIDTH;
+			debugItem.attackHeight[0] = ItemDrop.AXE_ATTACK_HEIGHT;
+			debugItem.attackChargeTime[0] = ItemDrop.AXE_CHARGE_TIME;
+			debugItem.attack[0] = ItemDrop.AXE_ATTACK;
+			debugItem.effectAtlas = EffectRenderer.swordEffectAtlas;
+			debugItem.effectAnimation = EffectRenderer.swordAnimation;
+			debugItem.weaponAtlas[0] = PlayerWeapon.axe;
+			debugItem.weaponAnimation = PlayerWeapon.axeAnim;
+			//lv2
+			debugItem.attackWidth[1] = ItemDrop.AXELV2_ATTACK_WIDTH;
+			debugItem.attackHeight[1] = ItemDrop.AXELV2_ATTACK_HEIGHT;
+			debugItem.attackChargeTime[1] = ItemDrop.AXELV2_CHARGE_TIME;
+			debugItem.attack[1] = ItemDrop.AXELV2_ATTACK;
+			debugItem.effectAtlas = EffectRenderer.swordEffectAtlas;
+			debugItem.effectAnimation = EffectRenderer.swordAnimation;
+			debugItem.weaponAtlas[1] = PlayerWeapon.axeLV2;
+			debugItem.weaponLV2Animation = PlayerWeapon.axeLV2Anim;
+			//lv3
+			debugItem.attackWidth[2] = ItemDrop.AXELV3_ATTACK_WIDTH;
+			debugItem.attackHeight[2] = ItemDrop.AXELV3_ATTACK_HEIGHT;
+			debugItem.attackChargeTime[2] = ItemDrop.AXELV3_CHARGE_TIME;
+			debugItem.attack[2] = ItemDrop.AXELV3_ATTACK;
+			debugItem.effectAtlas = EffectRenderer.swordEffectAtlas;
+			debugItem.effectAnimation = EffectRenderer.swordAnimation;
+			debugItem.weaponAtlas[2] = PlayerWeapon.axeLV3;
+			debugItem.weaponLV3Animation = PlayerWeapon.axeLV3Anim;
+			debugItem.weaponSound = PlayerWeapon.axeSound;
+			debugItem.setX(60);
+			debugItem.setY(60);
+			debugItem.hitbox.setX(debugItem.getX());
+			debugItem.hitbox.setY(debugItem.getY());
+			debugItem.dropped = true;
+			debugItem.setVisible(true);
+		}
+		else if (character == 'Ù')
+		{
+			debugItem.img = ItemDrop.bowDropTexture;
+			debugItem.weaponName = "bow";
+			debugItem.dropType = "weapon";
+			//lv1
+			debugItem.attackWidth[0] = ItemDrop.AXE_ATTACK_WIDTH;
+			debugItem.attackHeight[0] = ItemDrop.AXE_ATTACK_HEIGHT;
+			debugItem.attackChargeTime[0] = ItemDrop.AXE_CHARGE_TIME;
+			debugItem.attack[0] = ItemDrop.AXE_ATTACK;
+			debugItem.effectAtlas = EffectRenderer.punchAtlas;
+			debugItem.effectAnimation = EffectRenderer.punchAnimation;
+			debugItem.weaponAtlas[0] = PlayerWeapon.bow;
+			debugItem.weaponAnimation = PlayerWeapon.bowAnim;
+			//lv2
+			debugItem.attackWidth[1] = ItemDrop.AXELV2_ATTACK_WIDTH;
+			debugItem.attackHeight[1] = ItemDrop.AXELV2_ATTACK_HEIGHT;
+			debugItem.attackChargeTime[1] = ItemDrop.AXELV2_CHARGE_TIME;
+			debugItem.attack[1] = ItemDrop.AXELV2_ATTACK;
+			debugItem.effectAtlas = EffectRenderer.punchAtlas;
+			debugItem.effectAnimation = EffectRenderer.punchAnimation;
+			debugItem.weaponAtlas[1] = PlayerWeapon.bowLV2;
+			debugItem.weaponLV2Animation = PlayerWeapon.bowLV2Anim;
+			//lv3
+			debugItem.attackWidth[2] = ItemDrop.AXELV3_ATTACK_WIDTH;
+			debugItem.attackHeight[2] = ItemDrop.AXELV3_ATTACK_HEIGHT;
+			debugItem.attackChargeTime[2] = ItemDrop.AXELV3_CHARGE_TIME;
+			debugItem.attack[2] = ItemDrop.AXELV3_ATTACK;
+			debugItem.effectAtlas = EffectRenderer.punchAtlas;
+			debugItem.effectAnimation = EffectRenderer.punchAnimation;
+			debugItem.weaponAtlas[2] = PlayerWeapon.bowLV3;
+			debugItem.weaponLV3Animation = PlayerWeapon.bowLV3Anim;
+			debugItem.weaponSound = PlayerWeapon.bowSound;
+			debugItem.setX(60);
+			debugItem.setY(60);
+			debugItem.hitbox.setX(debugItem.getX());
+			debugItem.hitbox.setY(debugItem.getY());
+			debugItem.dropped = true;
+			debugItem.setVisible(true);
+		}
+		else if (character == 'ß')
+		{
+			debugItem.dropType = "powerup";
+			debugItem.img = ItemDrop.lifeDropTexture;
+			debugItem.powerUpName = "life";
+			debugItem.setX(60);
+			debugItem.setY(60);
+			debugItem.hitbox.setX(debugItem.getX());
+			debugItem.hitbox.setY(debugItem.getY());
+			debugItem.dropped = true;
+			debugItem.setVisible(true);
+		}
+		else if (character == 'õ')
+		{
+			debugItem.dropType = "powerup";
+			debugItem.img = ItemDrop.shoeDropTexture;
+			debugItem.powerUpName = "shoe";
+			debugItem.setX(60);
+			debugItem.setY(60);
+			debugItem.hitbox.setX(debugItem.getX());
+			debugItem.hitbox.setY(debugItem.getY());
+			debugItem.dropped = true;
+			debugItem.setVisible(true);
+		}
+		else if (character == 'ö')
+		{
+			for (NormalWall wall : normalWalls) {
+				if (wall.getX() == 50 || wall.getX() == 1250 || wall.getY() == 50 || wall.getY() == 550)
+				{
+					wall.hitbox.setX(-1000);
+					wall.hitbox.setY(-1000);
+					wall.setVisible(false);
+				}
 			}
-			player[0].regenDelay = 2;
 		}
 		return false;
 	}
@@ -2274,6 +2523,18 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 							confirmSound.play();
 						}
 						else if (player[i].controlType.equals("controller2"))
+						{
+							player[i].controlType = "controller3";
+							player[i].controllerCount = 2;
+							confirmSound.play();
+						}
+						else if (player[i].controlType.equals("controller3"))
+						{
+							player[i].controlType = "controller4";
+							player[i].controllerCount = 3;
+							confirmSound.play();
+						}
+						else if (player[i].controlType.equals("controller4"))
 						{
 							player[i].controlType = "keyboard";
 							player[i].controllerCount = -1;
@@ -3083,6 +3344,9 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			item.hitbox.setX(-1000);
 			item.hitbox.setY(-1000);
 		}
+		debugItem.setVisible(false);
+		debugItem.hitbox.setX(-1000);
+		debugItem.hitbox.setY(-1000);
 		ItemDrop.dropCount = 0;
 		arrowCharged[0] = false;
 		arrowCharged[1] = false;
@@ -3215,7 +3479,7 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 	public void buttonDownInSettingStage(Controller controller, int buttonCode)
 	{
 		// handle button input for controller
-		if (changeControl && (player[playerNumber].controlType.equals("controller1") || player[playerNumber].controlType.equals("controller2")))
+		if (changeControl && (player[playerNumber].controlType.equals("controller1") || player[playerNumber].controlType.equals("controller2") || player[playerNumber].controlType.equals("controller3") || player[playerNumber].controlType.equals("controller4")))
 		{
 			if (controller == Controllers.getControllers().get(player[playerNumber].controllerCount))
 			{
