@@ -3401,6 +3401,8 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			allPlayer.speedRight = 0;
 			allPlayer.arrow.setX(-100);
 			allPlayer.arrow.setY(-100);
+			allPlayer.arrow.setArrow(allPlayer.getX()+25, allPlayer.getY()+20, allPlayer.direction, allPlayer.weaponLV);
+			allPlayer.arrow.setVisible(false);
 			allPlayer.attackSound = PlayerWeapon.fistSound;
 			allPlayer.speedBoostTime = 0;
 			allPlayer.slowTime = 0;
@@ -3416,6 +3418,16 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 			{
 				allPlayer.setX(1250);
 				allPlayer.setY(550);
+			}
+			else if (allPlayer == player[2])
+			{
+				allPlayer.setX(50);
+				allPlayer.setY(550);
+			}
+			else if (allPlayer == player[3])
+			{
+				allPlayer.setX(1250);
+				allPlayer.setY(50);
 			}
 			allPlayer.setIngame(false);
 		}
@@ -3481,34 +3493,37 @@ public class ArcanePlayground extends ApplicationAdapter implements InputProcess
 		// handle button input for controller
 		if (changeControl && (player[playerNumber].controlType.equals("controller1") || player[playerNumber].controlType.equals("controller2") || player[playerNumber].controlType.equals("controller3") || player[playerNumber].controlType.equals("controller4")))
 		{
-			if (controller == Controllers.getControllers().get(player[playerNumber].controllerCount))
+			if (player[playerNumber].controllerCount+1 <= Controllers.getControllers().size)
 			{
-				confirmSound.play();
-				if (controlName.equals("up"))
+				if (controller == Controllers.getControllers().get(player[playerNumber].controllerCount))
 				{
-					player[playerNumber].controlUp = buttonCode;
+					confirmSound.play();
+					if (controlName.equals("up"))
+					{
+						player[playerNumber].controlUp = buttonCode;
+					}
+					else if (controlName.equals("down"))
+					{
+						player[playerNumber].controlDown = buttonCode;
+					}
+					else if (controlName.equals("left"))
+					{
+						player[playerNumber].controlLeft = buttonCode;
+					}
+					else if (controlName.equals("right"))
+					{
+						player[playerNumber].controlRight = buttonCode;
+					}
+					else if (controlName.equals("attack"))
+					{
+						player[playerNumber].controlAttack = buttonCode;
+					}
+					else if (controlName.equals("back"))
+					{
+						player[playerNumber].controlBack = buttonCode;
+					}
+					changeControl = false;
 				}
-				else if (controlName.equals("down"))
-				{
-					player[playerNumber].controlDown = buttonCode;
-				}
-				else if (controlName.equals("left"))
-				{
-					player[playerNumber].controlLeft = buttonCode;
-				}
-				else if (controlName.equals("right"))
-				{
-					player[playerNumber].controlRight = buttonCode;
-				}
-				else if (controlName.equals("attack"))
-				{
-					player[playerNumber].controlAttack = buttonCode;
-				}
-				else if (controlName.equals("back"))
-				{
-					player[playerNumber].controlBack = buttonCode;
-				}
-				changeControl = false;
 			}
 		}
 	}
