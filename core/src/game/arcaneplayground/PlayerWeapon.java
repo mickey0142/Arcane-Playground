@@ -186,6 +186,11 @@ public class PlayerWeapon extends Actor{
 			moveY = 3;
 			this.setWidth(110);
 			this.setHeight(20);
+			if (player.weaponLV == 1)
+			{
+				this.setWidth(170);
+				this.setHeight(40);
+			}
 		}
 		else if (player.weaponName.equals("axe"))
 		{
